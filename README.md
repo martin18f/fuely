@@ -67,19 +67,6 @@ npx serve
 
 ---
 
-## 📂 Project Structure
-
-```
-fuely/
-│
-├── index.html
-├── style.css
-├── script.js
-└── README.md
-```
-
----
-
 ## 🔮 Future Improvements
 
 - Multi-currency support (€ / $ / £)
