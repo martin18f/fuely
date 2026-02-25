@@ -5,6 +5,4 @@ build
 cypress
 craco.config.js
 cypress.config.ts
-package.json
-package-lock.json
 vercel.json

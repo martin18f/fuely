@@ -1,71 +1,101 @@
-# Getting Started with Create React App
+Fuely – Fuel Cost Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Live demo: https://fuely-nine.vercel.app/
 
-## Available Scripts
+📌 Project Overview
 
-In the project directory, you can run:
+Fuely is a lightweight web application designed to calculate fuel costs for planned trips.
+It allows users to quickly estimate travel expenses based on distance, vehicle consumption, and fuel price.
 
-### `npm start`
+The goal of the project is to provide a fast, clean, and practical tool for trip cost estimation.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🧮 Calculation Formula
+Total Cost
+=
+(
+Distance
+100
+×
+Fuel Consumption
+)
+×
+Fuel Price
+Total Cost=(
+100
+Distance
+	​
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+×Fuel Consumption)×Fuel Price
+Example
 
-### `npm test`
+Distance: 250 km
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Consumption: 7.5 L / 100 km
 
-### `npm run build`
+Fuel price: 1.65 € / L
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+(
+250
+/
+100
+×
+7.5
+)
+×
+1.65
+=
+30.94
+€
+(250/100×7.5)×1.65=30.94€
+🛠️ Technologies Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+HTML5
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+CSS3
 
-### `npm run eject`
+JavaScript (Vanilla JS)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Vercel (Deployment)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+🚀 Run Locally
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Clone the repository:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+git clone https://github.com/your-username/fuely.git
 
-## Learn More
+Navigate to the project directory:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+cd fuely
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Open index.html in your browser
+or start a simple local server:
 
-### Code Splitting
+npx serve
+📂 Project Structure
+fuely/
+│
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+🔮 Possible Future Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Multi-currency support (€, $, £)
 
-### Analyzing the Bundle Size
+Round-trip cost calculation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Calculation history storage (localStorage)
 
-### Making a Progressive Web App
+Integration with live fuel price APIs
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Mobile-first UI improvements
 
-### Advanced Configuration
+Dark/light theme switch
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+📄 License
 
-### Deployment
+This project is licensed under the MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+👤 Author
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-"# fuely" 
+Developed as a practical web tool for estimating fuel expenses and improving trip planning accuracy.
