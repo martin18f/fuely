@@ -1,0 +1,132 @@
+/* Nový dizajn pre ContactForm */
+
+/* Kontajner s glassmorphism efektom – maximálna šírka 860px */
+.contact-form-container {
+  max-width: 100%;
+  
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Nadpis a podnadpis */
+.contact-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.contact-message {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+/* Formulár s floating label efektom */
+.contact-form .form-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.contact-form label {
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  padding: 0 5px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  pointer-events: none;
+}
+
+/* Štýl pre inputy a textarea – width 100% */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--text-color);
+  font-size: 1rem;
+  outline: none;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Submit tlačidlo – width 100% a zarovnané s inputmi */
+.contact-submit-button {
+  width: 100%;
+  padding: 15px;
+  background-image: linear-gradient(30deg, #0400ff, #4ce3f7);
+  border: none;
+  font-weight: bold;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.contact-submit-button:hover {
+  background-image: linear-gradient(30deg, #0033cc, #1fa3ff);
+  background-position: right center;
+  background-size: 200% auto;
+  -webkit-animation: pulse 2s infinite;
+  animation: pulse512 1.5s infinite;
+  transform: translateY(-3px);
+}
+
+/* Po odoslaní zobrazí sa správa */
+.thank-you-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-submit-button {
+  box-sizing: border-box;
+}
+
+/* Responzívne úpravy pre malé obrazovky */
+@media (max-width: 480px) {
+  .contact-form-container {
+    padding: 20px;
+  }
+  .contact-title {
+    font-size: 1.5rem;
+  }
+  .contact-message {
+    font-size: 0.9rem;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+  .contact-submit-button {
+    font-size: 1rem;
+    padding: 12px;
+  }
+}

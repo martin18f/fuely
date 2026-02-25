@@ -1,0 +1,309 @@
+/* =========================
+   Hlavný kontajner vstupu
+   ========================= */
+   .fuelPriceContainer {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+  
+  /* Input pre zadanie ceny paliva */
+  .inputFuelPrice {
+    width: 100%;
+    box-sizing: border-box;
+    /* rezerva pre plusWrapper (~36px + margin) */
+    padding-right: 40px; 
+  }
+  
+  /* =========================
+     Ikona lupy (plusWrapper)
+     ========================= */
+  .plusWrapper {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+  
+    /* Umožníme animovaným pseudoelementom presahovať kontajner */
+    overflow: visible;
+  
+    /* Jemný tieň, aby ikona nevyzerala "plocho" */
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+  }
+  
+  /* SVG ikona lupy */
+  .plusWrapper svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--text-color); /* alebo napr. #555 */
+    opacity: 0.9;
+    transition:
+      transform 0.3s ease,
+      fill 0.3s ease,
+      filter 0.3s ease,
+      opacity 0.3s ease;
+  }
+  
+  /* Hover na wrapper */
+  .plusWrapper:hover {
+    transform: translateY(-50%) scale(1.05);
+  }
+  
+  /* Hover efekt na SVG: natočenie, zmena farby, jemný "neon" tieň */
+  .plusWrapper:hover svg {
+    transform: rotate(10deg) scale(1.15);
+    fill: #185ee0; /* výraznejšia modrá */
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #185ee0);
+  }
+  
+  /* Kliknutie (active) = mierne "stlačenie" ikony */
+  .plusWrapper:active {
+    transform: translateY(-50%) scale(0.97);
+  }
+  .plusWrapper:active svg {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+    filter: drop-shadow(0 0 6px #185ee0);
+  }
+  
+  /* =========================
+     EXTRA ANIMOVANÉ KRUHY
+     ========================= */
+  /* Prvý kruh (plný, jemná priehľadnosť) */
+  .plusWrapper::before {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: #185ee0;
+    opacity: 0.15;
+    transition: transform 0.4s ease, width 0.3s ease, height 0.3s ease;
+    z-index: -1;
+  }
+  
+  /* Druhý kruh (dashed okraj) */
+  .plusWrapper::after {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 2px dashed #185ee0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.3;
+    transition: transform 0.4s ease, width 0.3s ease, height 0.3s ease;
+    z-index: -1;
+  }
+  
+  /* Pri hover sa oba kruhy rozbalia a dashed kruh rotuje */
+  .plusWrapper:hover::before {
+    width: 60px;
+    height: 60px;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .plusWrapper:hover::after {
+    width: 70px;
+    height: 70px;
+    transform: translate(-50%, -50%) scale(1);
+    animation: rotateRing 2s linear infinite;
+  }
+  
+  /* Kľúčové snímky pre rotáciu dashed kruhu */
+  @keyframes rotateRing {
+    0% {
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1) rotate(360deg);
+    }
+  }
+  
+  /* =========================
+     Popup overlay & content
+     ========================= */
+  .popupOverlay {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 9998;
+  }
+  .popupContent {
+    position: fixed;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 370px;
+    max-width: 90%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+  }
+  .popupContent h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  /* Riadok s voľbou fuelType (radio) */
+  .fuelTypeRow {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  /* Výpis krajín */
+  .countryList {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  .countryItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+  }
+  .countryItem:hover {
+    background-color: #f0f0f0;
+  }
+  .countryItem:last-child {
+    border-bottom: none;
+  }
+  .flagIcon {
+    width: 24px;
+    height: auto;
+  }
+  
+  /* Tlačidlo "Close" */
+  .closeBtn {
+    align-self: flex-end;
+    background: #dc3545;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .closeBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  .closeBtn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Vyhľadávací input pre krajiny */
+  .searchCountry {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .searchCountry input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+  }
+  .searchCountry input:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.5);
+  }
+  
+  /* Stav načítavania + chyba */
+  .loading {
+    color: #999;
+    text-align: center;
+  }
+  .error {
+    color: red;
+    text-align: center;
+  }
+  
+  /* ============= Media Queries ============= */
+  @media (max-width: 768px) {
+    .inputFuelPrice {
+      font-size: 1rem;
+      padding-right: 40px;
+    }
+  
+    .plusWrapper {
+      width: 30px;
+      height: 30px;
+      right: 10px;
+      top: 23px;
+    }
+  
+    /* Pri hover budú pseudoelementy menšie */
+    .plusWrapper:hover::before {
+      width: 50px;
+      height: 50px;
+    }
+    .plusWrapper:hover::after {
+      width: 60px;
+      height: 60px;
+    }
+  
+    .popupContent {
+      width: 70%;
+      padding: 1rem;
+    }
+  
+    .fuelTypeRow {
+      flex-direction: row;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      gap: 20px;
+      align-items: center;
+    }
+  
+    .countryList {
+      max-height: 120px;
+    }
+  
+    .closeBtn {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+    }
+  
+    .popupContent h2 {
+      font-size: 1.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  
+    .searchCountry {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  

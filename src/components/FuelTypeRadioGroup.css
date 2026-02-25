@@ -1,0 +1,80 @@
+/* Obalovací kontajner pre celý komponent */
+.fuelTypeContainer {
+  background-color: var(--section-bg);
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Sekcia „tabs“ */
+.fuelTypeTabs {
+  display: flex;
+  position: relative;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.15),
+              0 6px 12px 0 rgba(92, 92, 92, 0.15);
+  padding: 0.75rem;
+  border-radius: 99px;
+}
+
+/* Všetky vnútorné prvky budú nad pozadím */
+.fuelTypeTabs * {
+  z-index: 2;
+}
+
+/* Skryté radio inputy */
+.fuelTypeContainer input[type="radio"] {
+  display: none;
+}
+
+/* Štýl pre jednotlivé záložky (tab = label) */
+.fuelTypeTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 80px;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: color 0.15s ease-in;
+}
+
+/* Zmena farby aktívnej záložky */
+.fuelTypeContainer input[type="radio"]:checked + .fuelTypeTab {
+  color: var(--active-tab-color); /* dynamická farba podľa témy */
+}
+
+/* Jemný hover efekt – voliteľné */
+
+
+/* Responzivita pre menšie obrazovky */
+@media (max-width: 768px) {
+  .fuelTypeTabs {
+    justify-content: center;
+  }
+  
+  .fuelTypeTab {
+    width: 70px;
+  }
+}
+
+/* Témy – doladenie farieb */
+.light-theme {
+  --bg-color: linear-gradient(135deg, #eef2f3, #ffffff);
+  --text-color: #333333;
+  --section-bg: #ffffff;
+  --secondary-color: #ffffff;
+  --active-tab-color: #185ee0; /* modrá pre svetlú tému */
+}
+
+.dark-theme {
+  --bg-color: #181818;
+  --text-color: #f0f0f0;
+  --section-bg: #494949;
+  --secondary-color: #5c5c5c;
+  --active-tab-color: #6ee7b7; /* zelenkastá pre tmavú tému */
+}

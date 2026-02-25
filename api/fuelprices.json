@@ -1,0 +1,1350 @@
+[
+  {
+    "Krajina": "Venezuela",
+    "Cena v €/l paliva (Diesel)": 0.004
+  },
+  {
+    "Krajina": "Iran",
+    "Cena v €/l paliva (Diesel)": 0.005
+  },
+  {
+    "Krajina": "Libya",
+    "Cena v €/l paliva (Diesel)": 0.025
+  },
+  {
+    "Krajina": "Algeria",
+    "Cena v €/l paliva (Diesel)": 0.199
+  },
+  {
+    "Krajina": "Egypt",
+    "Cena v €/l paliva (Diesel)": 0.241
+  },
+  {
+    "Krajina": "Turkmenistan",
+    "Cena v €/l paliva (Diesel)": 0.262
+  },
+  {
+    "Krajina": "Angola",
+    "Cena v €/l paliva (Diesel)": 0.3
+  },
+  {
+    "Krajina": "Kuwait",
+    "Cena v €/l paliva (Diesel)": 0.342
+  },
+  {
+    "Krajina": "Saudi Arabia",
+    "Cena v €/l paliva (Diesel)": 0.405
+  },
+  {
+    "Krajina": "Ecuador",
+    "Cena v €/l paliva (Diesel)": 0.436
+  },
+  {
+    "Krajina": "Bahrain",
+    "Cena v €/l paliva (Diesel)": 0.438
+  },
+  {
+    "Krajina": "Bolivia",
+    "Cena v €/l paliva (Diesel)": 0.493
+  },
+  {
+    "Krajina": "Kazakhstan",
+    "Cena v €/l paliva (Diesel)": 0.508
+  },
+  {
+    "Krajina": "Qatar",
+    "Cena v €/l paliva (Diesel)": 0.516
+  },
+  {
+    "Krajina": "Azerbaijan",
+    "Cena v €/l paliva (Diesel)": 0.539
+  },
+  {
+    "Krajina": "Nigeria",
+    "Cena v €/l paliva (Diesel)": 0.591
+  },
+  {
+    "Krajina": "Colombia",
+    "Cena v €/l paliva (Diesel)": 0.594
+  },
+  {
+    "Krajina": "Trinidad & Tobago",
+    "Cena v €/l paliva (Diesel)": 0.596
+  },
+  {
+    "Krajina": "Sudan",
+    "Cena v €/l paliva (Diesel)": 0.601
+  },
+  {
+    "Krajina": "Lebanon",
+    "Cena v €/l paliva (Diesel)": 0.602
+  },
+  {
+    "Krajina": "Oman",
+    "Cena v €/l paliva (Diesel)": 0.615
+  },
+  {
+    "Krajina": "Malaysia",
+    "Cena v €/l paliva (Diesel)": 0.62
+  },
+  {
+    "Krajina": "Syria",
+    "Cena v €/l paliva (Diesel)": 0.622
+  },
+  {
+    "Krajina": "UAE",
+    "Cena v €/l paliva (Diesel)": 0.657
+  },
+  {
+    "Krajina": "Vietnam",
+    "Cena v €/l paliva (Diesel)": 0.663
+  },
+  {
+    "Krajina": "Tunisia",
+    "Cena v €/l paliva (Diesel)": 0.665
+  },
+  {
+    "Krajina": "Belarus",
+    "Cena v €/l paliva (Diesel)": 0.706
+  },
+  {
+    "Krajina": "Puerto Rico",
+    "Cena v €/l paliva (Diesel)": 0.729
+  },
+  {
+    "Krajina": "Afghanistan",
+    "Cena v €/l paliva (Diesel)": 0.736
+  },
+  {
+    "Krajina": "Ethiopia",
+    "Cena v €/l paliva (Diesel)": 0.747
+  },
+  {
+    "Krajina": "Panama",
+    "Cena v €/l paliva (Diesel)": 0.747
+  },
+  {
+    "Krajina": "Russia",
+    "Cena v €/l paliva (Diesel)": 0.751
+  },
+  {
+    "Krajina": "Bhutan",
+    "Cena v €/l paliva (Diesel)": 0.753
+  },
+  {
+    "Krajina": "Burma",
+    "Cena v €/l paliva (Diesel)": 0.754
+  },
+  {
+    "Krajina": "Kyrgyzstan",
+    "Cena v €/l paliva (Diesel)": 0.769
+  },
+  {
+    "Krajina": "Taiwan",
+    "Cena v €/l paliva (Diesel)": 0.775
+  },
+  {
+    "Krajina": "Honduras",
+    "Cena v €/l paliva (Diesel)": 0.782
+  },
+  {
+    "Krajina": "Laos",
+    "Cena v €/l paliva (Diesel)": 0.788
+  },
+  {
+    "Krajina": "Indonesia",
+    "Cena v €/l paliva (Diesel)": 0.788
+  },
+  {
+    "Krajina": "Bangladesh",
+    "Cena v €/l paliva (Diesel)": 0.792
+  },
+  {
+    "Krajina": "Paraguay",
+    "Cena v €/l paliva (Diesel)": 0.823
+  },
+  {
+    "Krajina": "Maldives",
+    "Cena v €/l paliva (Diesel)": 0.829
+  },
+  {
+    "Krajina": "El Salvador",
+    "Cena v €/l paliva (Diesel)": 0.829
+  },
+  {
+    "Krajina": "Thailand",
+    "Cena v €/l paliva (Diesel)": 0.844
+  },
+  {
+    "Krajina": "Pakistan",
+    "Cena v €/l paliva (Diesel)": 0.845
+  },
+  {
+    "Krajina": "Cambodia",
+    "Cena v €/l paliva (Diesel)": 0.848
+  },
+  {
+    "Krajina": "Curacao",
+    "Cena v €/l paliva (Diesel)": 0.849
+  },
+  {
+    "Krajina": "Philippines",
+    "Cena v €/l paliva (Diesel)": 0.849
+  },
+  {
+    "Krajina": "Dom. Rep.",
+    "Cena v €/l paliva (Diesel)": 0.853
+  },
+  {
+    "Krajina": "Guatemala",
+    "Cena v €/l paliva (Diesel)": 0.856
+  },
+  {
+    "Krajina": "Liberia",
+    "Cena v €/l paliva (Diesel)": 0.859
+  },
+  {
+    "Krajina": "Uzbekistan",
+    "Cena v €/l paliva (Diesel)": 0.863
+  },
+  {
+    "Krajina": "Guyana",
+    "Cena v €/l paliva (Diesel)": 0.867
+  },
+  {
+    "Krajina": "Jordan",
+    "Cena v €/l paliva (Diesel)": 0.88
+  },
+  {
+    "Krajina": "Gabon",
+    "Cena v €/l paliva (Diesel)": 0.881
+  },
+  {
+    "Krajina": "USA",
+    "Cena v €/l paliva (Diesel)": 0.881
+  },
+  {
+    "Krajina": "Peru",
+    "Cena v €/l paliva (Diesel)": 0.883
+  },
+  {
+    "Krajina": "China",
+    "Cena v €/l paliva (Diesel)": 0.896
+  },
+  {
+    "Krajina": "Chile",
+    "Cena v €/l paliva (Diesel)": 0.901
+  },
+  {
+    "Krajina": "Ghana",
+    "Cena v €/l paliva (Diesel)": 0.912
+  },
+  {
+    "Krajina": "Fiji",
+    "Cena v €/l paliva (Diesel)": 0.932
+  },
+  {
+    "Krajina": "Australia",
+    "Cena v €/l paliva (Diesel)": 0.933
+  },
+  {
+    "Krajina": "DR Congo",
+    "Cena v €/l paliva (Diesel)": 0.94
+  },
+  {
+    "Krajina": "India",
+    "Cena v €/l paliva (Diesel)": 0.965
+  },
+  {
+    "Krajina": "Botswana",
+    "Cena v €/l paliva (Diesel)": 0.974
+  },
+  {
+    "Krajina": "Canada",
+    "Cena v €/l paliva (Diesel)": 0.974
+  },
+  {
+    "Krajina": "New Zealand",
+    "Cena v €/l paliva (Diesel)": 0.975
+  },
+  {
+    "Krajina": "Namibia",
+    "Cena v €/l paliva (Diesel)": 0.976
+  },
+  {
+    "Krajina": "Madagascar",
+    "Cena v €/l paliva (Diesel)": 0.978
+  },
+  {
+    "Krajina": "Brazil",
+    "Cena v €/l paliva (Diesel)": 0.981
+  },
+  {
+    "Krajina": "Zambia",
+    "Cena v €/l paliva (Diesel)": 0.991
+  },
+  {
+    "Krajina": "Lesotho",
+    "Cena v €/l paliva (Diesel)": 0.992
+  },
+  {
+    "Krajina": "Georgia",
+    "Cena v €/l paliva (Diesel)": 0.997
+  },
+  {
+    "Krajina": "Tanzania",
+    "Cena v €/l paliva (Diesel)": 1
+  },
+  {
+    "Krajina": "Cuba",
+    "Cena v €/l paliva (Diesel)": 1.005
+  },
+  {
+    "Krajina": "Nepal",
+    "Cena v €/l paliva (Diesel)": 1.008
+  },
+  {
+    "Krajina": "Swaziland",
+    "Cena v €/l paliva (Diesel)": 1.013
+  },
+  {
+    "Krajina": "Cape Verde",
+    "Cena v €/l paliva (Diesel)": 1.017
+  },
+  {
+    "Krajina": "Moldova",
+    "Cena v €/l paliva (Diesel)": 1.019
+  },
+  {
+    "Krajina": "Sri Lanka",
+    "Cena v €/l paliva (Diesel)": 1.019
+  },
+  {
+    "Krajina": "Japan",
+    "Cena v €/l paliva (Diesel)": 1.021
+  },
+  {
+    "Krajina": "South Africa",
+    "Cena v €/l paliva (Diesel)": 1.022
+  },
+  {
+    "Krajina": "Burkina Faso",
+    "Cena v €/l paliva (Diesel)": 1.034
+  },
+  {
+    "Krajina": "Morocco",
+    "Cena v €/l paliva (Diesel)": 1.056
+  },
+  {
+    "Krajina": "Togo",
+    "Cena v €/l paliva (Diesel)": 1.064
+  },
+  {
+    "Krajina": "Grenada",
+    "Cena v €/l paliva (Diesel)": 1.065
+  },
+  {
+    "Krajina": "South Korea",
+    "Cena v €/l paliva (Diesel)": 1.067
+  },
+  {
+    "Krajina": "Turkey",
+    "Cena v €/l paliva (Diesel)": 1.068
+  },
+  {
+    "Krajina": "Costa Rica",
+    "Cena v €/l paliva (Diesel)": 1.07
+  },
+  {
+    "Krajina": "Rwanda",
+    "Cena v €/l paliva (Diesel)": 1.071
+  },
+  {
+    "Krajina": "Ivory Coast",
+    "Cena v €/l paliva (Diesel)": 1.072
+  },
+  {
+    "Krajina": "Nicaragua",
+    "Cena v €/l paliva (Diesel)": 1.078
+  },
+  {
+    "Krajina": "Uruguay",
+    "Cena v €/l paliva (Diesel)": 1.092
+  },
+  {
+    "Krajina": "Mongolia",
+    "Cena v €/l paliva (Diesel)": 1.094
+  },
+  {
+    "Krajina": "Jamaica",
+    "Cena v €/l paliva (Diesel)": 1.097
+  },
+  {
+    "Krajina": "Aruba",
+    "Cena v €/l paliva (Diesel)": 1.099
+  },
+  {
+    "Krajina": "Suriname",
+    "Cena v €/l paliva (Diesel)": 1.102
+  },
+  {
+    "Krajina": "Benin",
+    "Cena v €/l paliva (Diesel)": 1.103
+  },
+  {
+    "Krajina": "Dominica",
+    "Cena v €/l paliva (Diesel)": 1.11
+  },
+  {
+    "Krajina": "Mali",
+    "Cena v €/l paliva (Diesel)": 1.11
+  },
+  {
+    "Krajina": "N. Maced.",
+    "Cena v €/l paliva (Diesel)": 1.117
+  },
+  {
+    "Krajina": "Haiti",
+    "Cena v €/l paliva (Diesel)": 1.147
+  },
+  {
+    "Krajina": "Mexico",
+    "Cena v €/l paliva (Diesel)": 1.152
+  },
+  {
+    "Krajina": "Argentina",
+    "Cena v €/l paliva (Diesel)": 1.152
+  },
+  {
+    "Krajina": "Senegal",
+    "Cena v €/l paliva (Diesel)": 1.156
+  },
+  {
+    "Krajina": "Kenya",
+    "Cena v €/l paliva (Diesel)": 1.174
+  },
+  {
+    "Krajina": "Bahamas",
+    "Cena v €/l paliva (Diesel)": 1.19
+  },
+  {
+    "Krajina": "Mauritius",
+    "Cena v €/l paliva (Diesel)": 1.198
+  },
+  {
+    "Krajina": "Armenia",
+    "Cena v €/l paliva (Diesel)": 1.203
+  },
+  {
+    "Krajina": "Malta",
+    "Cena v €/l paliva (Diesel)": 1.21
+  },
+  {
+    "Krajina": "Cayman Islands",
+    "Cena v €/l paliva (Diesel)": 1.219
+  },
+  {
+    "Krajina": "Bosnia & Herz.",
+    "Cena v €/l paliva (Diesel)": 1.222
+  },
+  {
+    "Krajina": "Burundi",
+    "Cena v €/l paliva (Diesel)": 1.23
+  },
+  {
+    "Krajina": "Uganda",
+    "Cena v €/l paliva (Diesel)": 1.231
+  },
+  {
+    "Krajina": "Saint Lucia",
+    "Cena v €/l paliva (Diesel)": 1.232
+  },
+  {
+    "Krajina": "Andorra",
+    "Cena v €/l paliva (Diesel)": 1.233
+  },
+  {
+    "Krajina": "Mozambique",
+    "Cena v €/l paliva (Diesel)": 1.245
+  },
+  {
+    "Krajina": "Cameroon",
+    "Cena v €/l paliva (Diesel)": 1.268
+  },
+  {
+    "Krajina": "Bulgaria",
+    "Cena v €/l paliva (Diesel)": 1.268
+  },
+  {
+    "Krajina": "Ukraine",
+    "Cena v €/l paliva (Diesel)": 1.27
+  },
+  {
+    "Krajina": "Guinea",
+    "Cena v €/l paliva (Diesel)": 1.271
+  },
+  {
+    "Krajina": "Sierra Leone",
+    "Cena v €/l paliva (Diesel)": 1.277
+  },
+  {
+    "Krajina": "Seychelles",
+    "Cena v €/l paliva (Diesel)": 1.322
+  },
+  {
+    "Krajina": "Montenegro",
+    "Cena v €/l paliva (Diesel)": 1.36
+  },
+  {
+    "Krajina": "Czech Republic",
+    "Cena v €/l paliva (Diesel)": 1.36
+  },
+  {
+    "Krajina": "Zimbabwe",
+    "Cena v €/l paliva (Diesel)": 1.394
+  },
+  {
+    "Krajina": "Luxembourg",
+    "Cena v €/l paliva (Diesel)": 1.403
+  },
+  {
+    "Krajina": "Belize",
+    "Cena v €/l paliva (Diesel)": 1.417
+  },
+  {
+    "Krajina": "Spain",
+    "Cena v €/l paliva (Diesel)": 1.422
+  },
+  {
+    "Krajina": "Poland",
+    "Cena v €/l paliva (Diesel)": 1.428
+  },
+  {
+    "Krajina": "Malawi",
+    "Cena v €/l paliva (Diesel)": 1.445
+  },
+  {
+    "Krajina": "Mayotte",
+    "Cena v €/l paliva (Diesel)": 1.45
+  },
+  {
+    "Krajina": "Romania",
+    "Cena v €/l paliva (Diesel)": 1.465
+  },
+  {
+    "Krajina": "Cyprus",
+    "Cena v €/l paliva (Diesel)": 1.475
+  },
+  {
+    "Krajina": "Slovakia",
+    "Cena v €/l paliva (Diesel)": 1.479
+  },
+  {
+    "Krajina": "Estonia",
+    "Cena v €/l paliva (Diesel)": 1.482
+  },
+  {
+    "Krajina": "Sweden",
+    "Cena v €/l paliva (Diesel)": 1.488
+  },
+  {
+    "Krajina": "Croatia",
+    "Cena v €/l paliva (Diesel)": 1.494
+  },
+  {
+    "Krajina": "Barbados",
+    "Cena v €/l paliva (Diesel)": 1.512
+  },
+  {
+    "Krajina": "Hungary",
+    "Cena v €/l paliva (Diesel)": 1.516
+  },
+  {
+    "Krajina": "Slovenia",
+    "Cena v €/l paliva (Diesel)": 1.517
+  },
+  {
+    "Krajina": "San Marino",
+    "Cena v €/l paliva (Diesel)": 1.518
+  },
+  {
+    "Krajina": "Austria",
+    "Cena v €/l paliva (Diesel)": 1.528
+  },
+  {
+    "Krajina": "Lithuania",
+    "Cena v €/l paliva (Diesel)": 1.539
+  },
+  {
+    "Krajina": "Greece",
+    "Cena v €/l paliva (Diesel)": 1.551
+  },
+  {
+    "Krajina": "Latvia",
+    "Cena v €/l paliva (Diesel)": 1.552
+  },
+  {
+    "Krajina": "Germany",
+    "Cena v €/l paliva (Diesel)": 1.585
+  },
+  {
+    "Krajina": "Portugal",
+    "Cena v €/l paliva (Diesel)": 1.587
+  },
+  {
+    "Krajina": "Norway",
+    "Cena v €/l paliva (Diesel)": 1.604
+  },
+  {
+    "Krajina": "Belgium",
+    "Cena v €/l paliva (Diesel)": 1.614
+  },
+  {
+    "Krajina": "Monaco",
+    "Cena v €/l paliva (Diesel)": 1.629
+  },
+  {
+    "Krajina": "France",
+    "Cena v €/l paliva (Diesel)": 1.63
+  },
+  {
+    "Krajina": "UK",
+    "Cena v €/l paliva (Diesel)": 1.663
+  },
+  {
+    "Krajina": "Italy",
+    "Cena v €/l paliva (Diesel)": 1.664
+  },
+  {
+    "Krajina": "Netherlands",
+    "Cena v €/l paliva (Diesel)": 1.669
+  },
+  {
+    "Krajina": "Serbia",
+    "Cena v €/l paliva (Diesel)": 1.672
+  },
+  {
+    "Krajina": "Wallis and Futuna",
+    "Cena v €/l paliva (Diesel)": 1.691
+  },
+  {
+    "Krajina": "Singapore",
+    "Cena v €/l paliva (Diesel)": 1.707
+  },
+  {
+    "Krajina": "Finland",
+    "Cena v €/l paliva (Diesel)": 1.731
+  },
+  {
+    "Krajina": "Ireland",
+    "Cena v €/l paliva (Diesel)": 1.734
+  },
+  {
+    "Krajina": "Israel",
+    "Cena v €/l paliva (Diesel)": 1.74
+  },
+  {
+    "Krajina": "Albania",
+    "Cena v €/l paliva (Diesel)": 1.76
+  },
+  {
+    "Krajina": "Denmark",
+    "Cena v €/l paliva (Diesel)": 1.86
+  },
+  {
+    "Krajina": "Switzerland",
+    "Cena v €/l paliva (Diesel)": 1.959
+  },
+  {
+    "Krajina": "Liechtenstein",
+    "Cena v €/l paliva (Diesel)": 1.994
+  },
+  {
+    "Krajina": "C. Afr. Rep.",
+    "Cena v €/l paliva (Diesel)": 2.067
+  },
+  {
+    "Krajina": "Iceland",
+    "Cena v €/l paliva (Diesel)": 2.223
+  },
+  {
+    "Krajina": "Hong Kong",
+    "Cena v €/l paliva (Diesel)": 3.075
+  },
+  {
+    "Krajina": "Libya",
+    "Cena v €/l paliva (Benzín)": 0.025
+  },
+  {
+    "Krajina": "Iran",
+    "Cena v €/l paliva (Benzín)": 0.026
+  },
+  {
+    "Krajina": "Venezuela",
+    "Cena v €/l paliva (Benzín)": 0.032
+  },
+  {
+    "Krajina": "Angola",
+    "Cena v €/l paliva (Benzín)": 0.3
+  },
+  {
+    "Krajina": "Egypt",
+    "Cena v €/l paliva (Benzín)": 0.303
+  },
+  {
+    "Krajina": "Kuwait",
+    "Cena v €/l paliva (Benzín)": 0.313
+  },
+  {
+    "Krajina": "Algeria",
+    "Cena v €/l paliva (Benzín)": 0.315
+  },
+  {
+    "Krajina": "Turkmenistan",
+    "Cena v €/l paliva (Benzín)": 0.394
+  },
+  {
+    "Krajina": "Malaysia",
+    "Cena v €/l paliva (Benzín)": 0.42
+  },
+  {
+    "Krajina": "Kazakhstan",
+    "Cena v €/l paliva (Benzín)": 0.428
+  },
+  {
+    "Krajina": "Bahrain",
+    "Cena v €/l paliva (Benzín)": 0.487
+  },
+  {
+    "Krajina": "Bolivia",
+    "Cena v €/l paliva (Benzín)": 0.495
+  },
+  {
+    "Krajina": "Nigeria",
+    "Cena v €/l paliva (Benzín)": 0.514
+  },
+  {
+    "Krajina": "Qatar",
+    "Cena v €/l paliva (Benzín)": 0.516
+  },
+  {
+    "Krajina": "Oman",
+    "Cena v €/l paliva (Benzín)": 0.569
+  },
+  {
+    "Krajina": "Saudi Arabia",
+    "Cena v €/l paliva (Benzín)": 0.569
+  },
+  {
+    "Krajina": "Azerbaijan",
+    "Cena v €/l paliva (Benzín)": 0.593
+  },
+  {
+    "Krajina": "Iraq",
+    "Cena v €/l paliva (Benzín)": 0.595
+  },
+  {
+    "Krajina": "UAE",
+    "Cena v €/l paliva (Benzín)": 0.614
+  },
+  {
+    "Krajina": "Sudan",
+    "Cena v €/l paliva (Benzín)": 0.642
+  },
+  {
+    "Krajina": "Ecuador",
+    "Cena v €/l paliva (Benzín)": 0.647
+  },
+  {
+    "Krajina": "Russia",
+    "Cena v €/l paliva (Benzín)": 0.648
+  },
+  {
+    "Krajina": "Lebanon",
+    "Cena v €/l paliva (Benzín)": 0.657
+  },
+  {
+    "Krajina": "Bhutan",
+    "Cena v €/l paliva (Benzín)": 0.704
+  },
+  {
+    "Krajina": "Belarus",
+    "Cena v €/l paliva (Benzín)": 0.706
+  },
+  {
+    "Krajina": "Indonesia",
+    "Cena v €/l paliva (Benzín)": 0.724
+  },
+  {
+    "Krajina": "Vietnam",
+    "Cena v €/l paliva (Benzín)": 0.757
+  },
+  {
+    "Krajina": "Paraguay",
+    "Cena v €/l paliva (Benzín)": 0.759
+  },
+  {
+    "Krajina": "Tunisia",
+    "Cena v €/l paliva (Benzín)": 0.762
+  },
+  {
+    "Krajina": "Kyrgyzstan",
+    "Cena v €/l paliva (Benzín)": 0.773
+  },
+  {
+    "Krajina": "Ethiopia",
+    "Cena v €/l paliva (Benzín)": 0.78
+  },
+  {
+    "Krajina": "Liberia",
+    "Cena v €/l paliva (Benzín)": 0.799
+  },
+  {
+    "Krajina": "Afghanistan",
+    "Cena v €/l paliva (Benzín)": 0.801
+  },
+  {
+    "Krajina": "Syria",
+    "Cena v €/l paliva (Benzín)": 0.806
+  },
+  {
+    "Krajina": "Guyana",
+    "Cena v €/l paliva (Benzín)": 0.81
+  },
+  {
+    "Krajina": "Puerto Rico",
+    "Cena v €/l paliva (Benzín)": 0.82
+  },
+  {
+    "Krajina": "Maldives",
+    "Cena v €/l paliva (Benzín)": 0.832
+  },
+  {
+    "Krajina": "Pakistan",
+    "Cena v €/l paliva (Benzín)": 0.832
+  },
+  {
+    "Krajina": "Taiwan",
+    "Cena v €/l paliva (Benzín)": 0.842
+  },
+  {
+    "Krajina": "USA",
+    "Cena v €/l paliva (Benzín)": 0.866
+  },
+  {
+    "Krajina": "Panama",
+    "Cena v €/l paliva (Benzín)": 0.882
+  },
+  {
+    "Krajina": "Burma",
+    "Cena v €/l paliva (Benzín)": 0.888
+  },
+  {
+    "Krajina": "Colombia",
+    "Cena v €/l paliva (Benzín)": 0.892
+  },
+  {
+    "Krajina": "Uzbekistan",
+    "Cena v €/l paliva (Benzín)": 0.9
+  },
+  {
+    "Krajina": "Australia",
+    "Cena v €/l paliva (Benzín)": 0.9
+  },
+  {
+    "Krajina": "Gabon",
+    "Cena v €/l paliva (Benzín)": 0.911
+  },
+  {
+    "Krajina": "DR Congo",
+    "Cena v €/l paliva (Benzín)": 0.943
+  },
+  {
+    "Krajina": "Ghana",
+    "Cena v €/l paliva (Benzín)": 0.944
+  },
+  {
+    "Krajina": "Bangladesh",
+    "Cena v €/l paliva (Benzín)": 0.951
+  },
+  {
+    "Krajina": "Lesotho",
+    "Cena v €/l paliva (Benzín)": 0.953
+  },
+  {
+    "Krajina": "Honduras",
+    "Cena v €/l paliva (Benzín)": 0.953
+  },
+  {
+    "Krajina": "El Salvador",
+    "Cena v €/l paliva (Benzín)": 0.954
+  },
+  {
+    "Krajina": "Botswana",
+    "Cena v €/l paliva (Benzín)": 0.961
+  },
+  {
+    "Krajina": "Swaziland",
+    "Cena v €/l paliva (Benzín)": 0.975
+  },
+  {
+    "Krajina": "Namibia",
+    "Cena v €/l paliva (Benzín)": 0.978
+  },
+  {
+    "Krajina": "Brazil",
+    "Cena v €/l paliva (Benzín)": 0.981
+  },
+  {
+    "Krajina": "South Africa",
+    "Cena v €/l paliva (Benzín)": 0.99
+  },
+  {
+    "Krajina": "China",
+    "Cena v €/l paliva (Benzín)": 1.009
+  },
+  {
+    "Krajina": "Guatemala",
+    "Cena v €/l paliva (Benzín)": 1.014
+  },
+  {
+    "Krajina": "Georgia",
+    "Cena v €/l paliva (Benzín)": 1.02
+  },
+  {
+    "Krajina": "Tanzania",
+    "Cena v €/l paliva (Benzín)": 1.035
+  },
+  {
+    "Krajina": "Haiti",
+    "Cena v €/l paliva (Benzín)": 1.036
+  },
+  {
+    "Krajina": "Togo",
+    "Cena v €/l paliva (Benzín)": 1.041
+  },
+  {
+    "Krajina": "Philippines",
+    "Cena v €/l paliva (Benzín)": 1.043
+  },
+  {
+    "Krajina": "Cambodia",
+    "Cena v €/l paliva (Benzín)": 1.043
+  },
+  {
+    "Krajina": "Madagascar",
+    "Cena v €/l paliva (Benzín)": 1.047
+  },
+  {
+    "Krajina": "Trinidad & Tobago",
+    "Cena v €/l paliva (Benzín)": 1.048
+  },
+  {
+    "Krajina": "Canada",
+    "Cena v €/l paliva (Benzín)": 1.054
+  },
+  {
+    "Krajina": "Rwanda",
+    "Cena v €/l paliva (Benzín)": 1.062
+  },
+  {
+    "Krajina": "Benin",
+    "Cena v €/l paliva (Benzín)": 1.064
+  },
+  {
+    "Krajina": "Curacao",
+    "Cena v €/l paliva (Benzín)": 1.068
+  },
+  {
+    "Krajina": "India",
+    "Cena v €/l paliva (Benzín)": 1.077
+  },
+  {
+    "Krajina": "Fiji",
+    "Cena v €/l paliva (Benzín)": 1.08
+  },
+  {
+    "Krajina": "Suriname",
+    "Cena v €/l paliva (Benzín)": 1.083
+  },
+  {
+    "Krajina": "Grenada",
+    "Cena v €/l paliva (Benzín)": 1.086
+  },
+  {
+    "Krajina": "Nepal",
+    "Cena v €/l paliva (Benzín)": 1.088
+  },
+  {
+    "Krajina": "Argentina",
+    "Cena v €/l paliva (Benzín)": 1.099
+  },
+  {
+    "Krajina": "Jamaica",
+    "Cena v €/l paliva (Benzín)": 1.111
+  },
+  {
+    "Krajina": "Sri Lanka",
+    "Cena v €/l paliva (Benzín)": 1.111
+  },
+  {
+    "Krajina": "Peru",
+    "Cena v €/l paliva (Benzín)": 1.113
+  },
+  {
+    "Krajina": "Dom. Rep.",
+    "Cena v €/l paliva (Benzín)": 1.117
+  },
+  {
+    "Krajina": "Turkey",
+    "Cena v €/l paliva (Benzín)": 1.129
+  },
+  {
+    "Krajina": "Mexico",
+    "Cena v €/l paliva (Benzín)": 1.132
+  },
+  {
+    "Krajina": "Zambia",
+    "Cena v €/l paliva (Benzín)": 1.146
+  },
+  {
+    "Krajina": "Japan",
+    "Cena v €/l paliva (Benzín)": 1.147
+  },
+  {
+    "Krajina": "Thailand",
+    "Cena v €/l paliva (Benzín)": 1.149
+  },
+  {
+    "Krajina": "South Korea",
+    "Cena v €/l paliva (Benzín)": 1.161
+  },
+  {
+    "Krajina": "Chile",
+    "Cena v €/l paliva (Benzín)": 1.177
+  },
+  {
+    "Krajina": "Cuba",
+    "Cena v €/l paliva (Benzín)": 1.187
+  },
+  {
+    "Krajina": "Mali",
+    "Cena v €/l paliva (Benzín)": 1.187
+  },
+  {
+    "Krajina": "Laos",
+    "Cena v €/l paliva (Benzín)": 1.213
+  },
+  {
+    "Krajina": "Dominica",
+    "Cena v €/l paliva (Benzín)": 1.218
+  },
+  {
+    "Krajina": "Moldova",
+    "Cena v €/l paliva (Benzín)": 1.221
+  },
+  {
+    "Krajina": "Nicaragua",
+    "Cena v €/l paliva (Benzín)": 1.222
+  },
+  {
+    "Krajina": "Cape Verde",
+    "Cena v €/l paliva (Benzín)": 1.223
+  },
+  {
+    "Krajina": "Aruba",
+    "Cena v €/l paliva (Benzín)": 1.226
+  },
+  {
+    "Krajina": "Armenia",
+    "Cena v €/l paliva (Benzín)": 1.227
+  },
+  {
+    "Krajina": "Bosnia & Herz.",
+    "Cena v €/l paliva (Benzín)": 1.228
+  },
+  {
+    "Krajina": "Mozambique",
+    "Cena v €/l paliva (Benzín)": 1.231
+  },
+  {
+    "Krajina": "Saint Lucia",
+    "Cena v €/l paliva (Benzín)": 1.232
+  },
+  {
+    "Krajina": "Costa Rica",
+    "Cena v €/l paliva (Benzín)": 1.233
+  },
+  {
+    "Krajina": "N. Maced.",
+    "Cena v €/l paliva (Benzín)": 1.239
+  },
+  {
+    "Krajina": "Kenya",
+    "Cena v €/l paliva (Benzín)": 1.241
+  },
+  {
+    "Krajina": "Uganda",
+    "Cena v €/l paliva (Benzín)": 1.243
+  },
+  {
+    "Krajina": "Mauritius",
+    "Cena v €/l paliva (Benzín)": 1.244
+  },
+  {
+    "Krajina": "Burundi",
+    "Cena v €/l paliva (Benzín)": 1.254
+  },
+  {
+    "Krajina": "Morocco",
+    "Cena v €/l paliva (Benzín)": 1.256
+  },
+  {
+    "Krajina": "Guinea",
+    "Cena v €/l paliva (Benzín)": 1.271
+  },
+  {
+    "Krajina": "Sierra Leone",
+    "Cena v €/l paliva (Benzín)": 1.272
+  },
+  {
+    "Krajina": "Bulgaria",
+    "Cena v €/l paliva (Benzín)": 1.273
+  },
+  {
+    "Krajina": "Seychelles",
+    "Cena v €/l paliva (Benzín)": 1.286
+  },
+  {
+    "Krajina": "Cameroon",
+    "Cena v €/l paliva (Benzín)": 1.286
+  },
+  {
+    "Krajina": "Ukraine",
+    "Cena v €/l paliva (Benzín)": 1.287
+  },
+  {
+    "Krajina": "Burkina Faso",
+    "Cena v €/l paliva (Benzín)": 1.302
+  },
+  {
+    "Krajina": "Ivory Coast",
+    "Cena v €/l paliva (Benzín)": 1.309
+  },
+  {
+    "Krajina": "Bahamas",
+    "Cena v €/l paliva (Benzín)": 1.313
+  },
+  {
+    "Krajina": "Cayman Islands",
+    "Cena v €/l paliva (Benzín)": 1.329
+  },
+  {
+    "Krajina": "Malawi",
+    "Cena v €/l paliva (Benzín)": 1.337
+  },
+  {
+    "Krajina": "Malta",
+    "Cena v €/l paliva (Benzín)": 1.34
+  },
+  {
+    "Krajina": "Andorra",
+    "Cena v €/l paliva (Benzín)": 1.343
+  },
+  {
+    "Krajina": "Mongolia",
+    "Cena v €/l paliva (Benzín)": 1.363
+  },
+  {
+    "Krajina": "Czech Republic",
+    "Cena v €/l paliva (Benzín)": 1.378
+  },
+  {
+    "Krajina": "New Zealand",
+    "Cena v €/l paliva (Benzín)": 1.385
+  },
+  {
+    "Krajina": "Cyprus",
+    "Cena v €/l paliva (Benzín)": 1.388
+  },
+  {
+    "Krajina": "Zimbabwe",
+    "Cena v €/l paliva (Benzín)": 1.403
+  },
+  {
+    "Krajina": "Jordan",
+    "Cena v €/l paliva (Benzín)": 1.404
+  },
+  {
+    "Krajina": "Poland",
+    "Cena v €/l paliva (Benzín)": 1.411
+  },
+  {
+    "Krajina": "Romania",
+    "Cena v €/l paliva (Benzín)": 1.424
+  },
+  {
+    "Krajina": "Lithuania",
+    "Cena v €/l paliva (Benzín)": 1.44
+  },
+  {
+    "Krajina": "Sweden",
+    "Cena v €/l paliva (Benzín)": 1.442
+  },
+  {
+    "Krajina": "Luxembourg",
+    "Cena v €/l paliva (Benzín)": 1.459
+  },
+  {
+    "Krajina": "Montenegro",
+    "Cena v €/l paliva (Benzín)": 1.47
+  },
+  {
+    "Krajina": "Hungary",
+    "Cena v €/l paliva (Benzín)": 1.484
+  },
+  {
+    "Krajina": "Slovenia",
+    "Cena v €/l paliva (Benzín)": 1.488
+  },
+  {
+    "Krajina": "Croatia",
+    "Cena v €/l paliva (Benzín)": 1.498
+  },
+  {
+    "Krajina": "Spain",
+    "Cena v €/l paliva (Benzín)": 1.501
+  },
+  {
+    "Krajina": "Senegal",
+    "Cena v €/l paliva (Benzín)": 1.516
+  },
+  {
+    "Krajina": "Slovakia",
+    "Cena v €/l paliva (Benzín)": 1.52
+  },
+  {
+    "Krajina": "Austria",
+    "Cena v €/l paliva (Benzín)": 1.52
+  },
+  {
+    "Krajina": "Serbia",
+    "Cena v €/l paliva (Benzín)": 1.562
+  },
+  {
+    "Krajina": "Latvia",
+    "Cena v €/l paliva (Benzín)": 1.576
+  },
+  {
+    "Krajina": "UK",
+    "Cena v €/l paliva (Benzín)": 1.578
+  },
+  {
+    "Krajina": "Belgium",
+    "Cena v €/l paliva (Benzín)": 1.592
+  },
+  {
+    "Krajina": "Belize",
+    "Cena v €/l paliva (Benzín)": 1.605
+  },
+  {
+    "Krajina": "San Marino",
+    "Cena v €/l paliva (Benzín)": 1.613
+  },
+  {
+    "Krajina": "Monaco",
+    "Cena v €/l paliva (Benzín)": 1.629
+  },
+  {
+    "Krajina": "Estonia",
+    "Cena v €/l paliva (Benzín)": 1.632
+  },
+  {
+    "Krajina": "Germany",
+    "Cena v €/l paliva (Benzín)": 1.681
+  },
+  {
+    "Krajina": "C. Afr. Rep.",
+    "Cena v €/l paliva (Benzín)": 1.685
+  },
+  {
+    "Krajina": "Wallis and Futuna",
+    "Cena v €/l paliva (Benzín)": 1.686
+  },
+  {
+    "Krajina": "Uruguay",
+    "Cena v €/l paliva (Benzín)": 1.709
+  },
+  {
+    "Krajina": "Mayotte",
+    "Cena v €/l paliva (Benzín)": 1.72
+  },
+  {
+    "Krajina": "Finland",
+    "Cena v €/l paliva (Benzín)": 1.728
+  },
+  {
+    "Krajina": "France",
+    "Cena v €/l paliva (Benzín)": 1.729
+  },
+  {
+    "Krajina": "Norway",
+    "Cena v €/l paliva (Benzín)": 1.736
+  },
+  {
+    "Krajina": "Portugal",
+    "Cena v €/l paliva (Benzín)": 1.744
+  },
+  {
+    "Krajina": "Ireland",
+    "Cena v €/l paliva (Benzín)": 1.751
+  },
+  {
+    "Krajina": "Albania",
+    "Cena v €/l paliva (Benzín)": 1.76
+  },
+  {
+    "Krajina": "Italy",
+    "Cena v €/l paliva (Benzín)": 1.764
+  },
+  {
+    "Krajina": "Barbados",
+    "Cena v €/l paliva (Benzín)": 1.766
+  },
+  {
+    "Krajina": "Greece",
+    "Cena v €/l paliva (Benzín)": 1.785
+  },
+  {
+    "Krajina": "Israel",
+    "Cena v €/l paliva (Benzín)": 1.832
+  },
+  {
+    "Krajina": "Switzerland",
+    "Cena v €/l paliva (Benzín)": 1.854
+  },
+  {
+    "Krajina": "Liechtenstein",
+    "Cena v €/l paliva (Benzín)": 1.856
+  },
+  {
+    "Krajina": "Singapore",
+    "Cena v €/l paliva (Benzín)": 1.868
+  },
+  {
+    "Krajina": "Netherlands",
+    "Cena v €/l paliva (Benzín)": 1.914
+  },
+  {
+    "Krajina": "Denmark",
+    "Cena v €/l paliva (Benzín)": 1.977
+  },
+  {
+    "Krajina": "Iceland",
+    "Cena v €/l paliva (Benzín)": 2.141
+  },
+  {
+    "Krajina": "Hong Kong",
+    "Cena v €/l paliva (Benzín)": 3.169
+  }
+]

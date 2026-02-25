@@ -1,0 +1,27 @@
+/* PolicyLinks.css */
+.policy-links {
+    display: flex;               /* Usporiada odkazy v jednom riadku */
+    justify-content: center;     /* Centrovanie odkazov horizontálne */
+    align-items: center;         /* Vertikálne centrovanie */
+    gap: 10px;                   /* Medzera medzi prvkami */
+    margin-top: 20px;            /* Medzera od komponentu nad odkazmi */
+  }
+  
+  .policy-links .separator {
+    margin: 0 10px;              /* Medzera okolo separátora, napr. "|" */
+  }
+  
+  /* Voliteľne: Ak by ste na mobilných zariadeniach chceli odkazy zobraziť pod sebou */
+  @media (max-width: 768px) {
+    .policy-links {
+      flex-direction: column;
+      gap: 0px;
+      white-space: nowrap;
+    }
+
+    .policy-links .separator {
+        visibility: hidden;       /* Skryje separátory */
+             /* Medzera okolo separátora, napr. "|" */
+      }
+  }
+  
