@@ -1,101 +1,102 @@
-Fuely – Fuel Cost Calculator
+# Fuely – Fuel Cost Calculator
 
+A simple web-based fuel cost calculator for estimating travel expenses.  
 Live demo: https://fuely-nine.vercel.app/
 
-📌 Project Overview
+---
 
-Fuely is a lightweight web application designed to calculate fuel costs for planned trips.
-It allows users to quickly estimate travel expenses based on distance, vehicle consumption, and fuel price.
+## 📌 About The Project
 
-The goal of the project is to provide a fast, clean, and practical tool for trip cost estimation.
+**Fuely** is a lightweight web application designed to quickly calculate fuel costs for a trip.
 
-🧮 Calculation Formula
-Total Cost
-=
-(
-Distance
-100
-×
-Fuel Consumption
-)
-×
-Fuel Price
-Total Cost=(
-100
-Distance
-	​
+Users can:
 
-×Fuel Consumption)×Fuel Price
-Example
+- Enter trip distance (km)
+- Enter vehicle fuel consumption (L/100 km)
+- Enter fuel price (per liter)
+- Instantly calculate total fuel cost
+- View clear and structured results
 
-Distance: 250 km
+The goal of this project is to provide a fast and accurate cost estimation tool for drivers and travelers.
 
-Consumption: 7.5 L / 100 km
+---
 
-Fuel price: 1.65 € / L
+## 🧮 Calculation Formula
 
-(
-250
-/
-100
-×
-7.5
-)
-×
-1.65
-=
-30.94
-€
-(250/100×7.5)×1.65=30.94€
-🛠️ Technologies Used
+The application uses the following formula:
 
-HTML5
+Total Cost = (Distance / 100 × Consumption) × Fuel Price
 
-CSS3
+### Example
 
-JavaScript (Vanilla JS)
+- Distance: 250 km  
+- Consumption: 7.5 L / 100 km  
+- Fuel Price: 1.65 € / L  
 
-Vercel (Deployment)
+(250 / 100 × 7.5) × 1.65 = 30.94 €
 
-🚀 Run Locally
+---
 
-Clone the repository:
+## 🛠️ Built With
 
+- HTML5  
+- CSS3  
+- Vanilla JavaScript  
+- Vercel (Deployment)
+
+---
+
+## 🚀 Getting Started
+
+### Clone the repository
+
+```bash
 git clone https://github.com/your-username/fuely.git
-
-Navigate to the project directory:
-
 cd fuely
+```
 
-Open index.html in your browser
-or start a simple local server:
+### Run locally
 
+Open `index.html` in your browser  
+
+or use a local server:
+
+```bash
 npx serve
-📂 Project Structure
+```
+
+---
+
+## 📂 Project Structure
+
+```
 fuely/
 │
 ├── index.html
 ├── style.css
 ├── script.js
 └── README.md
-🔮 Possible Future Improvements
+```
 
-Multi-currency support (€, $, £)
+---
 
-Round-trip cost calculation
+## 🔮 Future Improvements
 
-Calculation history storage (localStorage)
+- Multi-currency support (€ / $ / £)
+- Round-trip calculation option
+- Calculation history storage
+- Integration with real-time fuel price APIs
+- Enhanced mobile responsiveness
+- Dark/light theme switcher
 
-Integration with live fuel price APIs
+---
 
-Mobile-first UI improvements
-
-Dark/light theme switch
-
-📄 License
+## 📄 License
 
 This project is licensed under the MIT License.
 
-👤 Author
+---
 
-Developed as a practical web tool for estimating fuel expenses and improving trip planning accuracy.
+## 👤 Author
+
+Created as a practical web project for estimating travel fuel expenses.
