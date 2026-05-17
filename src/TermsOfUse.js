@@ -14,7 +14,7 @@ const TermsOfUse = () => {
           name="description"
           content="Oficiálne podmienky používania služby Fuely. Informácie o odhadoch nákladov, externých službách, súkromí a zodpovednosti používateľa."
         />
-        <link rel="canonical" href="https://fuely.sk/terms-of-use" />
+        <link rel="canonical" href="https://martinsulak.dev/fuely/terms-of-use" />
       </Helmet>
 
       <div

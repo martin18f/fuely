@@ -565,9 +565,9 @@ useEffect(() => {
           <html lang={i18n.language} />
           <title>{t('seoTitle')}</title>
           <meta name="description" content={t('seoDescription')} />
-          <link rel="alternate" href="https://fuely.sk/sk" hreflang="sk" />
-          <link rel="alternate" href="https://fuely.sk/en" hreflang="en" />
-          <link rel="alternate" href="https://fuely.sk/de" hreflang="de" />
+          <link rel="alternate" href="https://martinsulak.dev/fuely/sk" hreflang="sk" />
+          <link rel="alternate" href="https://martinsulak.dev/fuely/en" hreflang="en" />
+          <link rel="alternate" href="https://martinsulak.dev/fuely/de" hreflang="de" />
         </Helmet>
 
 

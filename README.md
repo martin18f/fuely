@@ -1,7 +1,7 @@
 # Fuely – Fuel Cost Calculator
 
 A simple web-based fuel cost calculator for estimating travel expenses.  
-Live demo: https://fuely-nine.vercel.app/
+Live demo: https://martinsulak.dev/fuely
 
 ---
 
