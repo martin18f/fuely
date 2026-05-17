@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 import FuelPriceInput from './components/FuelPriceInput';
 import PalivovaKalkulacka from './PalivovaKalkulacka';
@@ -11,10 +12,16 @@ import i18n from './i18n';
 import useLocalStorage from './components/useLocalStorage';
 import CookieBanner from './components/CookieBanner';
 import RatingPopup from './components/RatingPopup';
+import TrackingScripts from './components/TrackingScripts';
 import ThemeToggle from './components/ThemeToggle';
 import CookiePolicy from './CookiePolicy';
 import TermsOfUse from './TermsOfUse';
 import PrivacyPolicy from './PrivacyPolicy';
+import {
+  COOKIE_CONSENT_EVENT,
+  COOKIE_CONSENT_KEY,
+  hasCookieConsent as readCookieConsent,
+} from './components/cookieConsent';
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -34,6 +41,10 @@ import VehicleTypeSwitcher from './components/VehicleTypeSwitcher';
 import ShareButton from './components/ShareButton';
 
 import './App.css';
+
+const GOOGLE_MAPS_LIBRARIES = ['places'];
+const GOOGLE_MAPS_API_KEY =
+  process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'AIzaSyByASDfSznBhQU1vZ-2yVhfTUI5gtCPotA';
 
 
 
@@ -57,12 +68,42 @@ function App() {
   const [fuelType, setFuelType] = useState('gasoline'); // alebo 'diesel'
   const [emissionsFactor, setEmissionsFactor] = useState(2.31); // default pre benzín
   const [emissions, setEmissions] = useState(null);
+  const [hasAnalyticsConsent, setHasAnalyticsConsent] = useState(() => readCookieConsent());
+
+  const {
+    isLoaded: isGoogleLoaded,
+    loadError: googleMapsLoadError,
+  } = useJsApiLoader({
+    id: 'fuely-google-maps-script',
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: GOOGLE_MAPS_LIBRARIES,
+  });
 
   
 
   // Detekcia jazyka podľa domény
   useEffect(() => {
     i18n.changeLanguage('en');
+  }, []);
+
+  useEffect(() => {
+    const handleConsentChange = (event) => {
+      setHasAnalyticsConsent(Boolean(event.detail?.accepted));
+    };
+
+    const handleStorageChange = (event) => {
+      if (event.key === COOKIE_CONSENT_KEY) {
+        setHasAnalyticsConsent(event.newValue === 'true');
+      }
+    };
+
+    window.addEventListener(COOKIE_CONSENT_EVENT, handleConsentChange);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener(COOKIE_CONSENT_EVENT, handleConsentChange);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Prepínač témy
@@ -92,7 +133,7 @@ function App() {
 
   
 
-  const [selectedYear, setSelectedYear] = useLocalStorage('csYear', '');
+  const [selectedYear, setSelectedYear] = useLocalStorage('csYear', 'Without year');
   const [selectedBrand, setSelectedBrand] = useLocalStorage('csBrand', '');
   const [selectedModel, setSelectedModel] = useLocalStorage('csModel', '');
   const [selectedEngine, setSelectedEngine] = useLocalStorage('csEngine', '');
@@ -131,31 +172,6 @@ function App() {
 
   const [exchangeRates, setExchangeRates] = useState({});
   const [resetKey, setResetKey] = useState(0);
-  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
-
-  const saveToFile = (data) => {
-    // 1. Načítaj existujúce hodnotenia
-    const existingData = localStorage.getItem('ratings');
-    const allRatings = existingData ? JSON.parse(existingData) : [];
-    
-    // 2. Pridaj nový záznam
-    allRatings.push(data);
-    
-    // 3. Ulož aktualizované dáta
-    localStorage.setItem('ratings', JSON.stringify(allRatings));
-    
-    // 4. Export do súboru (voliteľné)
-    const blob = new Blob([JSON.stringify(allRatings, null, 2)], {
-      type: 'application/json'
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `ratings_${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   // Fetch kurzov
   const fetchExchangeRates = (date = 'latest', base = 'eur', apiVersion = 'v1') => {
@@ -245,7 +261,7 @@ function App() {
     } else {
       setEmissions(null); // Reset pre elektrické autá
     }
-  }, [fuelUsed, fuelUnit, selectedVehicleType]); // ← Pridaná závislosť
+  }, [fuelUsed, fuelUnit, selectedVehicleType, emissionsFactor]); // ← Pridaná závislosť
 
   const calculateFuelCostEur = useCallback(
     (dist) => {
@@ -298,6 +314,10 @@ function App() {
   }, []);
 
   const calculateEverything = () => {
+    if (googleMapsLoadError) {
+      alert('Google Maps sa nepodarilo načítať.');
+      return;
+    }
     if (!isGoogleLoaded || !window.google || !window.google.maps) {
       alert('Google Maps nie je načítané.');
       return;
@@ -512,7 +532,7 @@ useEffect(() => {
     }
     // V prípade manuálneho režimu (useAutoConsumption === false)
     // ponecháme hodnotu nezmenenú.
-  }, [useAutoConsumption]);
+  }, [useAutoConsumption, setFuelConsumption]);
 
   return (
     <Router>
@@ -551,7 +571,8 @@ useEffect(() => {
         </Helmet>
 
 
-        <CookieBanner />
+        <CookieBanner onConsentChange={setHasAnalyticsConsent} />
+        <TrackingScripts enabled={hasAnalyticsConsent} />
 
         <h1 className="headingMain">{t('welcome')}</h1>
 
@@ -582,6 +603,7 @@ useEffect(() => {
                     defaultValue={startLocation?.address || ''}
                     onLocationSelect={setStartLocation}
                     placeholder={t('start')}
+                    isGoogleLoaded={isGoogleLoaded}
                     
                   />
                 </div>
@@ -593,6 +615,7 @@ useEffect(() => {
                     defaultValue={destinationLocation?.address || ''}
                     onLocationSelect={setDestinationLocation}
                     placeholder={t('destination')}
+                    isGoogleLoaded={isGoogleLoaded}
                   />
                 </div>
 
@@ -649,7 +672,7 @@ useEffect(() => {
   value={fuelConsumption}
   // readOnly len vtedy, keď je auto režim
   readOnly={useAutoConsumption}
-  onChange={(e) => setFuelConsumption(e.target.value)}
+  onChange={(e) => handleFuelConsumptionChange(e.target.value)}
 />
 
 <label className="labelFuelPrice">
@@ -791,10 +814,10 @@ useEffect(() => {
                 <MapView
                   directions={directions}
                   markers={markers}
-                  language={i18n.language}
                   resetKey={resetKey}
-                  onGoogleLoad={() => setIsGoogleLoaded(true)}
-                  theme={theme} // 👈 toto pridaj
+                  theme={theme}
+                  isGoogleLoaded={isGoogleLoaded}
+                  loadError={googleMapsLoadError}
                 />
               
 
@@ -833,7 +856,7 @@ useEffect(() => {
                 </div>
 
                 <PolicyLinks />
-                <SpeedInsights />
+                {hasAnalyticsConsent && <SpeedInsights />}
               </>
             }
           />
@@ -854,8 +877,8 @@ useEffect(() => {
 
         
 
-        <Analytics />
-        <RatingPopup />
+        {hasAnalyticsConsent && <Analytics />}
+        {hasAnalyticsConsent && <RatingPopup />}
       </div>
       
     </Router>

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  loadBaseCarData,
+  loadCarsByYear,
+  loadYears,
+  WITHOUT_YEAR,
+} from './services/carDataService';
 
 /* pomocná funkcia – Wh/km → kWh/100km | kWh/100mi */
 function convertElectricValue(whPerKm, fuelUnit) {
@@ -29,30 +35,58 @@ function CarSelector({
   const { t } = useTranslation();
 
   /* dáta */
-  const [years,       setYears]       = useState(['Without year']);
+  const [years,       setYears]       = useState([WITHOUT_YEAR]);
   const [smallData,   setSmallData]   = useState([]);   // cars_data_cleaned
   const [bigData,     setBigData]     = useState([]);   // tabulka_vozidiel (aktuálne vybraný rok)
   const [evData,      setEvData]      = useState([]);   // ev_dataset
   const [loadingYear, setLoadingYear] = useState(false);
+  const [loadingBaseData, setLoadingBaseData] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   /* 1️⃣ načítame roky + malé tabuľky hneď po mount‑e */
   useEffect(() => {
-    (async () => {
-      const yrs = await fetch('/api/get-years').then(r => r.json());
-      setYears(yrs);
+    let cancelled = false;
 
-      const small = await fetch('/api/get-car-data').then(r => r.json());
-      setSmallData(small.cars_data_cleaned);
-      setEvData   (small.ev_dataset);
+    (async () => {
+      try {
+        setLoadingBaseData(true);
+        setLoadError('');
+
+        const [yrs, small] = await Promise.all([
+          loadYears(),
+          loadBaseCarData(),
+        ]);
+
+        if (cancelled) return;
+
+        setYears(yrs);
+        setSmallData(small.cars_data_cleaned);
+        setEvData(small.ev_dataset);
+
+        if (!selectedYear) {
+          setSelectedYear(WITHOUT_YEAR);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Car data load error:', error);
+          setLoadError(error.message);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingBaseData(false);
+        }
+      }
     })();
-  }, []);
+
+    return () => { cancelled = true; };
+  }, [selectedYear, setSelectedYear]);
 
   /* 2️⃣ načítame veľké dáta až keď user zvolí rok */
   useEffect(() => {
     if (selectedVehicleType !== 'combustion') { setBigData([]); return; }
 
     // Without year -> používame smallData, žiadny fetch
-    if (!selectedYear || selectedYear === 'Without year') {
+    if (!selectedYear || selectedYear === WITHOUT_YEAR) {
       setBigData([]);
       return;
     }
@@ -61,19 +95,21 @@ function CarSelector({
     setLoadingYear(true);
 
     (async () => {
-      const PAGE = 1000;
-      let all = [], from = 0;
-
-      while (true) {
-        const part = await fetch(`/api/get-cars-by-year?year=${selectedYear}&from=${from}&to=${from + PAGE - 1}`)
-                             .then(r => r.json());
+      try {
+        const all = await loadCarsByYear(selectedYear);
         if (cancelled) return;
-        all = all.concat(part);
-        if (part.length < PAGE) break;
-        from += PAGE;
+        setBigData(all);
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Cars by year load error:', error);
+          setLoadError(error.message);
+          setBigData([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingYear(false);
+        }
       }
-      setBigData(all);
-      setLoadingYear(false);
     })();
 
     return () => { cancelled = true; };
@@ -162,6 +198,7 @@ function CarSelector({
   return (
     <div className="car-selector">
       <h2>{t('selectCar')}</h2>
+      {loadError && <p className="error">{loadError}</p>}
 
       {/* vehicle type */}
       <div className="dropdown-group">
@@ -198,7 +235,7 @@ function CarSelector({
           >
             {years.map(y => <option key={y} value={y}>{y}</option>)}
           </select>
-          {loadingYear && <small>{t('loading')}…</small>}
+          {(loadingBaseData || loadingYear) && <small>{t('loading') || 'Loading'}…</small>}
         </div>
       )}
 
@@ -212,7 +249,7 @@ function CarSelector({
             setSelectedModel(''); setSelectedEngine('');
             setSelectedTransmission(''); setSelectedFuelType('');
           }}
-          disabled={selectedVehicleType === 'combustion' && !selectedYear}
+          disabled={loadingBaseData || (selectedVehicleType === 'combustion' && !selectedYear)}
         >
           <option value="">{t('selectBrand')}</option>
           {(selectedVehicleType === 'combustion' ? availableBrandsComb : availableBrandsEV)

@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './CookieBanner.css';
+import {
+  getCookieConsentValue,
+  setCookieConsent,
+} from './cookieConsent';
 
-const CookieBanner = () => {
+const CookieBanner = ({ onConsentChange }) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const bannerRef = useRef(null);
@@ -11,23 +16,21 @@ const CookieBanner = () => {
   const dragging = useRef(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookieConsent');
+    const consent = getCookieConsentValue();
     if (!consent) {
       setIsVisible(true);
     }
   }, []);
 
   const handleAccept = () => {
-    try {
-      localStorage.setItem('cookieConsent', 'true');
-      setIsVisible(false);
-    } catch (e) {
-      console.error("Cookie accept error", e);
-    }
+    setCookieConsent(true);
+    onConsentChange?.(true);
+    setIsVisible(false);
   };
 
   const handleDeny = () => {
-    localStorage.setItem('cookieConsent', 'false');
+    setCookieConsent(false);
+    onConsentChange?.(false);
     setIsVisible(false);
   };
 
@@ -93,7 +96,7 @@ const CookieBanner = () => {
       <span className="title">🍪 {t('cookieTitle')}</span>
       <p className="description">
         {t('cookieDescription')}{' '}
-        <a href="/cookie-policy">{t('cookiePolicyLink')}</a>
+        <Link to="/cookie-policy">{t('cookiePolicyLink')}</Link>
       </p>
       <div className="actions">
         <button className="pref" onClick={handleDeny}>

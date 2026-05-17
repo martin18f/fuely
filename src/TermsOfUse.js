@@ -3,18 +3,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
-
 const TermsOfUse = () => {
   const { t } = useTranslation();
 
   return (
     <>
-      {/* SEO meta tagy špecifické pre /terms-of-use */}
       <Helmet>
         <title>Fuely – Terms of Use (Podmienky používania)</title>
         <meta
           name="description"
-          content="Oficiálne podmienky používania služby Fuely. Nájdete tu info o zodpovednosti, ochrane súkromia a ďalšie právne náležitosti pre používateľov Fuely.sk."
+          content="Oficiálne podmienky používania služby Fuely. Informácie o odhadoch nákladov, externých službách, súkromí a zodpovednosti používateľa."
         />
         <link rel="canonical" href="https://fuely.sk/terms-of-use" />
       </Helmet>
@@ -26,65 +24,65 @@ const TermsOfUse = () => {
         <h1>{t('termsOfUseTitle', 'Podmienky používania')}</h1>
 
         <p>
-          {t(
-            'termsOfUseIntroduction',
-            `Tieto podmienky používania (ďalej len "podmienky") upravujú prístup a používanie tejto webovej stránky. Použitím tejto stránky súhlasíte s dodržiavaním týchto podmienok.`
-          )}
+          Používaním webovej aplikácie Fuely súhlasíte s týmito podmienkami. Ak s nimi
+          nesúhlasíte, aplikáciu nepoužívajte.
         </p>
 
-        <h2>1. Prístup k stránke</h2>
+        <h2>1. Účel služby</h2>
         <p>
-          {t(
-            'termsOfUseAccess',
-            `Používateľ má právo prístupu k informáciám a obsahu tejto stránky, avšak tento prístup je podmienený dodržiavaním týchto podmienok.`
-          )}
+          Fuely slúži na orientačný výpočet nákladov na cestu podľa zadanej trasy, spotreby,
+          ceny paliva alebo elektriny a meny. Výsledky sú odhady a nemusia zodpovedať skutočným
+          nákladom.
         </p>
 
-        <h2>2. Zodpovednosť</h2>
+        <h2>2. Presnosť údajov</h2>
         <p>
-          {t(
-            'termsOfUseLiability',
-            `Prevádzkovateľ webovej stránky nenesie zodpovednosť za škody, ktoré môžu vzniknúť v dôsledku použitia alebo nemožnosti použitia informácií a služieb poskytovaných touto stránkou.`
-          )}
+          Výpočet závisí od údajov, ktoré zadáte, od dostupnosti Google Maps a od externých
+          kurzových alebo dátových zdrojov. Fuely nezaručuje nepretržitú dostupnosť ani úplnú
+          presnosť výsledkov.
         </p>
 
-        <h2>3. Ochrana osobných údajov</h2>
+        <h2>3. Zodpovednosť používateľa</h2>
         <p>
-          {t(
-            'termsOfUsePrivacy',
-            `Informácie o spracúvaní a ochrane osobných údajov nájdete v našej Zásade ochrany osobných údajov, ktorá je neoddeliteľnou súčasťou týchto podmienok.`
-          )}
+          Trasu, dopravné obmedzenia, ceny paliva, poplatky, bezpečnosť jazdy a právne povinnosti
+          si vždy overte pred cestou. Fuely nenahrádza navigáciu, dopravné pokyny ani odborné
+          poradenstvo.
         </p>
 
-        <h2>4. Autorské práva</h2>
+        <h2>4. Externé služby</h2>
         <p>
-          {t(
-            'termsOfUseCopyright',
-            `Všetok obsah, dizajn a texty na tejto stránke sú chránené autorskými právami a inými právnymi predpismi. Akékoľvek neoprávnené kopírovanie, šírenie alebo iné použitie je prísne zakázané.`
-          )}
+          Aplikácia využíva externé služby, najmä Google Maps, EmailJS, analytické nástroje a
+          technické hostingové služby. Ich dostupnosť a spracovanie údajov sa riadia aj pravidlami
+          týchto poskytovateľov.
         </p>
 
-        <h2>5. Zmeny podmienok</h2>
+        <h2>5. Ochrana osobných údajov a cookies</h2>
         <p>
-          {t(
-            'termsOfUseChanges',
-            `Prevádzkovateľ si vyhradzuje právo kedykoľvek meniť tieto podmienky. Aktuálna verzia podmienok bude vždy zverejnená na tejto stránke.`
-          )}
+          Informácie o spracúvaní údajov a cookies nájdete v zásadách ochrany osobných údajov
+          a v Cookie Policy. Analytické služby spúšťame až po prijatí cookies.
         </p>
 
-        <h2>6. Kontakt</h2>
+        <h2>6. Autorské práva</h2>
         <p>
-          {t(
-            'termsOfUseContact',
-            `Ak máte akékoľvek otázky alebo pripomienky k týmto podmienkam používania, neváhajte nás kontaktovať na:`
-          )}{' '}
+          Texty, dizajn, rozhranie a ďalší obsah aplikácie sú chránené právnymi predpismi.
+          Bez súhlasu ich nemožno kopírovať, upravovať ani ďalej šíriť mimo bežného používania
+          aplikácie.
+        </p>
+
+        <h2>7. Zmeny podmienok</h2>
+        <p>
+          Tieto podmienky môžeme aktualizovať. Aktuálna verzia bude vždy zverejnená na tejto
+          stránke.
+        </p>
+
+        <h2>8. Kontakt</h2>
+        <p>
+          Otázky k podmienkam používania môžete poslať na:{' '}
           <a href="mailto:dsnextgen.eu@gmail.com">dsnextgen.eu@gmail.com</a>
         </p>
 
         <p>
-          <em>
-            {t('termsOfUseUpdated', 'Posledná aktualizácia: 10.02.2025')}
-          </em>
+          <em>{t('termsOfUseUpdated', 'Posledná aktualizácia: 17.05.2026')}</em>
         </p>
       </div>
     </>

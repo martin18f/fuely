@@ -14,7 +14,6 @@ function FuelPriceInput({
 
   // Ovládanie popupu
   const [showPopup, setShowPopup] = useState(false);
-  const [plusOpen, setPlusOpen] = useState(false);
 
   // Typ paliva: "gasoline" alebo "diesel"
   const [fuelType, setFuelType] = useState('gasoline');
@@ -230,17 +229,14 @@ function FuelPriceInput({
     if (window.innerWidth <= 768) {
       setTimeout(() => {
         setShowPopup(true);
-        setPlusOpen(true);
       }, 500);
     } else {
       setShowPopup(true);
-      setPlusOpen(true);
     }
   };
 
   const handleClosePopup = () => {
     setShowPopup(false);
-    setPlusOpen(false);
     setSearchQuery('');
   };
 

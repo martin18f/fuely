@@ -12,55 +12,59 @@ const PrivacyPolicy = () => {
     >
       <h1>{t('privacyPolicyTitle', 'Zásady ochrany osobných údajov')}</h1>
       <p>
-        {t(
-          'privacyPolicyIntro',
-          `Tieto zásady ochrany osobných údajov (ďalej len "zásady") popisujú, ako zhromažďujeme, používame a chránime vaše osobné údaje. Použitím tejto webovej stránky súhlasíte so spracovaním vašich údajov podľa týchto zásad.`
-        )}
+        Tieto zásady vysvetľujú, aké údaje môže Fuely spracúvať pri používaní palivovej
+        kalkulačky, mapy, kontaktného formulára, analytiky a hodnotenia aplikácie.
       </p>
 
-      <h2>{t('privacyPolicyCollectionTitle', '1. Zhromažďovanie údajov')}</h2>
+      <h2>1. Údaje potrebné pre fungovanie aplikácie</h2>
       <p>
-        {t(
-          'privacyPolicyCollectionContent',
-          `Zhromažďujeme osobné údaje, ktoré nám poskytnete prostredníctvom registrácie, objednávok alebo kontaktných formulárov. Medzi tieto údaje môžu patriť vaše meno, e-mailová adresa, telefónne číslo a ďalšie informácie, ktoré sú potrebné na poskytovanie našich služieb.`
-        )}
+        Pri výpočte trasy zadávate štart, cieľ, spotrebu, cenu paliva, menu a ďalšie údaje
+        potrebné na výpočet. Väčšina týchto údajov sa spracúva v prehliadači. Miesta a trasy
+        sa odosielajú službe Google Maps, aby bolo možné zobraziť mapu, autocomplete a trasu.
       </p>
 
-      <h2>{t('privacyPolicyUsageTitle', '2. Používanie údajov')}</h2>
+      <h2>2. Kontaktný formulár</h2>
       <p>
-        {t(
-          'privacyPolicyUsageContent',
-          `Vaše údaje používame na spracovanie objednávok, komunikáciu s vami, poskytovanie zákazníckej podpory a zlepšovanie našich služieb. Vaše informácie môžeme tiež využiť na marketingové účely, pokiaľ ste nám dali na to súhlas.`
-        )}
+        Ak použijete kontaktný formulár, spracujeme meno, e-mail a správu, ktorú odošlete.
+        Formulár je odosielaný cez službu EmailJS na účely odpovede a riešenia spätnej väzby.
       </p>
 
-      <h2>{t('privacyPolicyProtectionTitle', '3. Ochrana údajov')}</h2>
+      <h2>3. Analytika a hodnotenie</h2>
       <p>
-        {t(
-          'privacyPolicyProtectionContent',
-          `Zavádzame prísne bezpečnostné opatrenia, aby sme zabezpečili, že vaše osobné údaje sú chránené pred neoprávneným prístupom, zverejnením alebo zneužitím.`
-        )}
+        Analytické služby Google Tag Manager, Microsoft Clarity, Vercel Analytics a Vercel
+        Speed Insights spúšťame až po prijatí cookies. Hodnotiaci formulár sa tiež zobrazí
+        až po súhlase a môže odoslať hodnotenie, komentár, dátum, typ zariadenia a jazykové
+        nastavenie do Google Apps Script.
       </p>
 
-      <h2>{t('privacyPolicyRightsTitle', '4. Vaše práva')}</h2>
+      <h2>4. Lokálne úložisko</h2>
       <p>
-        {t(
-          'privacyPolicyRightsContent',
-          `Máte právo na prístup k vašim osobným údajom, ich opravu alebo vymazanie. Ak máte akékoľvek otázky ohľadom spracovania vašich údajov, neváhajte nás kontaktovať.`
-        )}
+        Po súhlase môžeme v localStorage uložiť preferencie aplikácie, napríklad jednotky,
+        menu, vybrané vozidlo, zadané miesta alebo informáciu o poslednom hodnotení. Pri
+        zamietnutí cookies sa tieto údaje neukladajú trvalo.
       </p>
 
-      <h2>{t('privacyPolicyContactTitle', '5. Kontakt')}</h2>
+      <h2>5. Tretie strany</h2>
       <p>
-        {t(
-          'privacyPolicyContactContent',
-          `V prípade akýchkoľvek otázok alebo pripomienok ohľadom našich zásad ochrany osobných údajov nás kontaktujte na:`
-        )}{' '}
+        Pri používaní aplikácie môžu byť zapojené služby Google Maps, Google Tag Manager,
+        Microsoft Clarity, Vercel Analytics, Vercel Speed Insights, EmailJS a Google Apps
+        Script. Tieto služby spracúvajú údaje podľa vlastných pravidiel ochrany súkromia.
+      </p>
+
+      <h2>6. Vaše práva</h2>
+      <p>
+        Môžete nás požiadať o informácie o spracúvaní, opravu, vymazanie alebo obmedzenie
+        spracúvania údajov, ak sa na danú situáciu tieto práva vzťahujú.
+      </p>
+
+      <h2>7. Kontakt</h2>
+      <p>
+        V prípade otázok k ochrane osobných údajov nás kontaktujte na:{' '}
         <a href="mailto:dsnextgen.eu@gmail.com">dsnextgen.eu@gmail.com</a>
       </p>
 
       <p>
-        <em>{t('privacyPolicyUpdated', 'Posledná aktualizácia: 10.02.2025')}</em>
+        <em>{t('privacyPolicyUpdated', 'Posledná aktualizácia: 17.05.2026')}</em>
       </p>
     </div>
   );

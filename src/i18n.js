@@ -100,7 +100,6 @@ const resources = {
       autoEfficiency: "Automaticky zistená spotreba",
       efficiencyShort: "kWh/100km",
       fuelConsumptionMetric: "Spotreba (l/100km):",
-      fuelConsumptionImperial: "Spotreba (MPG)",
       efficiencyMetricShort: "kWh/100km",
       efficiencyImperialShort: "kWh/100mi",
       efficiencyImperial: "Efektivita (kWh/100mi):",
@@ -235,8 +234,8 @@ i18n
     resources,
     fallbackLng: 'en',
     detection: {
-      order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
-      caches: ['cookie']
+      order: ['querystring', 'navigator', 'htmlTag'],
+      caches: []
     },
     interpolation: {
       escapeValue: false

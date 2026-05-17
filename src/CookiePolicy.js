@@ -1,82 +1,71 @@
 // src/CookiePolicy.js
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { resetCookieConsent } from './components/cookieConsent';
 
 const CookiePolicy = () => {
   const { t } = useTranslation();
 
+  const handleResetConsent = () => {
+    resetCookieConsent();
+    window.location.reload();
+  };
+
   return (
-    <div className="cookie-policy-container">
+    <div className="cookie-policy-container" style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <h1>{t('cookiePolicyTitle', 'Cookie Policy')}</h1>
       <p>
-        {t(
-          'cookiePolicyContent',
-          `Táto stránka používa cookies, aby vám poskytla lepší zážitok. 
-          Cookies sú malé textové súbory uložené vo vašom prehliadači. 
-          Používame ich na zabezpečenie základnej funkčnosti stránky, 
-          analytiku a marketingové účely. Pre viac informácií si prečítajte našu 
-          zásadu ochrany osobných údajov.`
-        )}
+        Táto stránka používa nevyhnutné lokálne úložisko pre uloženie vášho rozhodnutia
+        o cookies a voliteľné analytické služby iba po vašom súhlase.
       </p>
 
-      <hr />
-
       <p>
-        <strong>Posledná aktualizácia:</strong> 10.02.2025
+        <strong>Posledná aktualizácia:</strong> 17.05.2026
       </p>
 
-      <h2>1. Čo sú cookies?</h2>
+      <h2>1. Čo ukladáme vždy</h2>
       <p>
-        Cookies sú malé textové súbory, ktoré sa uložia vo vašom prehliadači, keď navštívite webovú stránku. Pomáhajú webovým stránkam zapamätať si informácie o vašej návšteve, čo zlepšuje vašu skúsenosť (napríklad tým, že si pamätajú vaše preferencie alebo prihlásenie).
+        Hodnotu <strong>cookieConsent</strong> ukladáme v localStorage, aby sme si zapamätali,
+        či ste cookies prijali alebo zamietli. Toto považujeme za nevyhnutnú preferenciu.
       </p>
 
-      <h2>2. Ako používame cookies</h2>
+      <h2>2. Funkčné služby</h2>
       <p>
-        Na našej stránke <strong>fuely.sk</strong> používame cookies z nasledujúcich dôvodov:
-      </p>
-      <ul>
-        <li>
-          <strong>Základná funkčnosť:</strong> Umožňujú nám zabezpečiť, že stránka funguje správne. Patria sem cookies, ktoré pamätajú, či ste prihlásení, a udržiavajú vaše nastavenia.
-        </li>
-        <li>
-          <strong>Analytika a štatistiky:</strong> Pomocou cookies sledujeme, ako návštevníci používajú našu stránku, čo nám pomáha vylepšiť obsah a funkcionalitu. Tieto údaje sú anonymné.
-        </li>
-        <li>
-          <strong>Marketing a personalizácia:</strong> V niektorých prípadoch môžeme používať cookies na zlepšenie reklám a zobrazenie relevantného obsahu. Tieto cookies môžu byť nastavené aj tretími stranami.
-        </li>
-      </ul>
-
-      <h2>3. Typy používaných cookies</h2>
-      <ul>
-        <li>
-          <strong>Reliačné (Session) cookies:</strong> Dočasné cookies, ktoré sa vymažú po zatvorení prehliadača.
-        </li>
-        <li>
-          <strong>Trvalé cookies:</strong> Cookies, ktoré zostanú uložené vo vašom zariadení aj po zatvorení prehliadača a pomáhajú nám zapamätať si vaše preferencie pri ďalších návštevách.
-        </li>
-        <li>
-          <strong>Prvé strany a tretie strany:</strong> Niektoré cookies nastavujeme my priamo (prvé strany), zatiaľ čo iné môžu byť nastavené našimi partnermi (tretie strany).
-        </li>
-      </ul>
-
-      <h2>4. Tretie strany</h2>
-      <p>
-        Niektoré služby, ktoré používame (napríklad analytické nástroje a sociálne siete), môžu tiež používať vlastné cookies. Tieto cookies sú spravované príslušnými spoločnosťami. Pre viac informácií o ich zásadách ochrany osobných údajov odporúčame navštíviť ich webové stránky.
+        Fuely používa Google Maps JavaScript API a Places Autocomplete na vyhľadanie miest,
+        zobrazenie mapy a výpočet trasy. Tieto služby sú súčasťou hlavnej funkcie aplikácie.
+        Pri ich používaní môže Google spracovať technické údaje, IP adresu a zadané miesta.
       </p>
 
-      <h2>5. Ako spravovať a odstrániť cookies</h2>
+      <h2>3. Voliteľná analytika a spätná väzba</h2>
       <p>
-        Väčšina moderných prehliadačov umožňuje nastaviť, ako chcete s cookies zaobchádzať – môžete ich blokovať, odstrániť alebo upozorniť, keď sa cookie ukladá. Viac informácií nájdete v nastaveniach vášho prehliadača. Majte však na pamäti, že zablokovanie cookies môže ovplyvniť funkčnosť niektorých častí našej stránky.
+        Po kliknutí na „Prijať” môžeme spustiť Google Tag Manager, Microsoft Clarity,
+        Vercel Analytics, Vercel Speed Insights a hodnotiaci formulár. Tieto služby pomáhajú
+        merať návštevnosť, výkon a kvalitu aplikácie.
+      </p>
+      <p>
+        Ak kliknete na „Zamietnuť”, tieto analytické a spätnoväzbové služby nespúšťame.
       </p>
 
-      <h2>6. Zmeny v Cookie Policy</h2>
+      <h2>4. Nastavenia aplikácie</h2>
       <p>
-        Táto Cookie Policy môže byť časom aktualizovaná. Odporúčame vám pravidelne kontrolovať túto stránku, aby ste boli informovaní o prípadných zmenách.
+        Po prijatí súhlasu si aplikácia môže uložiť vaše nastavenia kalkulačky, napríklad
+        jednotky, menu, vybrané vozidlo alebo naposledy zadané miesta. Po zamietnutí sa tieto
+        údaje neukladajú trvalo.
       </p>
 
-      <h2>7. Kontakt</h2>
+      <h2>5. Ako zmeniť rozhodnutie</h2>
       <p>
-        Ak máte akékoľvek otázky alebo pripomienky k tejto Cookie Policy, neváhajte nás kontaktovať na adrese: <a href="mailto:dsnextgen.eu@gmail.com">dsnextgen.eu@gmail.com</a>
+        Súhlas môžete zmeniť vymazaním dát stránky v nastaveniach prehliadača alebo tlačidlom
+        nižšie. Po obnovení stránky sa banner zobrazí znova.
+      </p>
+      <button type="button" className="accept" onClick={handleResetConsent}>
+        Zmeniť nastavenia cookies
+      </button>
+
+      <h2>6. Kontakt</h2>
+      <p>
+        Otázky k používaniu cookies nám môžete poslať na:{' '}
+        <a href="mailto:dsnextgen.eu@gmail.com">dsnextgen.eu@gmail.com</a>
       </p>
     </div>
   );
