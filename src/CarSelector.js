@@ -14,7 +14,7 @@ function convertElectricValue(whPerKm, fuelUnit) {
   if (isNaN(n)) return '';
   const kWhPer100km = n * 0.1;
   if (fuelUnit === 'imperial') {
-    const kWhPer100mi = (n / 1.609344) / 10;
+    const kWhPer100mi = (n * 1.609344) / 10;
     return kWhPer100mi.toFixed(2);
   }
   return kWhPer100km.toFixed(2);

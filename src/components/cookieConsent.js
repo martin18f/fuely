@@ -1,7 +1,7 @@
 export const COOKIE_CONSENT_KEY = 'cookieConsent';
 export const COOKIE_CONSENT_EVENT = 'fuely-cookie-consent-change';
 
-const OPTIONAL_STORAGE_KEYS = ['lastRated', 'firstVisitDate', 'ratings'];
+const OPTIONAL_STORAGE_KEYS = ['lastRated', 'firstVisitDate', 'ratings', 'pendingRating'];
 
 export const getCookieConsentValue = () => {
   try {

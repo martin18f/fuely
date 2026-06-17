@@ -1,109 +1,194 @@
 <!DOCTYPE html>
 <html lang="sk">
   <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PYBF3LZ88R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-PYBF3LZ88R');
-</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
     <meta charset="utf-8" />
-    <meta name="robots" content="index, follow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYBF3LZ88R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-PYBF3LZ88R');
+    </script>
+
+    <meta data-react-helmet="true" name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Fuely" />
+    <meta name="application-name" content="Fuely" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="google-adsense-account" content="ca-pub-8147584564803084" />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8147584564803084"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Kľúčové slová -->
     <meta
       name="keywords"
-      content="Fuely, palivová kalkulačka, fuel cost calculator, spotreba, náklady, auto, výpočet"
+      content="Fuely, palivová kalkulačka, fuel cost calculator, výpočet spotreby, cestovné náklady, benzín, nafta, elektromobil, plánovanie trasy"
     />
 
-    <!-- Stručný a skrátený title -->
-    <title>Fuely – Palivová kalkulačka | Fuel Cost Calculator - SK & EN</title>
+    <title>Fuely - Palivová kalkulačka | Výpočet nákladov na cestu</title>
 
 
     <!-- Skrátená meta description (cca do 160 znakov) -->
     <meta
+      data-react-helmet="true"
       name="description"
-      content="Fuely – Palivová kalkulačka | Fuel Cost Calculator – Zadajte trasu, spotrebu a cenu paliva, aby ste optimalizovali a presne vypočítali náklady na cestu."
+      content="Fuely je palivová kalkulačka pre benzín, naftu aj elektromobil. Zadajte trasu, vzdialenosť, spotrebu a cenu paliva a zistite náklady na cestu."
     />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Fuely – Pomocník pri plánovaní ciest a kalkulácii nákladov na palivo"/>
-    <meta property="og:description" content="Fuely vám pomôže zistiť náklady na palivo. Zadajte vzdialenosť, spotrebu a cenu paliva pre okamžitý prehľad o nákladoch na cestu."/>
-    <meta property="og:url" content="https://martinsulak.dev/fuely/"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:image" content="%PUBLIC_URL%/fuely-cover.jpg"/>
+    <meta data-react-helmet="true" property="og:title" content="Fuely - Palivová kalkulačka | Výpočet nákladov na cestu"/>
+    <meta data-react-helmet="true" property="og:description" content="Fuely je palivová kalkulačka pre benzín, naftu aj elektromobil. Zadajte trasu, vzdialenosť, spotrebu a cenu paliva a zistite náklady na cestu."/>
+    <meta data-react-helmet="true" property="og:url" content="https://fuely.martinsulak.dev/"/>
+    <meta data-react-helmet="true" property="og:type" content="website"/>
+    <meta data-react-helmet="true" property="og:site_name" content="Fuely"/>
+    <meta data-react-helmet="true" property="og:locale" content="sk_SK"/>
+    <meta data-react-helmet="true" property="og:locale:alternate" content="en_US"/>
+    <meta data-react-helmet="true" property="og:image" content="https://fuely.martinsulak.dev/logo512.png"/>
+    <meta data-react-helmet="true" property="og:image:alt" content="Fuely fuel cost calculator logo"/>
+    <meta data-react-helmet="true" property="og:image:width" content="512"/>
+    <meta data-react-helmet="true" property="og:image:height" content="512"/>
+    <meta data-react-helmet="true" name="twitter:card" content="summary_large_image"/>
+    <meta data-react-helmet="true" name="twitter:title" content="Fuely - Palivová kalkulačka | Výpočet nákladov na cestu"/>
+    <meta data-react-helmet="true" name="twitter:description" content="Fuely počíta náklady na cestu podľa vzdialenosti, spotreby a ceny paliva pre benzín, naftu aj elektromobil."/>
+    <meta data-react-helmet="true" name="twitter:image" content="https://fuely.martinsulak.dev/logo512.png"/>
+    <meta data-react-helmet="true" name="twitter:image:alt" content="Fuely fuel cost calculator logo"/>
 
     <!-- Kanonická URL -->
-    <link rel="canonical" href="https://martinsulak.dev/fuely/" />
-
-    <!-- Sémantické skryté nadpisy a text pre SEO -->
-    <style>
-      .visually-hidden {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      clip: rect(1px, 1px, 1px, 1px) !important;
-      overflow: hidden !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-
-    </style>
+    <link data-react-helmet="true" rel="canonical" href="https://fuely.martinsulak.dev/" />
+    <link data-react-helmet="true" rel="alternate" hreflang="sk" href="https://fuely.martinsulak.dev/?lng=sk" />
+    <link data-react-helmet="true" rel="alternate" hreflang="en" href="https://fuely.martinsulak.dev/?lng=en" />
+    <link data-react-helmet="true" rel="alternate" hreflang="x-default" href="https://fuely.martinsulak.dev/" />
 
     <!-- CRA veci -->
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#1976d2" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <!-- SEO JSON-LD (štruktúrované dáta) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Fuely",
-      "url": "https://martinsulak.dev/fuely/",
-      "description": "Fuely je webová aplikácia na výpočet nákladov na palivo - palivová kalkulačka (fuel cost calculator)."
-    }
+    <script data-react-helmet="true" type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://fuely.martinsulak.dev/#organization",
+        "name": "Fuely",
+        "url": "https://fuely.martinsulak.dev/",
+        "logo": "https://fuely.martinsulak.dev/logo512.png",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "url": "https://fuely.martinsulak.dev/",
+            "contactType": "customer support",
+            "availableLanguage": ["sk", "en"]
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "@id": "https://fuely.martinsulak.dev/#web-application",
+        "name": "Fuely",
+        "url": "https://fuely.martinsulak.dev/",
+        "applicationCategory": "TravelApplication",
+        "operatingSystem": "Web",
+        "inLanguage": ["sk", "en"],
+        "isAccessibleForFree": true,
+        "description": "Fuely je webová aplikácia na výpočet nákladov na cestu podľa vzdialenosti, spotreby a ceny paliva alebo elektriny.",
+        "publisher": {
+          "@id": "https://fuely.martinsulak.dev/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://fuely.martinsulak.dev/#website",
+        "name": "Fuely",
+        "url": "https://fuely.martinsulak.dev/",
+        "description": "Palivová kalkulačka a fuel cost calculator pre plánovanie ciest, výpočet spotreby, ceny paliva a nákladov na cestu."
+      }
+    ]
     </script>
   </head>
   <body>
-
-    <!-- Skrytý H1 a H2 pre SEO -->
-    <h1 class="visually-hidden">Fuely – Palivová kalkulačka a Fuel Cost Calculator pre plánovanie ciest</h1>
-    <h2 class="visually-hidden">Ako Fuely funguje a ako rýchlo vypočíta náklady na cestu?</h2>
-    <p class="visually-hidden">
-      Fuely, palivová kalkulačka (fuel cost calculator), vám umožňuje zadať trasu, spotrebu a cenu paliva, aby ste okamžite videli, koľko miniete za cestu.
-    </p>
-    <h2 class="visually-hidden">Prečo používať Fuely na výpočet spotreby paliva?</h2>
-    <p class="visually-hidden">
-      Fuely je užitočný nástroj pre vodičov, ktorí chcú mať prehľad o výdavkoch na palivo pri dlhých cestách, rodinných dovolenkách aj bežnom dochádzaní.
-    </p>
-
-    <!-- Tu je REÁLNY krátky odstavec s interným odkazom -->
-    <p class="visually-hidden">
-      Viac o našej <strong>palivovej kalkulačke</strong> nájdete v 
-      <a href="/fuely/palivova-kalkulacka">detailnom návode</a> 
-      alebo si pozrite 
-      <a href="/fuely/terms-of-use">podmienky používania</a>.
-    </p>
-
-    <div id="root"></div>
-
-    <!-- Skrytý obrázok len pre SEO -->
-    <img
-      src="%PUBLIC_URL%/logo192.png"
-      alt="Logo Fuely - Palivová kalkulačka a Fuel Cost Calculator"
-      class="visually-hidden"
-      loading="lazy"
-    />
+    <div id="root">
+      <main>
+        <h1>Fuely - výpočet nákladov na cestovanie</h1>
+        <p>
+          Fuely je webová kalkulačka na odhad nákladov na cestu autom alebo
+          elektromobilom. Pomáha vodičom vypočítať cenu trasy podľa vzdialenosti,
+          spotreby, ceny paliva alebo elektriny, meny, mýta a plánovaných zastávok.
+        </p>
+        <p>
+          Aplikácia je vhodná na dovolenkové trasy, každodenné dochádzanie,
+          pracovné jazdy aj porovnanie alternatívnych trás. Po výbere štartu a
+          cieľa z Google Maps dokáže Fuely prepočítať vzdialenosť, čas jazdy,
+          spotrebované palivo alebo energiu a odhadovaný cenový rozsah.
+        </p>
+        <p>
+          Pre presnejší výsledok zadajte reálnu spotrebu vozidla, aktuálnu cenu
+          benzínu, nafty alebo elektriny a prípadné diaľničné poplatky. Výsledok
+          je orientačný, pretože ho ovplyvňuje premávka, počasie, štýl jazdy,
+          zaťaženie auta a skutočná cena na konkrétnej čerpacej stanici.
+        </p>
+        <h2>Palivová kalkulačka - výpočet nákladov, spotreby a ceny paliva</h2>
+        <p>
+          Fuely pracuje s údajmi, ktoré vodič pri plánovaní cesty prirodzene
+          pozná alebo vie rýchlo doplniť: vzdialenosť medzi štartom a cieľom,
+          spotreba vozidla, cena paliva, cena elektriny, mýto a mena výsledku.
+          Vďaka tomu je výpočet nákladov použiteľný pre benzín, naftu aj
+          elektromobil.
+        </p>
+        <h3>Vzdialenosť, štart a cieľ</h3>
+        <p>
+          Trasu možno zadať ručne alebo vybrať cez Google Maps. Po zadaní
+          štartu, cieľa a prípadných zastávok kalkulačka prepočíta vzdialenosť,
+          čas jazdy, spotrebované palivo alebo energiu a celkové náklady na
+          cestu.
+        </p>
+        <h3>Spotreba vozidla a cena paliva</h3>
+        <p>
+          Pri spaľovacom aute zadajte spotrebu v litroch na 100 km alebo MPG a
+          aktuálnu cenu paliva. Pri elektromobile zadajte spotrebu v kWh a cenu
+          elektriny. Presnejšie vstupy znamenajú presnejší odhad.
+        </p>
+        <h3>Meny vrátane EUR a USD</h3>
+        <p>
+          Pri zahraničnej trase môže Fuely zobraziť výsledok vo viacerých
+          menách vrátane EUR a USD. To pomáha porovnať náklady na palivo,
+          elektrinu, mýto a diaľničné poplatky ešte pred cestou.
+        </p>
+        <h2>Často kladené otázky</h2>
+        <h3>Ako získať presnejší výpočet nákladov na cestu?</h3>
+        <p>
+          Zadajte reálnu spotrebu auta, aktuálnu cenu paliva alebo elektriny,
+          správnu vzdialenosť a očakávané poplatky. Pri trase so zastávkami
+          skontrolujte štart, cieľ a každú medzizastávku.
+        </p>
+        <h3>Môžem počítať náklady v USD alebo inej mene?</h3>
+        <p>
+          Áno. Fuely podporuje viacero mien vrátane EUR a USD, takže sa hodí aj
+          pri plánovaní zahraničných trás.
+        </p>
+        <p>
+          Viac informácií nájdete v návode
+          <a href="/palivova-kalkulacka"> Palivová kalkulačka</a>,
+          v <a href="/privacy-policy">zásadách ochrany osobných údajov</a>
+          a v <a href="/terms-of-use">podmienkach používania</a>.
+        </p>
+      </main>
+    </div>
   </body>
 </html>

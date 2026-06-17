@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 
 jest.mock('react-router-dom', () => {
@@ -63,4 +63,46 @@ test('renders travel cost calculator', async () => {
     name: /travel cost calculator|výpočet nákladov na cestovanie/i,
   });
   expect(heading).toBeInTheDocument();
+  expect(
+    screen.getByRole('heading', {
+      name: /estimated range|odhadovaný rozsah/i,
+    })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/exact calculation|presný výpočet/i)
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', {
+      name: /calculate route|vypočítať trasu/i,
+    })
+  ).not.toBeInTheDocument();
+  expect(
+    screen.getByText(/advanced options|pokročilé možnosti/i)
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', {
+      name: /add stop|pridať zastávku/i,
+    })
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByText(/extra cost|dodatočné náklady/i)
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByText(/estimate variance|odchýlka odhadu/i)
+  ).not.toBeInTheDocument();
+});
+
+test('adds a stop between the start and destination fields', async () => {
+  render(<App />);
+  await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+
+  fireEvent.click(
+    screen.getByRole('button', {
+      name: /add stop|pridať zastávku/i,
+    })
+  );
+
+  const locationFields = screen.getAllByRole('combobox');
+  expect(locationFields.slice(0, 3).map((field) => field.getAttribute('aria-label')))
+    .toEqual(['Start', 'Stop 1', 'Destination']);
 });

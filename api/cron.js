@@ -4,10 +4,18 @@ const tough = require('tough-cookie');
 const cheerio = require('cheerio');
 const { createClient } = require('@supabase/supabase-js');
 
-const SUPABASE_URL = "https://cyjauhagjcjrhjpgekgp.supabase.co";
-const SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5amF1aGFnamNqcmhqcGdla2dwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNTkwNjcwOSwiZXhwIjoyMDUxNDgyNzA5fQ.0iHXWKGoH88QEeE39Y-ltLxnPF9W-ootRtiYdOdlqxs";
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+const getSupabaseClient = () => {
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+    throw new Error(
+      'Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variable'
+    );
+  }
+
+  return createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+};
 
 // Presne replikuje logiku Python requests session (cookies)
 async function scrapePrices(url) {
@@ -54,6 +62,7 @@ async function scrapePrices(url) {
 
 module.exports = async (req, res) => {
   try {
+    const supabase = getSupabaseClient();
     const dieselUrl = 'https://www.globalpetrolprices.com/diesel_prices/?currency=EUR';
     const gasolineUrl = 'https://www.globalpetrolprices.com/gasoline_prices/?currency=EUR';
 

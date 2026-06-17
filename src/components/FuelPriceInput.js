@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getFuelPrices } from '../services/fuelPricesService';
 import './FuelPriceInput.css';
 
 function FuelPriceInput({ 
+  id,
   value, 
-  onChange, 
+  onChange,
+  onPresetSelect = onChange,
   selectedVehicleType, 
   useAutoConsumption 
 }) {
@@ -199,21 +202,14 @@ function FuelPriceInput({
     'Hong Kong': 'hk'
   };
 
-  // Načítame dáta z /api/get-fuel-prices len raz pri mount
+  // Production uses the API; local development falls back to bundled CSV files.
   useEffect(() => {
     setLoading(true);
     setError(null);
 
-    fetch('/api/get-fuel-prices')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
+    getFuelPrices()
       .then((data) => {
-        console.log('Data from Supabase:', data);
-        setCountries(data); // Očakávame pole objektov s {country, diesel_price, gasoline_price}
+        setCountries(data);
       })
       .catch((err) => {
         console.error(err);
@@ -270,7 +266,7 @@ function FuelPriceInput({
     }
 
     if (price !== null && price !== undefined) {
-      onChange(price.toString());
+      onPresetSelect(price.toString());
     } else {
       onChange('');
       console.warn("Cena pre", fuelType, "nie je dostupná v riadku:", row);
@@ -281,6 +277,7 @@ function FuelPriceInput({
   return (
     <div className="fuelPriceContainer">
       <input
+        id={id}
         type="text"
         className="inputFuelPrice"
         value={value}

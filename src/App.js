@@ -1,96 +1,236 @@
-// src/App.js
-
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { useJsApiLoader } from '@react-google-maps/api';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 import FuelPriceInput from './components/FuelPriceInput';
-import PalivovaKalkulacka from './PalivovaKalkulacka';
 import i18n from './i18n';
 import useLocalStorage from './components/useLocalStorage';
 import CookieBanner from './components/CookieBanner';
-import RatingPopup from './components/RatingPopup';
 import TrackingScripts from './components/TrackingScripts';
 import ThemeToggle from './components/ThemeToggle';
-import CookiePolicy from './CookiePolicy';
-import TermsOfUse from './TermsOfUse';
-import PrivacyPolicy from './PrivacyPolicy';
 import {
   COOKIE_CONSENT_EVENT,
   COOKIE_CONSENT_KEY,
   hasCookieConsent as readCookieConsent,
 } from './components/cookieConsent';
-
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from '@vercel/speed-insights/react';
-
 import LanguageSwitcher from './components/LanguageSwitcher';
 import FuelUnitSwitcher from './components/FuelUnitSwitcher';
 import SearchBar from './components/SearchBar';
-import MapView from './components/MapView';
+import GoogleMapsLoader from './components/GoogleMapsLoader';
 import CustomCheckbox from './components/CustomCheckbox';
-import CarSelector from './CarSelector';
 import CurrencySwitcher from './components/CurrencySwitcher';
-import ContactForm from './components/ContactForm';
 import PolicyLinks from './PolicyLinks';
 import DeleteButton from './components/DeleteButton';
-import FuelTypeRadioGroup from "./components/FuelTypeRadioGroup";
+import FuelTypeRadioGroup from './components/FuelTypeRadioGroup';
 import VehicleTypeSwitcher from './components/VehicleTypeSwitcher';
 import ShareButton from './components/ShareButton';
+import { getLocaleDefaults } from './utils/localeDefaults';
+import {
+  calculateTripCost,
+  LITERS_PER_US_GALLON,
+  METERS_PER_MILE,
+} from './utils/tripCalculation';
 
 import './App.css';
 
+const CarSelector = lazy(() => import('./CarSelector'));
+const ContactForm = lazy(() => import('./components/ContactForm'));
+const CookiePolicy = lazy(() => import('./CookiePolicy'));
+const MapView = lazy(() => import('./components/MapView'));
+const PalivovaKalkulacka = lazy(() => import('./PalivovaKalkulacka'));
+const PrivacyPolicy = lazy(() => import('./PrivacyPolicy'));
+const RatingPopup = lazy(() => import('./components/RatingPopup'));
+const TermsOfUse = lazy(() => import('./TermsOfUse'));
+
 const GOOGLE_MAPS_LIBRARIES = ['places'];
-const GOOGLE_MAPS_API_KEY =
-  process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'AIzaSyByASDfSznBhQU1vZ-2yVhfTUI5gtCPotA';
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '';
+const SITE_URL = 'https://fuely.martinsulak.dev';
 
+const getAbsoluteUrl = (path = '/') =>
+  `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 
+const getDirectionsErrorMessage = (status, t) => {
+  const translatedMessage = t(`routeError_${status}`, {
+    defaultValue: '',
+  });
 
-// Fallback 404
+  return translatedMessage || t('routeErrorGeneric', { status: status || '?' });
+};
+
+const sanitizeNumericInput = (value) => value.replace(',', '.').trim();
+
+let stopId = 0;
+const createStop = () => ({
+  id: `${Date.now()}-${stopId += 1}`,
+  location: null,
+});
+
+const getRouteSummary = (route) => {
+  const legs = route?.legs || [];
+  const distanceMeters = legs.reduce(
+    (total, leg) => total + (leg.distance?.value || 0),
+    0
+  );
+  const durationSeconds = legs.reduce(
+    (total, leg) => total + (leg.duration?.value || 0),
+    0
+  );
+  const totalMinutes = Math.round(durationSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return {
+    distanceMeters,
+    durationText:
+      hours > 0 ? `${hours} h ${minutes} min` : `${minutes} min`,
+  };
+};
+
 function NotFound() {
   return (
-    <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>
-      404 – Page Not Found
-    </h2>
+    <>
+      <Helmet>
+        <title>404 - Fuely</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <h2 className="notFoundTitle">
+        404 - Page Not Found
+      </h2>
+    </>
   );
 }
 
 function App() {
-
-  
-
   const { t } = useTranslation();
+  const localeDefaults = useRef(
+    getLocaleDefaults(
+      typeof navigator === 'undefined' ? 'en' : navigator.language
+    )
+  ).current;
+
   const [theme, setTheme] = useState('light');
   const [loading, setLoading] = useState(false);
-  // Nové stavy pre emisie:
-  const [fuelType, setFuelType] = useState('gasoline'); // alebo 'diesel'
-  const [emissionsFactor, setEmissionsFactor] = useState(2.31); // default pre benzín
-  const [emissions, setEmissions] = useState(null);
-  const [hasAnalyticsConsent, setHasAnalyticsConsent] = useState(() => readCookieConsent());
+  const [routeError, setRouteError] = useState('');
+  const [fuelType, setFuelType] = useState('gasoline');
+  const [hasAnalyticsConsent, setHasAnalyticsConsent] = useState(() =>
+    readCookieConsent()
+  );
 
-  const {
-    isLoaded: isGoogleLoaded,
-    loadError: googleMapsLoadError,
-  } = useJsApiLoader({
-    id: 'fuely-google-maps-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries: GOOGLE_MAPS_LIBRARIES,
+  const [useAutoConsumption, setUseAutoConsumption] = useLocalStorage(
+    'useAutoConsumption',
+    false
+  );
+  const [fuelConsumption, setFuelConsumption] = useLocalStorage(
+    'fuelConsumption',
+    localeDefaults.fuelConsumption
+  );
+  const [selectedYear, setSelectedYear] = useLocalStorage(
+    'csYear',
+    'Without year'
+  );
+  const [selectedBrand, setSelectedBrand] = useLocalStorage('csBrand', '');
+  const [selectedModel, setSelectedModel] = useLocalStorage('csModel', '');
+  const [selectedEngine, setSelectedEngine] = useLocalStorage('csEngine', '');
+  const [selectedTransmission, setSelectedTransmission] = useLocalStorage(
+    'csTransmission',
+    ''
+  );
+  const [selectedFuelType, setSelectedFuelType] = useLocalStorage(
+    'csFuelType',
+    ''
+  );
+  const [selectedVehicleType, setSelectedVehicleType] = useLocalStorage(
+    'csVehicleType',
+    'combustion'
+  );
+  const [startLocation, setStartLocation] = useLocalStorage(
+    'startLocation',
+    null
+  );
+  const [destinationLocation, setDestinationLocation] = useLocalStorage(
+    'destinationLocation',
+    null
+  );
+  const [avoidHighways, setAvoidHighways] = useLocalStorage(
+    'avoidHighways',
+    false
+  );
+  const [distance, setDistance] = useLocalStorage(
+    'distance',
+    localeDefaults.distanceMeters
+  );
+  const [travelTime, setTravelTime] = useLocalStorage('travelTime', null);
+  const [fuelPriceLocal, setFuelPriceLocal] = useLocalStorage(
+    'fuelPriceLocal',
+    localeDefaults.fuelPrice
+  );
+  const [fuelUnit, setFuelUnit] = useLocalStorage(
+    'fuelUnit',
+    localeDefaults.fuelUnit
+  );
+  const [selectedCurrency, setSelectedCurrency] = useLocalStorage(
+    'selectedCurrency',
+    localeDefaults.selectedCurrency
+  );
+  const [stopLocations, setStopLocations] = useLocalStorage(
+    'stopLocations',
+    []
+  );
+  const [tolls, setTolls] = useLocalStorage('tolls', '0');
+  const [shouldLoadGoogleMaps, setShouldLoadGoogleMaps] = useState(false);
+  const [googleMapsState, setGoogleMapsState] = useState({
+    isLoaded: false,
+    loadError: null,
   });
 
-  
+  const [directionsResult, setDirectionsResult] = useState(null);
+  const [routeAlternatives, setRouteAlternatives] = useState([]);
+  const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
+  const [directions, setDirections] = useState(null);
+  const [fuelPriceEur, setFuelPriceEur] = useState(null);
+  const [exchangeRates, setExchangeRates] = useState({});
+  const [resetKey, setResetKey] = useState(0);
 
-  // Detekcia jazyka podľa domény
+  const routeRequestIdRef = useRef(0);
+  const previousFuelUnitRef = useRef(fuelUnit);
+  const waypointKey = stopLocations
+    .filter((stop) => stop.location?.position)
+    .map(
+      (stop) =>
+        `${stop.location.position.lat},${stop.location.position.lng}`
+    )
+    .join(';');
+  const { isLoaded: isGoogleLoaded, loadError: googleMapsLoadError } =
+    googleMapsState;
+
+  const requestGoogleMapsLoad = useCallback(() => {
+    if (GOOGLE_MAPS_API_KEY) {
+      setShouldLoadGoogleMaps(true);
+    }
+  }, []);
+
   useEffect(() => {
-    i18n.changeLanguage('en');
+    const language = i18n.resolvedLanguage || i18n.language || 'en';
+    if (!language.startsWith('sk') && !language.startsWith('en')) {
+      i18n.changeLanguage('en');
+    }
   }, []);
 
   useEffect(() => {
     const handleConsentChange = (event) => {
       setHasAnalyticsConsent(Boolean(event.detail?.accepted));
     };
-
     const handleStorageChange = (event) => {
       if (event.key === COOKIE_CONSENT_KEY) {
         setHasAnalyticsConsent(event.newValue === 'true');
@@ -106,292 +246,449 @@ function App() {
     };
   }, []);
 
-  // Prepínač témy
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
-
-  // Uplatnenie témy na body
   useEffect(() => {
-    if (theme === 'dark') {
-      document.body.classList.add('dark-theme');
-      document.body.classList.remove('light-theme');
-    } else {
-      document.body.classList.add('light-theme');
-      document.body.classList.remove('dark-theme');
-    }
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    document.body.classList.toggle('light-theme', theme !== 'dark');
   }, [theme]);
 
-  // useLocalStorage stavy (spotreba, destinácia, atď.)
-  
-
-  
-  // Stavy pre auto/manual + spotrebu
-  const [useAutoConsumption, setUseAutoConsumption] = useLocalStorage('useAutoConsumption', true);
-  const [fuelConsumption, setFuelConsumption] = useLocalStorage('fuelConsumption', '');
-
-
-  
-
-  const [selectedYear, setSelectedYear] = useLocalStorage('csYear', 'Without year');
-  const [selectedBrand, setSelectedBrand] = useLocalStorage('csBrand', '');
-  const [selectedModel, setSelectedModel] = useLocalStorage('csModel', '');
-  const [selectedEngine, setSelectedEngine] = useLocalStorage('csEngine', '');
-
-  const [selectedVehicleType, setSelectedVehicleType] = useLocalStorage('csVehicleType', 'combustion'); // 'combustion' alebo 'electric'
-
-  
-
-  const [startLocation, setStartLocation] = useLocalStorage('startLocation', null);
-  const [destinationLocation, setDestinationLocation] = useLocalStorage('destinationLocation', null);
-  const [avoidHighways, setAvoidHighways] = useLocalStorage('avoidHighways', false);
-
-  const [directionsResult, setDirectionsResult] = useState(null);
-  const [routeAlternatives, setRouteAlternatives] = useState([]);
-  const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
-  const [directions, setDirections] = useState(null);
-
-  const [distance, setDistance] = useLocalStorage('distance', null);
-  const [travelTime, setTravelTime] = useLocalStorage('travelTime', null);
-
-
-  
-  const [selectedTransmission, setSelectedTransmission] = useLocalStorage('csTransmission', '');
-  const [selectedFuelType, setSelectedFuelType] = useLocalStorage('csFuelType', '');
-  
-  
-
-  
-  const [fuelPriceLocal, setFuelPriceLocal] = useLocalStorage('fuelPriceLocal', '');
-  const [fuelUnit, setFuelUnit] = useLocalStorage('fuelUnit', 'metric');
-  const [selectedCurrency, setSelectedCurrency] = useLocalStorage('selectedCurrency', 'eur');
-
-  const [fuelPriceEur, setFuelPriceEur] = useState(null);
-  const [fuelUsed, setFuelUsed] = useLocalStorage('fuelUsed', null);
-  const [fuelCostEur, setFuelCostEur] = useLocalStorage('fuelCostEur', null);
-
-  const [exchangeRates, setExchangeRates] = useState({});
-  const [resetKey, setResetKey] = useState(0);
-
-  // Fetch kurzov
-  const fetchExchangeRates = (date = 'latest', base = 'eur', apiVersion = 'v1') => {
-    const primaryUrl = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${date}/${apiVersion}/currencies/${base}.json`;
-    const fallbackDomain = date === 'latest' ? 'latest' : date;
-    const fallbackUrl = `https://${fallbackDomain}.currency-api.pages.dev/${apiVersion}/currencies/${base}.json`;
-
-    return fetch(primaryUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Primárne API zlyhalo: ${response.status}`);
-        }
-        return response.json();
-      })
-      .catch((err) => {
-        console.error('Primárne API zlyhalo, skúšam fallback:', err);
-        return fetch(fallbackUrl).then((response) => {
-          if (!response.ok) {
-            throw new Error(`Fallback API zlyhalo: ${response.status}`);
-          }
-          return response.json();
-        });
-      });
-  };
+  useEffect(() => {
+    if (
+      startLocation?.position ||
+      destinationLocation?.position ||
+      stopLocations.some((stop) => stop.location?.position)
+    ) {
+      requestGoogleMapsLoad();
+    }
+  }, [
+    destinationLocation,
+    requestGoogleMapsLoad,
+    startLocation,
+    stopLocations,
+  ]);
 
   useEffect(() => {
-    fetchExchangeRates('latest', 'eur', 'v1')
+    const primaryUrl =
+      'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json';
+    const fallbackUrl =
+      'https://latest.currency-api.pages.dev/v1/currencies/eur.json';
+
+    fetch(primaryUrl)
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .catch(() =>
+        fetch(fallbackUrl).then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+      )
       .then((data) => {
-        if (data && data.eur) {
-          setExchangeRates(data.eur);
-        }
+        if (data?.eur) setExchangeRates(data.eur);
       })
       .catch((error) => {
-        console.error('Obe volania API zlyhali:', error);
+        console.error('Currency rates could not be loaded:', error);
       });
   }, []);
 
-  // Funkcie na update spotreby a ceny
-  const handleFuelConsumptionChange = (value) => {
-    const sanitized = value.replace(',', '.');
-    setFuelConsumption(sanitized);
-  };
-
-  const handleFuelPriceChange = (value) => {
-    const sanitized = value.replace(',', '.').trim();
-    setFuelPriceLocal(sanitized);
-
-    const val = parseFloat(sanitized);
-    if (!isNaN(val) && exchangeRates[selectedCurrency]) {
-      setFuelPriceEur(val / exchangeRates[selectedCurrency]);
-    } else {
-      setFuelPriceEur(null);
-    }
-  };
-
   useEffect(() => {
-    if (fuelPriceEur !== null && exchangeRates[selectedCurrency]) {
-      const localPriceVal = fuelPriceEur * exchangeRates[selectedCurrency];
-      const localPriceRounded = parseFloat(localPriceVal.toFixed(3));
-      setFuelPriceLocal(localPriceRounded.toString());
+    if (fuelPriceEur !== null) return;
+
+    const localPrice = Number.parseFloat(fuelPriceLocal);
+    const currentRate = exchangeRates[selectedCurrency];
+    if (Number.isFinite(localPrice) && currentRate) {
+      setFuelPriceEur(localPrice / currentRate);
     }
-    // eslint-disable-next-line
-  }, [selectedCurrency, exchangeRates, fuelPriceEur]);
+  }, [exchangeRates, fuelPriceEur, fuelPriceLocal, selectedCurrency]);
 
-  // Výpočet nákladov
+  const handleFuelPriceChange = useCallback(
+    (value) => {
+      const sanitized = sanitizeNumericInput(value);
+      setFuelPriceLocal(sanitized);
 
-  const handleFuelTypeChange = (value) => {
-    setFuelType(value);
-    if (value === 'gasoline') {
-      setEmissionsFactor(2.338); // ~ kg CO₂/l pre benzín
-    } else if (value === 'diesel') {
-      setEmissionsFactor(2.684); // ~ kg CO₂/l pre naftu
-    }
-  };
-
-  // Keď sa zmení množstvo spotrebovaného paliva (fuelUsed) alebo faktor, prepočítame emisie
-  useEffect(() => {
-    if (fuelUsed !== null && selectedVehicleType === 'combustion') { // ← Pridaná podmienka
-      let liters;
-      if (fuelUnit === 'imperial') {
-        liters = fuelUsed * 3.785411784;
-      } else {
-        liters = fuelUsed;
-      }
-      const totalEmissions = liters * emissionsFactor;
-      setEmissions(totalEmissions);
-    } else {
-      setEmissions(null); // Reset pre elektrické autá
-    }
-  }, [fuelUsed, fuelUnit, selectedVehicleType, emissionsFactor]); // ← Pridaná závislosť
-
-  const calculateFuelCostEur = useCallback(
-    (dist) => {
-      if (!fuelConsumption || !fuelPriceEur) {
-        setFuelCostEur(null);
-        setFuelUsed(null);
-        return;
-      }
-  
-      const distanceKm = dist / 1000;
-      const consumptionVal = parseFloat(fuelConsumption.trim());
-  
-      if (isNaN(consumptionVal) || consumptionVal <= 0) {
-        setFuelCostEur(null);
-        setFuelUsed(null);
-        return;
-      }
-  
-      if (selectedVehicleType === 'electric') {
-        const consumptionKWh = (distanceKm * consumptionVal) / 1000;
-        setFuelUsed(consumptionKWh);
-        setFuelCostEur(consumptionKWh * fuelPriceEur);
-      } else {
-        if (fuelUnit === 'imperial') {
-          const consumptionLper100km = 235.214583 / consumptionVal;
-          const consumptionLiters = (distanceKm / 100) * consumptionLper100km;
-          const usedGal = consumptionLiters / 3.785411784;
-          setFuelUsed(usedGal);
-          setFuelCostEur(consumptionLiters * fuelPriceEur);
-        } else {
-          const consumptionLiters = (distanceKm / 100) * consumptionVal;
-          setFuelUsed(consumptionLiters);
-          setFuelCostEur(consumptionLiters * fuelPriceEur);
-        }
-      }
+      const localPrice = Number.parseFloat(sanitized);
+      const currentRate = exchangeRates[selectedCurrency];
+      setFuelPriceEur(
+        Number.isFinite(localPrice) && currentRate
+          ? localPrice / currentRate
+          : null
+      );
     },
-    [fuelConsumption, fuelPriceEur, fuelUnit, selectedVehicleType, setFuelCostEur, setFuelUsed] // Pridané závislosti
+    [exchangeRates, selectedCurrency, setFuelPriceLocal]
+  );
+
+  const handlePresetFuelPriceChange = useCallback(
+    (eurPerLiterValue) => {
+      const eurPerLiter = Number.parseFloat(eurPerLiterValue);
+      const currencyRate =
+        selectedCurrency === 'eur' ? 1 : exchangeRates[selectedCurrency];
+
+      if (!Number.isFinite(eurPerLiter) || !currencyRate) {
+        handleFuelPriceChange(eurPerLiterValue);
+        return;
+      }
+
+      const unitMultiplier =
+        selectedVehicleType === 'combustion' && fuelUnit === 'imperial'
+          ? LITERS_PER_US_GALLON
+          : 1;
+      const convertedPrice =
+        eurPerLiter * currencyRate * unitMultiplier;
+      handleFuelPriceChange(
+        Number.parseFloat(convertedPrice.toFixed(3)).toString()
+      );
+    },
+    [
+      exchangeRates,
+      fuelUnit,
+      handleFuelPriceChange,
+      selectedCurrency,
+      selectedVehicleType,
+    ]
+  );
+
+  const handleCurrencyChange = useCallback(
+    (nextCurrency) => {
+      const currentPrice = Number.parseFloat(fuelPriceLocal);
+      const currentRate = exchangeRates[selectedCurrency];
+      const nextRate = exchangeRates[nextCurrency];
+      const priceInEur =
+        fuelPriceEur ??
+        (Number.isFinite(currentPrice) && currentRate
+          ? currentPrice / currentRate
+          : null);
+
+      if (priceInEur !== null && nextRate) {
+        setFuelPriceLocal(
+          Number.parseFloat((priceInEur * nextRate).toFixed(3)).toString()
+        );
+        setFuelPriceEur(priceInEur);
+      }
+      setSelectedCurrency(nextCurrency);
+    },
+    [
+      exchangeRates,
+      fuelPriceEur,
+      fuelPriceLocal,
+      selectedCurrency,
+      setFuelPriceLocal,
+      setSelectedCurrency,
+    ]
+  );
+
+  const handleFuelConsumptionChange = useCallback(
+    (value) => setFuelConsumption(sanitizeNumericInput(value)),
+    [setFuelConsumption]
+  );
+
+  const handleConsumptionChange = useCallback(
+    (value) => {
+      if (useAutoConsumption) setFuelConsumption(value);
+    },
+    [setFuelConsumption, useAutoConsumption]
   );
 
   useEffect(() => {
-    if (distance !== null) {
-      calculateFuelCostEur(distance);
-    }
-  }, [distance, fuelPriceEur, fuelConsumption, fuelUnit, calculateFuelCostEur]);
+    const previousUnit = previousFuelUnitRef.current;
+    if (fuelUnit === previousUnit) return;
 
-  // Directions
+    const consumption = Number.parseFloat(fuelConsumption);
+    const localPrice = Number.parseFloat(fuelPriceLocal);
+    const movingToImperial = fuelUnit === 'imperial';
+
+    if (!useAutoConsumption && Number.isFinite(consumption) && consumption > 0) {
+      if (selectedVehicleType === 'combustion') {
+        setFuelConsumption((235.214583 / consumption).toFixed(2));
+      } else {
+        const convertedConsumption = movingToImperial
+          ? consumption * 1.609344
+          : consumption / 1.609344;
+        setFuelConsumption(convertedConsumption.toFixed(2));
+      }
+    }
+
+    if (
+      selectedVehicleType === 'combustion' &&
+      Number.isFinite(localPrice) &&
+      localPrice > 0
+    ) {
+      const priceMultiplier = movingToImperial
+        ? LITERS_PER_US_GALLON
+        : 1 / LITERS_PER_US_GALLON;
+      setFuelPriceLocal(
+        Number.parseFloat((localPrice * priceMultiplier).toFixed(3)).toString()
+      );
+      setFuelPriceEur((currentPrice) =>
+        currentPrice === null ? null : currentPrice * priceMultiplier
+      );
+    }
+
+    previousFuelUnitRef.current = fuelUnit;
+  }, [
+    fuelConsumption,
+    fuelPriceLocal,
+    fuelUnit,
+    selectedVehicleType,
+    setFuelConsumption,
+    setFuelPriceLocal,
+    useAutoConsumption,
+  ]);
+
   const setSelectedDirections = useCallback((result, index) => {
-    const selected = { ...result, routes: [result.routes[index]] };
-    setDirections(selected);
+    setDirections({ ...result, routes: [result.routes[index]] });
   }, []);
 
-  const calculateEverything = () => {
-    if (googleMapsLoadError) {
-      alert('Google Maps sa nepodarilo načítať.');
-      return;
-    }
-    if (!isGoogleLoaded || !window.google || !window.google.maps) {
-      alert('Google Maps nie je načítané.');
-      return;
-    }
-    if (!startLocation || !destinationLocation) {
-      alert(t('Vyberte prosím obe miesta (Štart a Cieľ).'));
-      return;
-    }
-    if (!fuelConsumption) {
-      alert('Zadajte spotrebu paliva.');
-      return;
-    }
-    if (!fuelPriceLocal) {
-      alert('Zadajte cenu paliva.');
+  const requestRoute = useCallback(() => {
+    if (
+      googleMapsLoadError ||
+      !isGoogleLoaded ||
+      !window.google?.maps ||
+      !startLocation ||
+      !destinationLocation
+    ) {
       return;
     }
 
+    const requestId = routeRequestIdRef.current + 1;
+    routeRequestIdRef.current = requestId;
     setLoading(true);
+    setRouteError('');
 
     const directionsService = new window.google.maps.DirectionsService();
+    const waypoints = waypointKey
+      ? waypointKey.split(';').map((coordinates) => {
+          const [lat, lng] = coordinates.split(',').map(Number);
+          return {
+            location: { lat, lng },
+            stopover: true,
+          };
+        })
+      : [];
+
     directionsService.route(
       {
         origin: startLocation.position,
         destination: destinationLocation.position,
+        waypoints,
         travelMode: window.google.maps.TravelMode.DRIVING,
-        provideRouteAlternatives: true,
-        avoidHighways: avoidHighways,
+        provideRouteAlternatives: waypoints.length === 0,
+        avoidHighways,
       },
       (result, status) => {
+        if (requestId !== routeRequestIdRef.current) return;
+
         setLoading(false);
-        if (status === window.google.maps.DirectionsStatus.OK) {
+        if (status === 'OK' && result?.routes?.length) {
           setDirectionsResult(result);
           setRouteAlternatives(result.routes);
           setSelectedRouteIndex(0);
           setSelectedDirections(result, 0);
-
-          const dist = result.routes[0].legs[0].distance.value;
-          setDistance(dist);
-
-          const durText = result.routes[0].legs[0].duration.text;
-          setTravelTime(durText);
-
-          calculateFuelCostEur(dist);
+          const routeSummary = getRouteSummary(result.routes[0]);
+          setDistance(routeSummary.distanceMeters);
+          setTravelTime(routeSummary.durationText);
+          setRouteError('');
         } else {
-          console.error('Chyba pri získavaní trasy', result);
-          alert(t('Nastala chyba pri výpočte trasy.'));
+          console.error('Directions request failed:', status);
+          setRouteError(getDirectionsErrorMessage(status, t));
         }
       }
     );
-  };
+  }, [
+    avoidHighways,
+    destinationLocation,
+    googleMapsLoadError,
+    isGoogleLoaded,
+    setDistance,
+    setSelectedDirections,
+    setTravelTime,
+    startLocation,
+    t,
+    waypointKey,
+  ]);
+
+  useEffect(() => {
+    if (!startLocation || !destinationLocation || !isGoogleLoaded) return;
+
+    const timeoutId = window.setTimeout(requestRoute, 250);
+    return () => window.clearTimeout(timeoutId);
+  }, [destinationLocation, isGoogleLoaded, requestRoute, startLocation]);
 
   const selectRouteAlternative = (index) => {
-    if (directionsResult && routeAlternatives.length > index) {
-      setSelectedRouteIndex(index);
-      setSelectedDirections(directionsResult, index);
+    if (!directionsResult || !routeAlternatives[index]) return;
 
-      const dist = directionsResult.routes[index].legs[0].distance.value;
-      setDistance(dist);
-
-      const durText = directionsResult.routes[index].legs[0].duration.text;
-      setTravelTime(durText);
-
-      calculateFuelCostEur(dist);
-    }
+    const route = directionsResult.routes[index];
+    const routeSummary = getRouteSummary(route);
+    setSelectedRouteIndex(index);
+    setSelectedDirections(directionsResult, index);
+    setDistance(routeSummary.distanceMeters);
+    setTravelTime(routeSummary.durationText);
   };
 
-  // Prepínač auto/manual
+  const handleDistanceChange = (value) => {
+    const sanitized = sanitizeNumericInput(value);
+    if (!sanitized) {
+      setDistance(null);
+      return;
+    }
+
+    const parsedDistance = Number.parseFloat(sanitized);
+    if (!Number.isFinite(parsedDistance)) return;
+
+    setDistance(
+      fuelUnit === 'imperial'
+        ? parsedDistance * METERS_PER_MILE
+        : parsedDistance * 1000
+    );
+  };
+
+  const calculation = useMemo(
+    () =>
+      calculateTripCost({
+        distanceMeters: distance,
+        consumption: fuelConsumption,
+        fuelPrice: fuelPriceLocal,
+        fuelUnit,
+        vehicleType: selectedVehicleType,
+        tolls,
+      }),
+    [
+      distance,
+      fuelConsumption,
+      fuelPriceLocal,
+      fuelUnit,
+      selectedVehicleType,
+      tolls,
+    ]
+  );
+
+  const emissions = useMemo(() => {
+    if (!calculation || selectedVehicleType !== 'combustion') return null;
+
+    const liters =
+      fuelUnit === 'imperial'
+        ? calculation.energyUsed * LITERS_PER_US_GALLON
+        : calculation.energyUsed;
+    return liters * (fuelType === 'diesel' ? 2.684 : 2.338);
+  }, [calculation, fuelType, fuelUnit, selectedVehicleType]);
+
+  const displayLocale =
+    (i18n.resolvedLanguage || i18n.language || 'en').startsWith('sk')
+      ? 'sk-SK'
+      : 'en-US';
+  const currencyCode = selectedCurrency.toUpperCase();
+  const currencyFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(displayLocale, {
+        style: 'currency',
+        currency: currencyCode,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    [currencyCode, displayLocale]
+  );
+  const numberFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(displayLocale, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      }),
+    [displayLocale]
+  );
+
+  const formatCurrency = useCallback(
+    (value) => currencyFormatter.format(value),
+    [currencyFormatter]
+  );
+  const formatNumber = useCallback(
+    (value) => numberFormatter.format(value),
+    [numberFormatter]
+  );
+
+  const calculationBreakdown = useMemo(() => {
+    if (!calculation) return '';
+
+    const distancePart = `${formatNumber(calculation.distance)} ${
+      calculation.distanceUnit
+    }`;
+    const pricePart = `${formatCurrency(calculation.fuelPrice)}/${
+      calculation.priceUnit
+    }`;
+    let formula;
+
+    if (
+      selectedVehicleType === 'combustion' &&
+      fuelUnit === 'imperial'
+    ) {
+      formula = `${distancePart} / ${formatNumber(
+        calculation.consumption
+      )} MPG x ${pricePart}`;
+    } else {
+      formula = `${distancePart} / 100 x ${formatNumber(
+        calculation.consumption
+      )} ${calculation.consumptionUnit} x ${pricePart}`;
+    }
+
+    if (calculation.tolls > 0) {
+      formula += ` + ${formatCurrency(calculation.tolls)} ${t('tolls')}`;
+    }
+
+    return `${formula} = ${formatCurrency(calculation.exactCost)}`;
+  }, [
+    calculation,
+    formatCurrency,
+    formatNumber,
+    fuelUnit,
+    selectedVehicleType,
+    t,
+  ]);
+
+  const distanceInputValue =
+    distance === null
+      ? ''
+      : Number.parseFloat(
+          (
+            fuelUnit === 'imperial'
+              ? distance / METERS_PER_MILE
+              : distance / 1000
+          ).toFixed(2)
+        ).toString();
+
+  const consumptionLabel =
+    selectedVehicleType === 'electric'
+      ? fuelUnit === 'imperial'
+        ? t('efficiencyImperial')
+        : t('efficiencyMetric')
+      : fuelUnit === 'imperial'
+        ? t('fuelConsumptionImperial')
+        : t('fuelConsumptionMetric');
+
+  const handleConsumptionModeToggle = () => {
+    setUseAutoConsumption((currentValue) => {
+      const nextValue = !currentValue;
+      if (nextValue) {
+        setFuelConsumption('');
+      } else if (!fuelConsumption) {
+        setFuelConsumption(fuelUnit === 'imperial' ? '36.19' : '6.5');
+      }
+      return nextValue;
+    });
+  };
+
   const renderConsumptionSwitcher = () => (
     <div className="unique-switcher-container">
       <div className="unique-switcher-text-col">
-        <div className={`unique-switcher-text-top ${useAutoConsumption ? 'active' : ''}`}>
+        <div
+          className={`unique-switcher-text-top ${
+            useAutoConsumption ? 'active' : ''
+          }`}
+        >
           {t('autoConsumptionOption')}
         </div>
-        <div className={`unique-switcher-text-bottom ${!useAutoConsumption ? 'active' : ''}`}>
+        <div
+          className={`unique-switcher-text-bottom ${
+            !useAutoConsumption ? 'active' : ''
+          }`}
+        >
           {t('manualConsumptionOption')}
         </div>
       </div>
@@ -401,79 +698,32 @@ function App() {
             type="checkbox"
             className="unique-chk"
             checked={!useAutoConsumption}
-            onChange={() => setUseAutoConsumption(prev => !prev)}
+            onChange={handleConsumptionModeToggle}
           />
-          <span className="unique-slider"></span>
+          <span className="unique-slider" />
         </label>
       </div>
     </div>
   );
-  
-  
-  const handleConsumptionChange = (value) => {
-    if (useAutoConsumption) {
-      // Len ak je zapnutý "auto" režim, prepíšeme
-      setFuelConsumption(value);
-    }
+
+  const addStop = () => {
+    setStopLocations((currentStops) => [...currentStops, createStop()]);
   };
 
-  let consumptionLabel;
-if (selectedVehicleType === 'electric') {
-  consumptionLabel = (fuelUnit === 'imperial')
-    ? t('efficiencyImperial')   // "Efficiency (kWh/100mi):"
-    : t('efficiencyMetric');    // "Efficiency (kWh/100km):"
-} else {
-  consumptionLabel = (fuelUnit === 'imperial')
-    ? t('fuelConsumptionImperial') // "Fuel consumption (MPG):"
-    : t('fuelConsumptionMetric');  // "Fuel consumption (l/100km):"
-}
+  const updateStop = (id, location) => {
+    setStopLocations((currentStops) =>
+      currentStops.map((stop) =>
+        stop.id === id ? { ...stop, location } : stop
+      )
+    );
+  };
 
-const prevFuelUnit = useRef(fuelUnit);
+  const removeStop = (id) => {
+    setStopLocations((currentStops) =>
+      currentStops.filter((stop) => stop.id !== id)
+    );
+  };
 
-useEffect(() => {
-  if (useAutoConsumption) {
-    // v auto režime prepočet robí CarSelector
-    prevFuelUnit.current = fuelUnit;
-    return;
-  }
-
-  const val = parseFloat(fuelConsumption);
-  if (isNaN(val) || val <= 0) {
-    prevFuelUnit.current = fuelUnit;
-    return;
-  }
-
-  if (fuelUnit !== prevFuelUnit.current) {
-    if (selectedVehicleType === 'combustion') {
-      // z l/100km => MPG alebo naopak
-      if (prevFuelUnit.current === 'metric' && fuelUnit === 'imperial') {
-        const mpg = 235.214583 / val;
-        setFuelConsumption(mpg.toFixed(2));
-      } else if (prevFuelUnit.current === 'imperial' && fuelUnit === 'metric') {
-        const lPer100 = 235.214583 / val;
-        setFuelConsumption(lPer100.toFixed(2));
-      }
-    } else if (selectedVehicleType === 'electric') {
-      // kWh/100km => kWh/100mi alebo naopak
-      if (prevFuelUnit.current === 'metric' && fuelUnit === 'imperial') {
-        const kwhPer100mi = val / 1.609344;
-        setFuelConsumption(kwhPer100mi.toFixed(2));
-      } else if (prevFuelUnit.current === 'imperial' && fuelUnit === 'metric') {
-        const kwhPer100km = val * 1.609344;
-        setFuelConsumption(kwhPer100km.toFixed(2));
-      }
-    }
-    prevFuelUnit.current = fuelUnit;
-  }
-}, [
-  fuelUnit, 
-  fuelConsumption, 
-  selectedVehicleType, 
-  useAutoConsumption,
-  setFuelConsumption
-]);
-
-  // Reset všetkého
   const handleDelete = () => {
     setStartLocation(null);
     setDestinationLocation(null);
@@ -482,28 +732,29 @@ useEffect(() => {
     setRouteAlternatives([]);
     setSelectedRouteIndex(0);
     setDirections(null);
-    setDistance(null);
+    setDistance(localeDefaults.distanceMeters);
     setTravelTime(null);
-    setFuelUsed(null);
-    setFuelCostEur(null);
-
-    setFuelConsumption('');
-    setFuelPriceLocal('');
+    setFuelConsumption(localeDefaults.fuelConsumption);
+    setFuelPriceLocal(localeDefaults.fuelPrice);
     setFuelPriceEur(null);
-    setFuelUsed(null);
-
-    setFuelUnit('metric');
-    setSelectedCurrency('eur');
-    setResetKey((prev) => prev + 1);
-    setFuelType('gasoline')
-    setEmissions(null)
-    setSelectedYear('');
+    setFuelUnit(localeDefaults.fuelUnit);
+    previousFuelUnitRef.current = localeDefaults.fuelUnit;
+    setSelectedCurrency(localeDefaults.selectedCurrency);
+    setStopLocations([]);
+    setTolls('0');
+    setUseAutoConsumption(false);
+    setFuelType('gasoline');
+    setSelectedYear('Without year');
     setSelectedBrand('');
     setSelectedModel('');
     setSelectedEngine('');
+    setSelectedTransmission('');
+    setSelectedFuelType('');
+    setSelectedVehicleType('combustion');
+    setRouteError('');
+    setResetKey((currentKey) => currentKey + 1);
   };
 
-  // Google Maps Navigation Link
   const getGoogleMapsNavigationUrl = () => {
     if (!startLocation || !destinationLocation) return '';
     const origin = `${startLocation.position.lat},${startLocation.position.lng}`;
@@ -511,69 +762,210 @@ useEffect(() => {
     return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
   };
 
-  // FuelCost => displayed
-  let displayedFuelCost = null;
-  if (fuelCostEur !== null && exchangeRates[selectedCurrency]) {
-    displayedFuelCost = (fuelCostEur * exchangeRates[selectedCurrency]).toFixed(2);
-  }
-
-  // Markery
   const markers = [];
-  if (!directions && startLocation?.position) {
-    markers.push({ position: startLocation.position, label: 'A' });
+  if (startLocation?.position) {
+    markers.push({
+      position: startLocation.position,
+      label: 'A',
+      type: 'start',
+    });
   }
-  if (!directions && destinationLocation?.position) {
-    markers.push({ position: destinationLocation.position, label: 'B' });
-  }
-
-  useEffect(() => {
-    if (useAutoConsumption) {
-      setFuelConsumption('');
+  stopLocations.forEach((stop, index) => {
+    if (stop.location?.position) {
+      markers.push({
+        position: stop.location.position,
+        label: `${index + 1}`,
+        type: 'stop',
+      });
     }
-    // V prípade manuálneho režimu (useAutoConsumption === false)
-    // ponecháme hodnotu nezmenenú.
-  }, [useAutoConsumption, setFuelConsumption]);
+  });
+  if (destinationLocation?.position) {
+    markers.push({
+      position: destinationLocation.position,
+      label: 'B',
+      type: 'destination',
+    });
+  }
+  const shouldRenderMap = markers.length > 0 || directions || googleMapsLoadError;
+
+  const resultPlaceholder = !distance
+    ? t('resultNeedsDistance')
+    : !fuelConsumption
+      ? t('resultNeedsConsumption')
+      : t('resultNeedsFuelPrice');
+  const currentLanguage = (i18n.resolvedLanguage || i18n.language || 'sk')
+    .startsWith('sk')
+    ? 'sk'
+    : 'en';
+  const seoTitle = t('seoTitle');
+  const seoDescription = t('seoDescription');
+  const rootUrl = getAbsoluteUrl('/');
+  const appStructuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': `${rootUrl}#organization`,
+      name: 'Fuely',
+      url: rootUrl,
+      logo: getAbsoluteUrl('/logo512.png'),
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          url: rootUrl,
+          contactType: 'customer support',
+          availableLanguage: ['sk', 'en'],
+        },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      '@id': `${rootUrl}#web-application`,
+      name: 'Fuely',
+      url: rootUrl,
+      applicationCategory: 'TravelApplication',
+      operatingSystem: 'Web',
+      inLanguage: ['sk', 'en'],
+      isAccessibleForFree: true,
+      description: seoDescription,
+      publisher: {
+        '@id': `${rootUrl}#organization`,
+      },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR',
+      },
+      featureList: [
+        'Fuel cost calculator',
+        'Electric vehicle trip cost calculator',
+        'Google Maps route distance',
+        'Multiple route stops',
+        'Currency and unit conversion',
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: currentLanguage === 'sk'
+            ? 'Čo je palivová kalkulačka?'
+            : 'What is a fuel cost calculator?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: currentLanguage === 'sk'
+              ? 'Palivová kalkulačka je nástroj na výpočet orientačných nákladov na cestu podľa trasy, spotreby vozidla a ceny paliva.'
+              : 'A fuel cost calculator estimates trip expenses from your route, vehicle consumption, and fuel price.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: currentLanguage === 'sk'
+            ? 'Vie Fuely počítať aj s elektromobilom?'
+            : 'Can Fuely calculate electric vehicle trip costs?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: currentLanguage === 'sk'
+              ? 'Áno. Fuely podporuje spaľovacie aj elektrické vozidlá, vrátane ceny elektriny a spotreby v kWh.'
+              : 'Yes. Fuely supports combustion and electric vehicles, including electricity price and kWh consumption.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: currentLanguage === 'sk'
+            ? 'Podporuje Fuely zastávky na trase?'
+            : 'Does Fuely support route stops?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: currentLanguage === 'sk'
+              ? 'Áno. Medzi štart a cieľ môžete pridať viacero zastávok a aplikácia automaticky prepočíta vzdialenosť, čas jazdy a odhadované náklady.'
+              : 'Yes. You can add multiple stops between the start and destination and Fuely automatically recalculates distance, travel time and estimated cost.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: currentLanguage === 'sk'
+            ? 'Ako Fuely používa vzdialenosť, spotrebu a cenu paliva?'
+            : 'How does Fuely use distance, consumption and fuel price?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: currentLanguage === 'sk'
+              ? 'Fuely spojí vzdialenosť trasy, spotrebu vozidla a cenu paliva alebo elektriny. Z týchto údajov vypočíta orientačné náklady na cestu od štartu po cieľ.'
+              : 'Fuely combines route distance, vehicle consumption and fuel or electricity price to estimate trip costs from start to destination.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: currentLanguage === 'sk'
+            ? 'Podporuje Fuely EUR, USD a ďalšie meny?'
+            : 'Does Fuely support EUR, USD and other currencies?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: currentLanguage === 'sk'
+              ? 'Áno. Fuely podporuje výpočet nákladov vo viacerých menách vrátane EUR a USD, takže sa hodí aj pri plánovaní zahraničnej trasy.'
+              : 'Yes. Fuely supports trip cost estimates in multiple currencies including EUR and USD, which helps with international route planning.',
+          },
+        },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Fuely',
+          item: rootUrl,
+        },
+      ],
+    },
+  ];
 
   return (
     <Router>
       <div className={`App ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
-      <Helmet>
+        {shouldLoadGoogleMaps && GOOGLE_MAPS_API_KEY && (
+          <GoogleMapsLoader
+            apiKey={GOOGLE_MAPS_API_KEY}
+            libraries={GOOGLE_MAPS_LIBRARIES}
+            onStateChange={setGoogleMapsState}
+          />
+        )}
+        <Helmet>
           <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "Čo je palivová kalkulačka?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Palivová kalkulačka je nástroj pre výpočet nákladov na cestu."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Ako presný je váš fuel cost calculator?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Presnosť závisí od presnosti zadanej spotreby, cien paliva a dopravnej situácie."
-                  }
-                }
-              ]
-            })}
+            {JSON.stringify(appStructuredData)}
           </script>
-          <html lang={i18n.language} />
-          <title>{t('seoTitle')}</title>
-          <meta name="description" content={t('seoDescription')} />
-          <link rel="alternate" href="https://martinsulak.dev/fuely/sk" hreflang="sk" />
-          <link rel="alternate" href="https://martinsulak.dev/fuely/en" hreflang="en" />
-          <link rel="alternate" href="https://martinsulak.dev/fuely/de" hreflang="de" />
+          <html lang={currentLanguage} />
+          <title>{seoTitle}</title>
+          <meta name="description" content={seoDescription} />
+          <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          />
+          <link rel="canonical" href={rootUrl} />
+          <link rel="alternate" href="https://fuely.martinsulak.dev/?lng=sk" hrefLang="sk" />
+          <link rel="alternate" href="https://fuely.martinsulak.dev/?lng=en" hrefLang="en" />
+          <link rel="alternate" href={rootUrl} hrefLang="x-default" />
+          <meta property="og:title" content={seoTitle} />
+          <meta property="og:description" content={seoDescription} />
+          <meta property="og:url" content={rootUrl} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="Fuely" />
+          <meta property="og:locale" content={currentLanguage === 'sk' ? 'sk_SK' : 'en_US'} />
+          <meta property="og:image" content={getAbsoluteUrl('/logo512.png')} />
+          <meta property="og:image:alt" content="Fuely fuel cost calculator logo" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={seoTitle} />
+          <meta name="twitter:description" content={seoDescription} />
+          <meta name="twitter:image" content={getAbsoluteUrl('/logo512.png')} />
+          <meta name="twitter:image:alt" content="Fuely fuel cost calculator logo" />
         </Helmet>
-
 
         <CookieBanner onConsentChange={setHasAnalyticsConsent} />
         <TrackingScripts enabled={hasAnalyticsConsent} />
-
         <h1 className="headingMain">{t('welcome')}</h1>
 
         <Routes>
@@ -581,277 +973,388 @@ useEffect(() => {
             path="/"
             element={
               <>
-                {/* Switchery jazyk / fuelUnit */}
                 <div className="switcher-container">
                   <LanguageSwitcher />
-                  <FuelUnitSwitcher 
-  fuelUnit={fuelUnit}
-  setFuelUnit={setFuelUnit}
-  selectedVehicleType={selectedVehicleType} // ← Pridaná prop
-/>
+                  <FuelUnitSwitcher
+                    fuelUnit={fuelUnit}
+                    setFuelUnit={setFuelUnit}
+                    selectedVehicleType={selectedVehicleType}
+                  />
                 </div>
 
-                {/* Tlačidlo na prepínanie témy */}
                 <div className="switch-wrapper">
-                  <ThemeToggle theme={theme} onToggle={toggleTheme} />
+                  <ThemeToggle
+                    theme={theme}
+                    onToggle={() =>
+                      setTheme((currentTheme) =>
+                        currentTheme === 'light' ? 'dark' : 'light'
+                      )
+                    }
+                  />
                 </div>
 
-                {/* Štart */}
-                <div className="section">
-                  
+                <div className="section locationSearchSection startLocationSection">
                   <SearchBar
                     defaultValue={startLocation?.address || ''}
                     onLocationSelect={setStartLocation}
+                    onActivate={requestGoogleMapsLoad}
                     placeholder={t('start')}
                     isGoogleLoaded={isGoogleLoaded}
-                    
+                    loadError={googleMapsLoadError}
                   />
                 </div>
 
-                {/* Cieľ */}
-                <div className="section">
-                  
+                <div className="stopAddRow">
+                  <button
+                    type="button"
+                    className="addStopButton"
+                    onClick={addStop}
+                    aria-label={t('addStop')}
+                    title={t('addStop')}
+                  >
+                    <span aria-hidden="true">+</span>
+                  </button>
+                </div>
+
+                {stopLocations.map((stop, index) => (
+                  <div
+                    className={`section locationSearchSection stopLocationSection stopLayer-${Math.min(index, 9)}`}
+                    key={stop.id}
+                  >
+                    <div className="stopRemoveRow">
+                      <button
+                        type="button"
+                        className="removeStopButton"
+                        onClick={() => removeStop(stop.id)}
+                        aria-label={`${t('removeStop')} ${index + 1}`}
+                      >
+                        {t('removeStop')}
+                      </button>
+                    </div>
+                    <SearchBar
+                      defaultValue={stop.location?.address || ''}
+                      onLocationSelect={(location) =>
+                        updateStop(stop.id, location)
+                      }
+                      onActivate={requestGoogleMapsLoad}
+                      placeholder={`${t('stop')} ${index + 1}`}
+                      isGoogleLoaded={isGoogleLoaded}
+                      loadError={googleMapsLoadError}
+                    />
+                  </div>
+                ))}
+
+                <div className="section locationSearchSection destinationLocationSection">
                   <SearchBar
                     defaultValue={destinationLocation?.address || ''}
                     onLocationSelect={setDestinationLocation}
+                    onActivate={requestGoogleMapsLoad}
                     placeholder={t('destination')}
                     isGoogleLoaded={isGoogleLoaded}
+                    loadError={googleMapsLoadError}
                   />
                 </div>
 
-                
-
-                {/* Vyhnúť sa diaľniciam */}
                 <div className="form-row">
                   <CustomCheckbox
                     checked={avoidHighways}
-                    onChange={(e) => setAvoidHighways(e.target.checked)}
+                    onChange={(event) =>
+                      setAvoidHighways(event.target.checked)
+                    }
                   />
                 </div>
 
-                {/* Auto/manual spotreba */}
                 {renderConsumptionSwitcher()}
-                  {!useAutoConsumption && (
-                    <VehicleTypeSwitcher
-                      vehicleType={selectedVehicleType}
-                      setVehicleType={setSelectedVehicleType}
+
+                {!useAutoConsumption && (
+                  <VehicleTypeSwitcher
+                    vehicleType={selectedVehicleType}
+                    setVehicleType={setSelectedVehicleType}
+                  />
+                )}
+
+                {useAutoConsumption && (
+                  <Suspense fallback={null}>
+                    <CarSelector
+                      selectedVehicleType={selectedVehicleType}
+                      setSelectedVehicleType={setSelectedVehicleType}
+                      selectedYear={selectedYear}
+                      setSelectedYear={setSelectedYear}
+                      selectedBrand={selectedBrand}
+                      setSelectedBrand={setSelectedBrand}
+                      selectedModel={selectedModel}
+                      setSelectedModel={setSelectedModel}
+                      selectedEngine={selectedEngine}
+                      setSelectedEngine={setSelectedEngine}
+                      selectedTransmission={selectedTransmission}
+                      setSelectedTransmission={setSelectedTransmission}
+                      selectedFuelType={selectedFuelType}
+                      setSelectedFuelType={setSelectedFuelType}
+                      onConsumptionChange={handleConsumptionChange}
+                      fuelUnit={fuelUnit}
                     />
-                  )}
-                
+                  </Suspense>
+                )}
 
-                {/* CarSelector ako child komponent */}
-      {useAutoConsumption && (
-        <CarSelector
-        selectedVehicleType={selectedVehicleType}
-        setSelectedVehicleType={setSelectedVehicleType}
-        selectedYear={selectedYear}
-        setSelectedYear={setSelectedYear}
-        selectedBrand={selectedBrand}
-        setSelectedBrand={setSelectedBrand}
-        selectedModel={selectedModel}
-        setSelectedModel={setSelectedModel}
-        selectedEngine={selectedEngine}
-        setSelectedEngine={setSelectedEngine}
-        selectedTransmission={selectedTransmission}
-        setSelectedTransmission={setSelectedTransmission}
-        selectedFuelType={selectedFuelType}
-        setSelectedFuelType={setSelectedFuelType}
-
-        onConsumptionChange={handleConsumptionChange}
-        fuelUnit={fuelUnit}
-      />
-      )}
-
-                {/* Spotreba, cena paliva */}
                 <div className="section fuelSection">
-  {/* Tu použijete premenné consumptionLabel, consumptionPlaceholder */}
-  <label className="labelFuelConsumption">{consumptionLabel}</label>
-<input
-  type="text"
-  className="inputFuelConsumption"
-  value={fuelConsumption}
-  // readOnly len vtedy, keď je auto režim
-  readOnly={useAutoConsumption}
-  onChange={(e) => handleFuelConsumptionChange(e.target.value)}
-/>
+                  <label
+                    htmlFor="distance-input"
+                    className="labelFuelConsumption"
+                  >
+                    {t('distance')} ({fuelUnit === 'imperial' ? 'mi' : 'km'})
+                  </label>
+                  <input
+                    id="distance-input"
+                    type="text"
+                    inputMode="decimal"
+                    className="inputFuelConsumption"
+                    value={distanceInputValue}
+                    onChange={(event) =>
+                      handleDistanceChange(event.target.value)
+                    }
+                  />
+                  <small className="inputHint">{t('distanceHint')}</small>
 
-<label className="labelFuelPrice">
-  {selectedVehicleType === 'electric'
-    ? `${t('electricityPrice')} (${selectedCurrency.toUpperCase()}/kWh):`
-    : `${t('fuelPrice')} (${selectedCurrency.toUpperCase()}/${
-        fuelUnit === 'imperial' ? 'gal' : 'l'
-      }):`
-  }
-</label>
-  
-<FuelPriceInput
-  value={fuelPriceLocal}
-  onChange={(newVal) => handleFuelPriceChange(newVal)}
-  selectedVehicleType={selectedVehicleType}
-  useAutoConsumption={useAutoConsumption}
-/>
-</div>
-    
+                  <label
+                    htmlFor="consumption-input"
+                    className="labelFuelConsumption"
+                  >
+                    {consumptionLabel}
+                  </label>
+                  <input
+                    id="consumption-input"
+                    type="text"
+                    inputMode="decimal"
+                    className="inputFuelConsumption"
+                    value={fuelConsumption}
+                    readOnly={useAutoConsumption}
+                    onChange={(event) =>
+                      handleFuelConsumptionChange(event.target.value)
+                    }
+                  />
 
-                
-{selectedVehicleType === 'combustion' && (
-  <FuelTypeRadioGroup
-    fuelType={fuelType}
-    onChange={handleFuelTypeChange}
-  />
-)}
+                  <label
+                    htmlFor="fuel-price-input"
+                    className="labelFuelPrice"
+                  >
+                    {selectedVehicleType === 'electric'
+                      ? `${t('electricityPrice')} (${currencyCode}/kWh)`
+                      : `${t('fuelPrice')} (${currencyCode}/${
+                          fuelUnit === 'imperial' ? 'gal' : 'L'
+                        })`}
+                  </label>
+                  <FuelPriceInput
+                    id="fuel-price-input"
+                    value={fuelPriceLocal}
+                    onChange={handleFuelPriceChange}
+                    onPresetSelect={handlePresetFuelPriceChange}
+                    selectedVehicleType={selectedVehicleType}
+                    useAutoConsumption={useAutoConsumption}
+                  />
+                </div>
 
-                {/* Mena */}
+                {selectedVehicleType === 'combustion' && (
+                  <FuelTypeRadioGroup
+                    fuelType={fuelType}
+                    onChange={setFuelType}
+                  />
+                )}
+
                 <div className="section">
                   <CurrencySwitcher
                     selectedCurrency={selectedCurrency}
-                    setSelectedCurrency={setSelectedCurrency}
+                    setSelectedCurrency={handleCurrencyChange}
                   />
                 </div>
 
-                
+                <details className="section advancedSection">
+                  <summary>{t('advancedOptions')}</summary>
 
-                {/* Tlačidlá Calculate / Reset */}
-                <div
-  className="section buttonsSection"
-  style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: '10px',
-  }}
->
-  {/* Vľavo: Calculate + Delete */}
-  <div style={{ display: 'flex', gap: '60px' }}>
-    <button onClick={calculateEverything} className="buttonCalculate">
-      {loading ? t('calculating') || 'Calculating...' : t('calculate')}
-    </button>
-    <DeleteButton onClick={handleDelete} />
-  </div>
+                  <div className="tollsControl">
+                    <label htmlFor="tolls-input">
+                      {t('tolls')} ({currencyCode})
+                    </label>
+                    <input
+                      id="tolls-input"
+                      type="text"
+                      inputMode="decimal"
+                      className="inputFuelConsumption"
+                      value={tolls}
+                      onChange={(event) =>
+                        setTolls(sanitizeNumericInput(event.target.value))
+                      }
+                    />
+                  </div>
+                </details>
 
-  {/* Vpravo: Share */}
-  <ShareButton theme={theme} />
-</div>
-
-
-                {/* Výsledky */}
-                {(distance !== null ||
-                  fuelUsed !== null ||
-                  fuelCostEur !== null ||
-                  travelTime !== null ||
-                  emissions !== null) && (
-                  <div className="section resultsSection">
-                    {distance && (
-                      <p className="distanceResult">
-                        {t('distance')}:{' '}
-                        {fuelUnit === 'imperial'
-                          ? ((distance / 1000) * 0.621371).toFixed(2)
-                          : (distance / 1000).toFixed(2)}{' '}
-                        {fuelUnit === 'imperial' ? 'mi' : 'km'}
-                      </p>
+                <section
+                  className="section resultsSection liveResults"
+                  aria-live="polite"
+                >
+                  <div className="resultHeader">
+                    <div>
+                      <span className="resultEyebrow">
+                        {t('liveEstimate')}
+                      </span>
+                      <h2>{t('estimatedRange')}</h2>
+                    </div>
+                    {loading && (
+                      <span className="routeStatus">{t('updatingRoute')}</span>
                     )}
-                    {fuelUsed !== null && (
-  <p className="fuelUsedResult">
-    {t('fuelUsed')}: {fuelUsed.toFixed(2)}{' '}
-    {selectedVehicleType === 'electric' 
-      ? 'kWh'
-      : (fuelUnit === 'imperial' ? 'gal' : 'l')}
-  </p>
-)}
-                    {travelTime && (
-                      <p className="travelTimeResult">
-                        {t('travelTime')}: {travelTime}
+                  </div>
+
+                  {calculation ? (
+                    <>
+                      <p className="estimatedRangeValue">
+                        {formatCurrency(calculation.estimatedMin)}
+                        <span aria-hidden="true"> - </span>
+                        {formatCurrency(calculation.estimatedMax)}
                       </p>
-                    )}
-                    {fuelCostEur !== null && displayedFuelCost && (
-                      <p className="fuelCostResult" style={{ color: 'green' }}>
-                        {t('fuelCost')}: {displayedFuelCost}{' '}
-                        {selectedCurrency.toUpperCase()}
+                      <div className="exactCalculation">
+                        <span>{t('exactCalculation')}</span>
+                        <strong>
+                          {formatCurrency(calculation.exactCost)}
+                        </strong>
+                      </div>
+                      <p className="calculationMeta">
+                        {t('distance')}: {formatNumber(calculation.distance)}{' '}
+                        {calculation.distanceUnit}
+                        {' | '}
+                        {t('fuelUsed')}: {formatNumber(calculation.energyUsed)}{' '}
+                        {calculation.energyUnit}
+                        {travelTime ? ` | ${t('travelTime')}: ${travelTime}` : ''}
+                        {emissions !== null
+                          ? ` | ${t('emissions')}: ${formatNumber(emissions)} kg`
+                          : ''}
                       </p>
-                    )}
-                    {/* Sem pridáme emisie */}
-                    {emissions !== null && (
-                      <p className="emissionsResult" style={{ color: 'darkred' }}>
-                      {t('emissions')}: {emissions.toFixed(2)} kg
+                      <div className="calculationBreakdown">
+                        <span>{t('basedOn')}</span>
+                        <code>{calculationBreakdown}</code>
+                      </div>
+                      <p className="resultNote">{t('actualCostNote')}</p>
+                    </>
+                  ) : (
+                    <div className="resultPlaceholder">
+                      <strong>{t('resultWaitingTitle')}</strong>
+                      <span>{resultPlaceholder}</span>
+                    </div>
+                  )}
+
+                  {routeError && (
+                    <p className="routeError" role="alert">
+                      {routeError}
                     </p>
                   )}
-                  </div>
-                )}
+                </section>
 
-                {/* Alternatívne trasy */}
+                <div
+                  className="section buttonsSection resultActions"
+                >
+                  <div className="deleteAction">
+                    <DeleteButton onClick={handleDelete} />
+                  </div>
+                  <ShareButton theme={theme} />
+                </div>
+
                 {routeAlternatives.length > 1 && (
                   <div className="section">
-                  <h3 className="headingRoutes">{t('selectRoute')}</h3>
-                  <div className="routeButtonsWrapper">
-                    {routeAlternatives.map((route, index) => (
-                      <button
-                        key={index}
-                        onClick={() => selectRouteAlternative(index)}
-                        className={`routeButton ${index === selectedRouteIndex ? 'activeRoute' : ''}`}
-                      >
-                        {`Route ${index + 1} (${route.legs[0].distance.text})`}
-                      </button>
-                    ))}
+                    <h3 className="headingRoutes">{t('selectRoute')}</h3>
+                    <div className="routeButtonsWrapper">
+                      {routeAlternatives.map((route, index) => (
+                        <button
+                          key={`${route.summary}-${index}`}
+                          onClick={() => selectRouteAlternative(index)}
+                          className={`routeButton ${
+                            index === selectedRouteIndex ? 'activeRoute' : ''
+                          }`}
+                        >
+                          {`${t('route')} ${index + 1} (${formatNumber(
+                            fuelUnit === 'imperial'
+                              ? getRouteSummary(route).distanceMeters /
+                                  METERS_PER_MILE
+                              : getRouteSummary(route).distanceMeters / 1000
+                          )} ${fuelUnit === 'imperial' ? 'mi' : 'km'})`}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
                 )}
 
-{startLocation && destinationLocation && (
-  <div className="section navigationSection">
-    <button
-      onClick={() => window.open(getGoogleMapsNavigationUrl(), '_blank')}
-      className="navigationButton"
-    >
-      <div className="loader"></div>
-      <span>{t('openNavigation')}</span>
-    </button>
-  </div>
-)}
+                {startLocation && destinationLocation && (
+                  <div className="section navigationSection">
+                    <button
+                      onClick={() =>
+                        window.open(getGoogleMapsNavigationUrl(), '_blank')
+                      }
+                      className="navigationButton"
+                    >
+                      <span>{t('openNavigation')}</span>
+                    </button>
+                  </div>
+                )}
 
+                {shouldRenderMap ? (
+                  <Suspense fallback={null}>
+                    <MapView
+                      directions={directions}
+                      markers={markers}
+                      resetKey={resetKey}
+                      theme={theme}
+                      isGoogleLoaded={isGoogleLoaded}
+                      loadError={googleMapsLoadError}
+                    />
+                  </Suspense>
+                ) : (
+                  <section className="section mapPreview">
+                    <h2>{t('mapPreviewTitle')}</h2>
+                    <p>{t('mapPreviewText')}</p>
+                  </section>
+                )}
 
-                {/* Mapa */}
-                <MapView
-                  directions={directions}
-                  markers={markers}
-                  resetKey={resetKey}
-                  theme={theme}
-                  isGoogleLoaded={isGoogleLoaded}
-                  loadError={googleMapsLoadError}
-                />
-              
+                <Suspense fallback={null}>
+                  <ContactForm />
+                </Suspense>
 
-                {/* Kontakt, policy, speed insights */}
-                <ContactForm />
-
-                
-
-                {/* SEO sekcia - texty z i18n */}
                 <div className="seo-section">
                   <h2>{t('detailTitle')}</h2>
                   <p>{t('detailParagraph1')}</p>
                   <p>{t('detailParagraph2')}</p>
                   <p>{t('detailParagraph3')}</p>
+                  <p>{t('detailParagraph4')}</p>
+                  <p>{t('detailParagraph5')}</p>
+                  <p>{t('detailParagraph6')}</p>
+                </div>
+
+                <div className="seo-section trip-planning-section">
+                  <h2>{t('planningTitle')}</h2>
+                  <h3>{t('planningHeadingDistance')}</h3>
+                  <p>{t('planningDistanceText')}</p>
+                  <h3>{t('planningHeadingFuelPrice')}</h3>
+                  <p>{t('planningFuelPriceText')}</p>
+                  <h3>{t('planningHeadingCurrencies')}</h3>
+                  <p>{t('planningCurrenciesText')}</p>
                 </div>
 
                 <div className="faq-section">
                   <h2>{t('faqTitle')}</h2>
-
                   <h3>{t('faqQ1')}</h3>
                   <p>{t('faqA1')}</p>
-
                   <h3>{t('faqQ2')}</h3>
                   <p>{t('faqA2')}</p>
-
                   <h3>{t('faqQ3')}</h3>
                   <p>{t('faqA3')}</p>
-
                   <h3>{t('faqQ4')}</h3>
                   <p>{t('faqA4')}</p>
-
-                  {/* Prípadne link na detailnú stránku / PalivovaKalkulacka */}
+                  <h3>{t('faqQ5')}</h3>
+                  <p>{t('faqA5')}</p>
+                  <h3>{t('faqQ6')}</h3>
+                  <p>{t('faqA6')}</p>
+                  <h3>{t('faqQ7')}</h3>
+                  <p>{t('faqA7')}</p>
+                  <h3>{t('faqQ8')}</h3>
+                  <p>{t('faqA8')}</p>
                   <Link to="/palivova-kalkulacka">
-                    {t('Viac o palivovej kalkulačke') /* ak taký kľúč vytvoríš */}
+                    {t('moreAboutCalculator')}
                   </Link>
                 </div>
 
@@ -861,26 +1364,20 @@ useEffect(() => {
             }
           />
 
-          {/* Ďalšie cesty */}
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-
-          {/* Samostatná podstránka */}
-          <Route path="/palivova-kalkulacka" element={<PalivovaKalkulacka />} />
-
-          {/* 404 fallback */}
+          <Route path="/cookie-policy" element={<Suspense fallback={null}><CookiePolicy /></Suspense>} />
+          <Route path="/terms-of-use" element={<Suspense fallback={null}><TermsOfUse /></Suspense>} />
+          <Route path="/privacy-policy" element={<Suspense fallback={null}><PrivacyPolicy /></Suspense>} />
+          <Route path="/palivova-kalkulacka" element={<Suspense fallback={null}><PalivovaKalkulacka /></Suspense>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
 
-        
-
-        
-
-        {hasAnalyticsConsent && <Analytics />}
-        {hasAnalyticsConsent && <RatingPopup />}
+        <Analytics />
+        {hasAnalyticsConsent && (
+          <Suspense fallback={null}>
+            <RatingPopup />
+          </Suspense>
+        )}
       </div>
-      
     </Router>
   );
 }

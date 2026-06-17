@@ -77,21 +77,6 @@ const CookieBanner = ({ onConsentChange }) => {
       ref={bannerRef}
       onMouseDown={handleMouseDown}
       className="cookie-card"
-      style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        background: 'rgba(255, 255, 255, 0.05)',
-        backdropFilter: 'blur(15px)',
-        WebkitBackdropFilter: 'blur(15px)',
-        borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
-        padding: '1rem',
-        zIndex: 10000,
-        width: '320px',
-        cursor: 'grab',
-      }}
     >
       <span className="title">🍪 {t('cookieTitle')}</span>
       <p className="description">

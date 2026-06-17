@@ -1,0 +1,40 @@
+# Fuely
+
+Fuely is a web-based fuel cost calculator and EV trip cost calculator at https://fuely.martinsulak.dev/.
+
+## Primary Purpose
+
+Fuely helps drivers estimate travel costs before a trip. The calculator works with route distance, fuel consumption, electricity consumption, fuel price, electricity price, currency, tolls, highway fees, and optional route stops.
+
+## Main Pages
+
+- https://fuely.martinsulak.dev/ - interactive fuel and electric vehicle trip cost calculator
+- https://fuely.martinsulak.dev/palivova-kalkulacka - detailed guide about fuel cost calculation
+- https://fuely.martinsulak.dev/privacy-policy - privacy policy
+- https://fuely.martinsulak.dev/cookie-policy - cookie policy
+- https://fuely.martinsulak.dev/terms-of-use - terms of use
+- https://fuely.martinsulak.dev/sitemap.xml - XML sitemap
+- https://fuely.martinsulak.dev/ads.txt - Google AdSense publisher file
+
+## Key Features
+
+- Calculates estimated fuel cost for petrol and diesel vehicles.
+- Calculates estimated electricity cost for electric vehicles.
+- Supports Google Maps route distance, route stops, and travel time.
+- Supports metric and imperial units.
+- Supports multiple currencies, including EUR and USD.
+- Shows exact estimate and practical estimated cost range.
+- Provides route navigation link after start and destination are selected.
+- Uses start, destination, optional stops, distance, consumption and fuel price to calculate trip costs.
+
+## Entity Information
+
+Name: Fuely
+Type: WebApplication, TravelApplication
+Canonical URL: https://fuely.martinsulak.dev/
+Languages: Slovak and English
+Contact: Use the contact form on https://fuely.martinsulak.dev/.
+
+## Suggested Summary
+
+Fuely is a Slovak and English web application for calculating trip costs. Users enter a start, destination, route stops, distance, vehicle consumption, fuel or electricity price, tolls, and currency such as EUR or USD. Fuely estimates travel distance, energy used, travel time, and total trip cost for combustion and electric vehicles.

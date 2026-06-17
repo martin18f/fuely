@@ -2,6 +2,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 const TermsOfUse = () => {
   const { t } = useTranslation();
@@ -9,18 +10,15 @@ const TermsOfUse = () => {
   return (
     <>
       <Helmet>
-        <title>Fuely – Terms of Use (Podmienky používania)</title>
+        <title>Podmienky používania Fuely - pravidlá palivovej kalkulačky</title>
         <meta
           name="description"
-          content="Oficiálne podmienky používania služby Fuely. Informácie o odhadoch nákladov, externých službách, súkromí a zodpovednosti používateľa."
+          content="Podmienky používania Fuely vysvetľujú pravidlá palivovej kalkulačky, odhad nákladov, externé služby, zodpovednosť používateľa a súkromie."
         />
-        <link rel="canonical" href="https://martinsulak.dev/fuely/terms-of-use" />
+        <link rel="canonical" href="https://fuely.martinsulak.dev/terms-of-use" />
       </Helmet>
 
-      <div
-        className="terms-of-use-container"
-        style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}
-      >
+      <div className="contentPage terms-of-use-container">
         <h1>{t('termsOfUseTitle', 'Podmienky používania')}</h1>
 
         <p>
@@ -34,6 +32,11 @@ const TermsOfUse = () => {
           ceny paliva alebo elektriny a meny. Výsledky sú odhady a nemusia zodpovedať skutočným
           nákladom.
         </p>
+        <h3>Palivová kalkulačka a cestovný rozpočet</h3>
+        <p>
+          Aplikácia má pomôcť s plánovaním výdavkov na benzín, naftu alebo nabíjanie
+          elektromobilu. Výsledok používajte ako praktickú orientáciu, nie ako garantovanú cenu.
+        </p>
 
         <h2>2. Presnosť údajov</h2>
         <p>
@@ -41,12 +44,23 @@ const TermsOfUse = () => {
           kurzových alebo dátových zdrojov. Fuely nezaručuje nepretržitú dostupnosť ani úplnú
           presnosť výsledkov.
         </p>
+        <h3>Čo môže ovplyvniť výsledok?</h3>
+        <p>
+          Reálnu cenu cesty ovplyvňuje premávka, rýchlosť, počasie, profil trasy, hmotnosť auta,
+          štýl jazdy, presnosť zadanej spotreby a aktuálna cena paliva alebo elektriny.
+        </p>
 
         <h2>3. Zodpovednosť používateľa</h2>
         <p>
           Trasu, dopravné obmedzenia, ceny paliva, poplatky, bezpečnosť jazdy a právne povinnosti
           si vždy overte pred cestou. Fuely nenahrádza navigáciu, dopravné pokyny ani odborné
           poradenstvo.
+        </p>
+        <h3>Bezpečnosť a overenie trasy</h3>
+        <p>
+          Pred odchodom skontrolujte aktuálne dopravné informácie, uzávierky, mýto a pravidlá
+          krajín, cez ktoré cestujete. Navigácia alebo mapa môže obsahovať zmeny mimo kontroly
+          aplikácie Fuely.
         </p>
 
         <h2>4. Externé služby</h2>
@@ -77,8 +91,8 @@ const TermsOfUse = () => {
 
         <h2>8. Kontakt</h2>
         <p>
-          Otázky k podmienkam používania môžete poslať na:{' '}
-          <a href="mailto:dsnextgen.eu@gmail.com">dsnextgen.eu@gmail.com</a>
+          Otázky k podmienkam používania môžete poslať cez{' '}
+          <Link to="/">kontaktný formulár na úvodnej stránke</Link>.
         </p>
 
         <p>

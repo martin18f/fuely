@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Fuely",
+  "name": "Fuely - Fuel Cost Calculator",
+  "description": "Palivová kalkulačka na výpočet nákladov na cestu pre spaľovacie aj elektrické vozidlá.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +19,11 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#1976d2",
+  "background_color": "#eef2f3",
+  "lang": "sk",
+  "categories": ["travel", "utilities", "navigation"]
 }

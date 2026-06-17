@@ -10,7 +10,7 @@ const CustomCheckbox = ({ checked, onChange }) => {
       <input 
         type="checkbox" 
         id="cbx" 
-        style={{ display: 'none' }}
+        className="custom-checkbox-input"
         checked={checked} 
         onChange={onChange} 
       />

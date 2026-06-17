@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 const CLARITY_ID = 'qmta0j4gdp';
 const GTM_ID = 'GTM-WLSCV2NQ';
+const GTM_SCRIPT_ID = 'fuely-gtm-script';
+const CLARITY_SCRIPT_ID = 'fuely-clarity-script';
 
 const appendScript = ({ id, src, text }) => {
   if (document.getElementById(id)) return;
@@ -23,14 +25,37 @@ const appendScript = ({ id, src, text }) => {
 
 function TrackingScripts({ enabled }) {
   useEffect(() => {
-    if (!enabled) return;
-
     window.dataLayer = window.dataLayer || [];
+    window.gtag =
+      window.gtag ||
+      function gtag() {
+        window.dataLayer.push(arguments);
+      };
+
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+    });
+
     window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
     appendScript({
-      id: 'fuely-gtm-script',
+      id: GTM_SCRIPT_ID,
       src: `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`,
     });
+  }, []);
+
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag('consent', 'update', {
+        analytics_storage: enabled ? 'granted' : 'denied',
+      });
+    }
+
+    if (!enabled) return;
 
     window.clarity =
       window.clarity ||
@@ -38,7 +63,7 @@ function TrackingScripts({ enabled }) {
         (window.clarity.q = window.clarity.q || []).push(arguments);
       };
     appendScript({
-      id: 'fuely-clarity-script',
+      id: CLARITY_SCRIPT_ID,
       src: `https://www.clarity.ms/tag/${CLARITY_ID}?ref=bwt`,
     });
   }, [enabled]);

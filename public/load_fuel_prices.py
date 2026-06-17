@@ -3,6 +3,7 @@
 
 import csv
 import math
+import os
 from supabase import create_client, Client
 from tqdm import tqdm
 
@@ -10,22 +11,8 @@ from tqdm import tqdm
 DIESEL_CSV = "diesel_prices.csv"
 GASOLINE_CSV = "gasoline_prices.csv"
 
-# -- SEM VKLADÁME VAŠE HODNOTY -----------------
-SUPABASE_URL = "https://cyjauhagjcjrhjpgekgp.supabase.co"
-
-# Toto vyzerá ako anonymný (public) key:
-ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5amF1aGFnamNqcmhqcGdla2dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU5MDY3MDksImV4cCI6MjA1MTQ4MjcwOX0.y0S58TUsuyCMEq76PvrWLdI7bD6PAAppBGGXWcBMR7w"
-
-# Toto vyzerá ako service_role key:
-SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5amF1aGFnamNqcmhqcGdla2dwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNTkwNjcwOSwiZXhwIjoyMDUxNDgyNzA5fQ.0iHXWKGoH88QEeE39Y-ltLxnPF9W-ootRtiYdOdlqxs"
-
-# Toto vyzerá ako JWT SECRET (ak by ste ho potrebovali):
-JWT_SECRET = "uKDU9GIB+UWVxlh8Lv6qbDncoWsJ+uekpmlYsmfUC26b7oey/xHsFXw7cN9TtFQzyjfT1qLr7ytBjsuiSxgjeg=="
-
-# -- ČI BUDETE POUŽÍVAŤ SERVICE_KEY ALEBO ANON_KEY? --
-# Pre upsert (zápis) je vhodné použiť service_role key
-# => Zvolím service role key:
-SUPABASE_KEY = SERVICE_ROLE_KEY
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
 # -- NASTAVENIA UPLOADU ------------------------
 UPSERT_CHUNK_SIZE = 50  # Koľko riadkov naraz
@@ -34,13 +21,16 @@ def get_supabase_client() -> Client:
     """
     Vytvorí Supabase klienta pomocou URL + key (service role).
     """
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        raise RuntimeError(
+            "Chýba SUPABASE_URL alebo SUPABASE_SERVICE_ROLE_KEY."
+        )
     return create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def load_csv_into_dict(file_path: str, is_diesel: bool) -> dict:
     data = {}
     print(f"Načítavam CSV: {file_path} (diesel={is_diesel})")
 
-    import os
     if not os.path.exists(file_path):
         print(f"  [VAROVANIE] CSV súbor '{file_path}' neexistuje.")
         return data

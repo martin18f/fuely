@@ -4,6 +4,16 @@ import { useTranslation } from 'react-i18next';
 import emailjs from 'emailjs-com';
 import './ContactForm.css';
 
+const SUPPORT_EMAIL_ENCODED = 'ZHNuZXh0Z2VuLmV1QGdtYWlsLmNvbQ==';
+
+const getSupportEmail = () => {
+  if (typeof atob === 'function') {
+    return atob(SUPPORT_EMAIL_ENCODED);
+  }
+
+  return `dsnextgen.eu${String.fromCharCode(64)}gmail.com`;
+};
+
 const ContactForm = () => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
@@ -18,7 +28,7 @@ const ContactForm = () => {
       from_name: name,
       from_email: email,
       message: message,
-      to_email: 'dsnextgen.eu@gmail.com'
+      to_email: getSupportEmail()
     };
 
     emailjs.send('service_c09je8q', 'template_gsqqfxt', templateParams, 'SZJ0VCwv7O-V7X0__')

@@ -60,33 +60,18 @@ const ShareButton = ({ theme }) => {
     }
   };
 
-  const isDark = theme === 'dark';
-
   return (
     <div
-  ref={buttonRef}
-  onMouseDown={handleMouseDown}
-  onClick={handleShare}
-  title={t('shareApp')}
-  style={{
-    background: 'rgba(255, 255, 255, 0.15)',
-    backdropFilter: 'blur(15px)',
-    WebkitBackdropFilter: 'blur(15px)',
-    borderRadius: '12px',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
-    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
-    padding: '10px 16px',
-    fontWeight: '600',
-    fontFamily: 'inherit',
-    fontSize: '0.9rem',
-    color: isDark ? '#fff' : '#111',
-    cursor: 'pointer',
-    userSelect: 'none',
-    transition: 'background-color 0.3s ease',
-  }}
->
-  🔗 {t('shareApp')}
-</div>
+      ref={buttonRef}
+      onMouseDown={handleMouseDown}
+      onClick={handleShare}
+      title={t('shareApp')}
+      className={`shareButtonGlass ${
+        theme === 'dark' ? 'shareButtonGlassDark' : 'shareButtonGlassLight'
+      }`}
+    >
+      🔗 {t('shareApp')}
+    </div>
   );
 };
 

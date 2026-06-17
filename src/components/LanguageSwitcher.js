@@ -5,11 +5,15 @@ import './Switchers.css'; // Použijeme náš spoločný CSS
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
-  const [checked, setChecked] = useState(i18n.language === 'en');
+  const [checked, setChecked] = useState(
+    (i18n.resolvedLanguage || i18n.language).startsWith('en')
+  );
 
   useEffect(() => {
-    setChecked(i18n.language === 'en');
-  }, [i18n.language]);
+    setChecked(
+      (i18n.resolvedLanguage || i18n.language).startsWith('en')
+    );
+  }, [i18n.language, i18n.resolvedLanguage]);
 
   const handleToggle = (e) => {
     const newValue = e.target.checked;

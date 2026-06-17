@@ -5,11 +5,11 @@ import { notifyIndexNowSingle } from '../services/indexNow';
 const TestIndexNowButton = () => {
   const handleClick = () => {
     // Zadajte URL, ktorú chcete otestovať (musí patriť vašej doméne)
-    notifyIndexNowSingle('https://www.vasadomena.sk/testovacia-stranka');
+    notifyIndexNowSingle('https://fuely.martinsulak.dev/');
   };
 
   return (
-    <button onClick={handleClick} style={{ padding: '10px 20px', margin: '20px', fontSize: '16px' }}>
+    <button className="indexNowTestButton" onClick={handleClick}>
       Otestovať IndexNow
     </button>
   );

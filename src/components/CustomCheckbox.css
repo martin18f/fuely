@@ -9,6 +9,10 @@
   margin-right: auto; /* Posunie celý element do prava */
 }
 
+.custom-checkbox-input {
+  display: none;
+}
+
 /* Originálny CSS od Uiverse.io by mrhyddenn */
 .check {
   cursor: pointer;
