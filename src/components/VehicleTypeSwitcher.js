@@ -41,7 +41,7 @@ const Section = styled.div`
 const Container = styled.div`
   margin: auto;
   color: var(--text-color);
-  font-weight: 900;
+  font-weight: 700;
   font-size: 2rem;
   display: flex;
   align-items: center;
@@ -95,7 +95,12 @@ const ToggleText = styled.div`
   line-height: 1.2;
   text-transform: capitalize;
   margin-left: -2rem;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
   transform: scale(0.7);
 `;
 
