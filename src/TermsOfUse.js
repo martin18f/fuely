@@ -73,7 +73,8 @@ const TermsOfUse = () => {
         <h2>5. Ochrana osobných údajov a cookies</h2>
         <p>
           Informácie o spracúvaní údajov a cookies nájdete v zásadách ochrany osobných údajov
-          a v Cookie Policy. Analytické služby spúšťame až po prijatí cookies.
+          a v Cookie Policy. Analytické, spätnoväzbové a reklamné consent signály povoľujeme
+          až po prijatí cookies.
         </p>
 
         <h2>6. Autorské práva</h2>

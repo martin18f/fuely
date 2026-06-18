@@ -5,6 +5,40 @@
       "schedule": "0 0 * * *"
     }
   ],
+  "rewrites": [
+    {
+      "source": "/palivova-kalkulacka",
+      "destination": "/"
+    },
+    {
+      "source": "/cena-cesty-autom",
+      "destination": "/"
+    },
+    {
+      "source": "/vypocet-spotreby-paliva",
+      "destination": "/"
+    },
+    {
+      "source": "/naklady-na-cestu-elektromobilom",
+      "destination": "/"
+    },
+    {
+      "source": "/fuel-cost-calculator",
+      "destination": "/"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/"
+    },
+    {
+      "source": "/cookie-policy",
+      "destination": "/"
+    },
+    {
+      "source": "/terms-of-use",
+      "destination": "/"
+    }
+  ],
   "headers": [
     {
       "source": "/static/(.*)",

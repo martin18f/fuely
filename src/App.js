@@ -35,6 +35,8 @@ import DeleteButton from './components/DeleteButton';
 import FuelTypeRadioGroup from './components/FuelTypeRadioGroup';
 import VehicleTypeSwitcher from './components/VehicleTypeSwitcher';
 import ShareButton from './components/ShareButton';
+import AdSenseUnit, { AD_SLOTS } from './components/AdSenseUnit';
+import SeoLandingPage, { SEO_LANDING_LINKS } from './SeoLandingPage';
 import { getLocaleDefaults } from './utils/localeDefaults';
 import {
   calculateTripCost,
@@ -993,6 +995,12 @@ function App() {
                   />
                 </div>
 
+                <AdSenseUnit
+                  slot={AD_SLOTS.top}
+                  className="adSenseUnitTop"
+                  label={t('advertisement')}
+                />
+
                 <div className="section locationSearchSection startLocationSection">
                   <SearchBar
                     defaultValue={startLocation?.address || ''}
@@ -1311,6 +1319,12 @@ function App() {
                   </section>
                 )}
 
+                <AdSenseUnit
+                  slot={AD_SLOTS.content}
+                  className="adSenseUnitContent"
+                  label={t('advertisement')}
+                />
+
                 <Suspense fallback={null}>
                   <ContactForm />
                 </Suspense>
@@ -1358,6 +1372,24 @@ function App() {
                   </Link>
                 </div>
 
+                <div className="seo-section relatedGuidesHome">
+                  <h2>{t('relatedGuidesTitle')}</h2>
+                  <div className="relatedGuideGrid">
+                    {SEO_LANDING_LINKS.filter(
+                      (link) => link.language === currentLanguage
+                    ).map((link) => (
+                      <Link
+                        to={link.path}
+                        className="relatedGuideLink"
+                        key={link.path}
+                      >
+                        <span>{link.title}</span>
+                        <small>{link.description}</small>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
                 <PolicyLinks />
                 {hasAnalyticsConsent && <SpeedInsights />}
               </>
@@ -1368,10 +1400,14 @@ function App() {
           <Route path="/terms-of-use" element={<Suspense fallback={null}><TermsOfUse /></Suspense>} />
           <Route path="/privacy-policy" element={<Suspense fallback={null}><PrivacyPolicy /></Suspense>} />
           <Route path="/palivova-kalkulacka" element={<Suspense fallback={null}><PalivovaKalkulacka /></Suspense>} />
+          <Route path="/cena-cesty-autom" element={<SeoLandingPage pageKey="cena-cesty-autom" />} />
+          <Route path="/vypocet-spotreby-paliva" element={<SeoLandingPage pageKey="vypocet-spotreby-paliva" />} />
+          <Route path="/naklady-na-cestu-elektromobilom" element={<SeoLandingPage pageKey="naklady-na-cestu-elektromobilom" />} />
+          <Route path="/fuel-cost-calculator" element={<SeoLandingPage pageKey="fuel-cost-calculator" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
 
-        <Analytics />
+        {hasAnalyticsConsent && <Analytics />}
         {hasAnalyticsConsent && (
           <Suspense fallback={null}>
             <RatingPopup />

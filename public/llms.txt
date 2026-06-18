@@ -10,6 +10,10 @@ Fuely helps drivers estimate travel costs before a trip. The calculator works wi
 
 - https://fuely.martinsulak.dev/ - interactive fuel and electric vehicle trip cost calculator
 - https://fuely.martinsulak.dev/palivova-kalkulacka - detailed guide about fuel cost calculation
+- https://fuely.martinsulak.dev/cena-cesty-autom - Slovak guide for estimating car trip cost
+- https://fuely.martinsulak.dev/vypocet-spotreby-paliva - Slovak guide for fuel consumption and price calculation
+- https://fuely.martinsulak.dev/naklady-na-cestu-elektromobilom - Slovak guide for electric vehicle trip cost calculation
+- https://fuely.martinsulak.dev/fuel-cost-calculator - English fuel cost calculator guide
 - https://fuely.martinsulak.dev/privacy-policy - privacy policy
 - https://fuely.martinsulak.dev/cookie-policy - cookie policy
 - https://fuely.martinsulak.dev/terms-of-use - terms of use

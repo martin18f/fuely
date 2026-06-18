@@ -51,6 +51,9 @@ function TrackingScripts({ enabled }) {
   useEffect(() => {
     if (window.gtag) {
       window.gtag('consent', 'update', {
+        ad_storage: enabled ? 'granted' : 'denied',
+        ad_user_data: enabled ? 'granted' : 'denied',
+        ad_personalization: enabled ? 'granted' : 'denied',
         analytics_storage: enabled ? 'granted' : 'denied',
       });
     }

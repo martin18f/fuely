@@ -1558,6 +1558,110 @@ a[data-discover="true"]:hover {
   font-weight: 700;
 }
 
+.contentLead {
+  color: color-mix(in srgb, var(--text-color) 82%, transparent);
+  font-size: 1.14rem;
+  line-height: 1.75;
+}
+
+.inlineCtaLink {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0.35rem 0 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(25, 118, 210, 0.24);
+  border-radius: 8px;
+  background: rgba(25, 118, 210, 0.08);
+  text-decoration: none;
+}
+
+.relatedGuides {
+  margin-top: 2rem;
+}
+
+.relatedGuideGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.relatedGuideLink {
+  display: grid !important;
+  width: auto !important;
+  gap: 0.35rem;
+  margin: 0 !important;
+  padding: 0.9rem 1rem !important;
+  border: 1px solid rgba(25, 118, 210, 0.16) !important;
+  border-left: 4px solid #1976d2 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: var(--text-color) !important;
+  text-align: left;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  white-space: normal !important;
+}
+
+.relatedGuideLink:hover {
+  border-color: rgba(25, 118, 210, 0.34) !important;
+  background: rgba(25, 118, 210, 0.07) !important;
+  animation: none !important;
+}
+
+.relatedGuideLink span {
+  color: #1976d2;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.relatedGuideLink small {
+  color: color-mix(in srgb, var(--text-color) 72%, transparent);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.adSenseUnit {
+  display: grid;
+  width: 100%;
+  min-height: 90px;
+  margin: 1.25rem 0;
+  place-items: center;
+  border: 1px solid rgba(25, 118, 210, 0.13);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--section-bg) 92%, #1976d2 8%);
+  overflow: hidden;
+}
+
+.adSenseUnitTop {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.adSenseUnitContent,
+.adSenseUnitArticle {
+  min-height: 250px;
+}
+
+.adSenseLabel {
+  align-self: start;
+  justify-self: start;
+  padding: 0.4rem 0.6rem;
+  color: color-mix(in srgb, var(--text-color) 58%, transparent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.adSenseUnit .adsbygoogle {
+  width: 100%;
+}
+
 .notFoundTitle {
   margin-top: 2rem;
   text-align: center;
@@ -1722,6 +1826,15 @@ a[data-discover="true"]:hover {
   .contentPage {
     margin: 1rem 0;
     border-radius: 16px;
+  }
+
+  .relatedGuideGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .adSenseUnitContent,
+  .adSenseUnitArticle {
+    min-height: 180px;
   }
 
   .cookie-card {

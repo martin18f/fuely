@@ -1,6 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import AdSenseUnit, { AD_SLOTS } from './components/AdSenseUnit';
+import { SEO_LANDING_LINKS } from './SeoLandingPage';
 
 const PAGE_URL = 'https://fuely.martinsulak.dev/palivova-kalkulacka';
 
@@ -131,6 +133,26 @@ function PalivovaKalkulacka() {
         naloženým autom, zadajte vyššiu reálnu spotrebu, aby bol odhad nákladov
         realistickejší.
       </p>
+
+      <AdSenseUnit
+        slot={AD_SLOTS.article}
+        className="adSenseUnitArticle"
+        label="Reklama"
+      />
+
+      <section className="relatedGuides">
+        <h2>Súvisiace návody</h2>
+        <div className="relatedGuideGrid">
+          {SEO_LANDING_LINKS.filter((link) => link.language === 'sk').map(
+            (link) => (
+              <Link to={link.path} className="relatedGuideLink" key={link.path}>
+                <span>{link.title}</span>
+                <small>{link.description}</small>
+              </Link>
+            )
+          )}
+        </div>
+      </section>
 
       <Link to="/">Späť na kalkulačku</Link>
     </article>

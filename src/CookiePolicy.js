@@ -16,10 +16,10 @@ const CookiePolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Cookie Policy Fuely - cookies, analytika a pravidlá súhlasu</title>
+        <title>Cookie Policy Fuely - cookies, analytika, reklamy a súhlas</title>
         <meta
           name="description"
-          content="Cookie Policy Fuely vysvetľuje nevyhnutné lokálne úložisko, Google Maps, analytiku, hodnotenie aplikácie a spôsob zmeny súhlasu."
+          content="Cookie Policy Fuely vysvetľuje nevyhnutné lokálne úložisko, Google Maps, analytiku, reklamy, hodnotenie aplikácie a zmenu súhlasu."
         />
         <link rel="canonical" href="https://fuely.martinsulak.dev/cookie-policy" />
       </Helmet>
@@ -28,7 +28,8 @@ const CookiePolicy = () => {
       <h1>{t('cookiePolicyTitle', 'Cookie Policy')}</h1>
       <p>
         Táto stránka používa nevyhnutné lokálne úložisko pre uloženie vášho rozhodnutia
-        o cookies a voliteľné analytické služby iba po vašom súhlase.
+        o cookies a voliteľné analytické, spätnoväzbové a reklamné služby iba po vašom
+        súhlase.
       </p>
 
       <p>
@@ -61,19 +62,21 @@ const CookiePolicy = () => {
 
       <h2>3. Voliteľná analytika a spätná väzba</h2>
       <p>
-        Po kliknutí na „Prijať” môžeme spustiť Google Tag Manager, Microsoft Clarity,
-        Vercel Analytics, Vercel Speed Insights a hodnotiaci formulár. Hodnotenie sa odosiela
-        cez serverový endpoint Fuely do Google Sheets. Tieto služby pomáhajú merať návštevnosť,
-        výkon a kvalitu aplikácie.
+        Po kliknutí na „Prijať” môžeme používať Google Tag Manager, Microsoft Clarity,
+        Vercel Analytics, Vercel Speed Insights, Google AdSense a hodnotiaci formulár.
+        Hodnotenie sa odosiela cez serverový endpoint Fuely do Google Sheets. Tieto služby
+        pomáhajú merať návštevnosť, výkon, kvalitu aplikácie a zobrazovať reklamu.
       </p>
       <p>
-        Ak kliknete na „Zamietnuť”, tieto analytické a spätnoväzbové služby nespúšťame.
+        Ak kliknete na „Zamietnuť”, nepovoľujeme analytické, reklamné a spätnoväzbové
+        consent signály nad rámec nevyhnutnej funkcionality.
       </p>
       <h3>Aké analytické nástroje môžu byť aktivované?</h3>
       <p>
-        Po súhlase môže stránka spustiť Google Tag Manager, Microsoft Clarity, Vercel Analytics
-        a Vercel Speed Insights. Tieto nástroje používame na meranie výkonu, odhalenie chýb v
-        rozhraní a pochopenie, ktoré časti kalkulačky sú pre návštevníkov najužitočnejšie.
+        Po súhlase môže stránka používať Google Tag Manager, Microsoft Clarity, Vercel Analytics,
+        Vercel Speed Insights a Google AdSense. Tieto nástroje používame na meranie výkonu,
+        odhalenie chýb v rozhraní, pochopenie užitočných častí kalkulačky a financovanie
+        prevádzky reklamou.
       </p>
 
       <h2>4. Nastavenia aplikácie</h2>

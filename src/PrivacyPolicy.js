@@ -10,10 +10,10 @@ const PrivacyPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Ochrana osobných údajov Fuely - súkromie a dáta aplikácie</title>
+        <title>Ochrana osobných údajov Fuely - súkromie, analytika a reklamy</title>
         <meta
           name="description"
-          content="Zásady ochrany osobných údajov Fuely opisujú spracovanie dát pri kalkulačke, mapách, analytike, kontakte, hodnotení a lokálnom úložisku."
+          content="Zásady ochrany osobných údajov Fuely opisujú spracovanie dát pri kalkulačke, mapách, analytike, reklamách, kontakte, hodnotení a lokálnom úložisku."
         />
         <link rel="canonical" href="https://fuely.martinsulak.dev/privacy-policy" />
       </Helmet>
@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
       <h1>{t('privacyPolicyTitle', 'Zásady ochrany osobných údajov')}</h1>
       <p>
         Tieto zásady vysvetľujú, aké údaje môže Fuely spracúvať pri používaní palivovej
-        kalkulačky, mapy, kontaktného formulára, analytiky a hodnotenia aplikácie.
+        kalkulačky, mapy, kontaktného formulára, analytiky, reklamy a hodnotenia aplikácie.
       </p>
 
       <h2>1. Údaje potrebné pre fungovanie aplikácie</h2>
@@ -51,10 +51,11 @@ const PrivacyPolicy = () => {
 
       <h2>3. Analytika a hodnotenie</h2>
       <p>
-        Analytické služby Google Tag Manager, Microsoft Clarity, Vercel Analytics a Vercel
-        Speed Insights spúšťame až po prijatí cookies. Hodnotiaci formulár sa tiež zobrazí
-        až po súhlase a môže odoslať hodnotenie, komentár, dátum, typ zariadenia a jazykové
-        nastavenie cez náš serverový API endpoint do Google Apps Script / Google Sheets.
+        Analytické a reklamné consent signály pre Google Tag Manager, Microsoft Clarity,
+        Vercel Analytics, Vercel Speed Insights a Google AdSense povoľujeme až po prijatí
+        cookies. Hodnotiaci formulár sa tiež zobrazí až po súhlase a môže odoslať hodnotenie,
+        komentár, dátum, typ zariadenia a jazykové nastavenie cez náš serverový API endpoint
+        do Google Apps Script / Google Sheets.
       </p>
       <h3>Dobrovoľná spätná väzba</h3>
       <p>
@@ -77,8 +78,9 @@ const PrivacyPolicy = () => {
       <h2>5. Tretie strany</h2>
       <p>
         Pri používaní aplikácie môžu byť zapojené služby Google Maps, Google Tag Manager,
-        Microsoft Clarity, Vercel Analytics, Vercel Speed Insights, EmailJS a Google Apps
-        Script. Tieto služby spracúvajú údaje podľa vlastných pravidiel ochrany súkromia.
+        Microsoft Clarity, Vercel Analytics, Vercel Speed Insights, Google AdSense, EmailJS
+        a Google Apps Script. Tieto služby spracúvajú údaje podľa vlastných pravidiel ochrany
+        súkromia.
       </p>
 
       <h2>6. Vaše práva</h2>

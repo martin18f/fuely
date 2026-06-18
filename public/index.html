@@ -5,11 +5,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYBF3LZ88R"></script>
+    <!-- Google consent mode default + Google tag (gtag.js) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted'
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYBF3LZ88R"></script>
+    <script>
       gtag('js', new Date());
       gtag('config', 'G-PYBF3LZ88R');
     </script>
@@ -32,19 +42,19 @@
       content="Fuely, palivová kalkulačka, fuel cost calculator, výpočet spotreby, cestovné náklady, benzín, nafta, elektromobil, plánovanie trasy"
     />
 
-    <title>Fuely - Palivová kalkulačka | Výpočet nákladov na cestu</title>
+    <title>Palivová kalkulačka Fuely | Výpočet ceny cesty autom</title>
 
 
     <!-- Skrátená meta description (cca do 160 znakov) -->
     <meta
       data-react-helmet="true"
       name="description"
-      content="Fuely je palivová kalkulačka pre benzín, naftu aj elektromobil. Zadajte trasu, vzdialenosť, spotrebu a cenu paliva a zistite náklady na cestu."
+      content="Palivová kalkulačka Fuely počíta cenu cesty autom alebo elektromobilom podľa trasy, spotreby, ceny paliva, elektriny, meny a mýta."
     />
 
     <!-- Open Graph -->
-    <meta data-react-helmet="true" property="og:title" content="Fuely - Palivová kalkulačka | Výpočet nákladov na cestu"/>
-    <meta data-react-helmet="true" property="og:description" content="Fuely je palivová kalkulačka pre benzín, naftu aj elektromobil. Zadajte trasu, vzdialenosť, spotrebu a cenu paliva a zistite náklady na cestu."/>
+    <meta data-react-helmet="true" property="og:title" content="Palivová kalkulačka Fuely | Výpočet ceny cesty autom"/>
+    <meta data-react-helmet="true" property="og:description" content="Palivová kalkulačka Fuely počíta cenu cesty autom alebo elektromobilom podľa trasy, spotreby, ceny paliva, elektriny, meny a mýta."/>
     <meta data-react-helmet="true" property="og:url" content="https://fuely.martinsulak.dev/"/>
     <meta data-react-helmet="true" property="og:type" content="website"/>
     <meta data-react-helmet="true" property="og:site_name" content="Fuely"/>
@@ -55,8 +65,8 @@
     <meta data-react-helmet="true" property="og:image:width" content="512"/>
     <meta data-react-helmet="true" property="og:image:height" content="512"/>
     <meta data-react-helmet="true" name="twitter:card" content="summary_large_image"/>
-    <meta data-react-helmet="true" name="twitter:title" content="Fuely - Palivová kalkulačka | Výpočet nákladov na cestu"/>
-    <meta data-react-helmet="true" name="twitter:description" content="Fuely počíta náklady na cestu podľa vzdialenosti, spotreby a ceny paliva pre benzín, naftu aj elektromobil."/>
+    <meta data-react-helmet="true" name="twitter:title" content="Palivová kalkulačka Fuely | Výpočet ceny cesty autom"/>
+    <meta data-react-helmet="true" name="twitter:description" content="Fuely počíta cenu cesty podľa trasy, spotreby, ceny paliva, elektriny, meny a mýta."/>
     <meta data-react-helmet="true" name="twitter:image" content="https://fuely.martinsulak.dev/logo512.png"/>
     <meta data-react-helmet="true" name="twitter:image:alt" content="Fuely fuel cost calculator logo"/>
 
@@ -125,7 +135,7 @@
   <body>
     <div id="root">
       <main>
-        <h1>Fuely - výpočet nákladov na cestovanie</h1>
+        <h1>Palivová kalkulačka Fuely - výpočet ceny cesty autom</h1>
         <p>
           Fuely je webová kalkulačka na odhad nákladov na cestu autom alebo
           elektromobilom. Pomáha vodičom vypočítať cenu trasy podľa vzdialenosti,

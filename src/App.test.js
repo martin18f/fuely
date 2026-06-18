@@ -60,7 +60,7 @@ test('renders travel cost calculator', async () => {
   await waitFor(() => expect(global.fetch).toHaveBeenCalled());
 
   const heading = await screen.findByRole('heading', {
-    name: /travel cost calculator|výpočet nákladov na cestovanie/i,
+    name: /fuely fuel cost calculator|palivová kalkulačka fuely/i,
   });
   expect(heading).toBeInTheDocument();
   expect(
