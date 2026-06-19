@@ -78,6 +78,11 @@ const createStop = () => ({
   location: null,
 });
 
+const getLocationKey = (location) => {
+  const position = location?.position;
+  return position ? `${position.lat},${position.lng}` : '';
+};
+
 const getRouteSummary = (route) => {
   const legs = route?.legs || [];
   const distanceMeters = legs.reduce(
@@ -205,6 +210,7 @@ function App() {
   const [resetKey, setResetKey] = useState(0);
 
   const routeRequestIdRef = useRef(0);
+  const hasSeenRouteEndpointPairRef = useRef(false);
   const previousFuelUnitRef = useRef(fuelUnit);
   const waypointKey = stopLocations
     .filter((stop) => stop.location?.position)
@@ -213,6 +219,15 @@ function App() {
         `${stop.location.position.lat},${stop.location.position.lng}`
     )
     .join(';');
+  const hasRouteEndpoints = Boolean(
+    startLocation?.position && destinationLocation?.position
+  );
+  const routeInputKey = [
+    getLocationKey(startLocation),
+    waypointKey,
+    getLocationKey(destinationLocation),
+    avoidHighways ? 'avoid-highways' : 'allow-highways',
+  ].join('|');
   const { isLoaded: isGoogleLoaded, loadError: googleMapsLoadError } =
     googleMapsState;
 
@@ -440,13 +455,30 @@ function App() {
     setDirections({ ...result, routes: [result.routes[index]] });
   }, []);
 
+  const clearRouteState = useCallback(
+    ({ clearDistance = false } = {}) => {
+      routeRequestIdRef.current += 1;
+      setLoading(false);
+      setRouteError('');
+      setDirectionsResult(null);
+      setRouteAlternatives([]);
+      setSelectedRouteIndex(0);
+      setDirections(null);
+      setTravelTime(null);
+      if (clearDistance) {
+        setDistance(null);
+      }
+    },
+    [setDistance, setTravelTime]
+  );
+
   const requestRoute = useCallback(() => {
     if (
       googleMapsLoadError ||
       !isGoogleLoaded ||
       !window.google?.maps ||
-      !startLocation ||
-      !destinationLocation
+      !startLocation?.position ||
+      !destinationLocation?.position
     ) {
       return;
     }
@@ -455,6 +487,12 @@ function App() {
     routeRequestIdRef.current = requestId;
     setLoading(true);
     setRouteError('');
+    setDirectionsResult(null);
+    setRouteAlternatives([]);
+    setSelectedRouteIndex(0);
+    setDirections(null);
+    setTravelTime(null);
+    setDistance(null);
 
     const directionsService = new window.google.maps.DirectionsService();
     const waypoints = waypointKey
@@ -509,11 +547,28 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (!startLocation || !destinationLocation || !isGoogleLoaded) return;
+    if (!hasRouteEndpoints) {
+      if (hasSeenRouteEndpointPairRef.current) {
+        clearRouteState({ clearDistance: true });
+        hasSeenRouteEndpointPairRef.current = false;
+      }
+      return undefined;
+    }
+
+    hasSeenRouteEndpointPairRef.current = true;
+    clearRouteState({ clearDistance: true });
+
+    if (!isGoogleLoaded) return undefined;
 
     const timeoutId = window.setTimeout(requestRoute, 250);
     return () => window.clearTimeout(timeoutId);
-  }, [destinationLocation, isGoogleLoaded, requestRoute, startLocation]);
+  }, [
+    clearRouteState,
+    hasRouteEndpoints,
+    isGoogleLoaded,
+    requestRoute,
+    routeInputKey,
+  ]);
 
   const selectRouteAlternative = (index) => {
     if (!directionsResult || !routeAlternatives[index]) return;

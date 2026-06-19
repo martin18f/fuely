@@ -127,3 +127,34 @@ test('initializes autocomplete when Places becomes available after first render'
   ).toBeInTheDocument();
   expect(getPlacePredictions).toHaveBeenCalled();
 });
+
+test('clears the selected location when the user edits the selected text', () => {
+  const onLocationSelect = jest.fn();
+  const { rerender } = render(
+    <SearchBar
+      defaultValue="Bratislava, Slovakia"
+      isGoogleLoaded={false}
+      onLocationSelect={onLocationSelect}
+      placeholder="Start"
+    />
+  );
+  const input = screen.getByRole('combobox');
+
+  fireEvent.change(input, {
+    target: { value: 'Bratislava main station' },
+  });
+
+  expect(onLocationSelect).toHaveBeenCalledWith(null);
+  expect(input).toHaveValue('Bratislava main station');
+
+  rerender(
+    <SearchBar
+      defaultValue=""
+      isGoogleLoaded={false}
+      onLocationSelect={onLocationSelect}
+      placeholder="Start"
+    />
+  );
+
+  expect(input).toHaveValue('Bratislava main station');
+});

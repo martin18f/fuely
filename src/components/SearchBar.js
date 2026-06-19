@@ -153,6 +153,8 @@ const SearchBar = ({
   const sessionTokenRef = useRef(null);
   const requestIdRef = useRef(0);
   const skipSearchForValueRef = useRef(defaultValue || '');
+  const selectedValueRef = useRef(defaultValue || '');
+  const keepQueryAfterParentClearRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -233,8 +235,18 @@ const SearchBar = ({
   }, []);
 
   useEffect(() => {
-    skipSearchForValueRef.current = defaultValue || '';
-    setQuery(defaultValue || '');
+    const nextDefaultValue = defaultValue || '';
+    skipSearchForValueRef.current = nextDefaultValue;
+    selectedValueRef.current = nextDefaultValue;
+
+    if (keepQueryAfterParentClearRef.current && !nextDefaultValue) {
+      keepQueryAfterParentClearRef.current = false;
+      setSuggestions([]);
+      return;
+    }
+
+    keepQueryAfterParentClearRef.current = false;
+    setQuery(nextDefaultValue);
     setSuggestions([]);
   }, [defaultValue]);
 
@@ -244,6 +256,7 @@ const SearchBar = ({
         await placesAdapterRef.current.resolvePrediction(prediction);
 
       skipSearchForValueRef.current = locationData.address;
+      selectedValueRef.current = locationData.address;
       setQuery(locationData.address);
       setSuggestions([]);
       setError('');
@@ -270,9 +283,20 @@ const SearchBar = ({
         value={query}
         onFocus={onActivate}
         onChange={(event) => {
+          const nextQuery = event.target.value;
+
           onActivate?.();
+          if (
+            selectedValueRef.current &&
+            nextQuery !== selectedValueRef.current
+          ) {
+            selectedValueRef.current = '';
+            keepQueryAfterParentClearRef.current = true;
+            onLocationSelect?.(null);
+          }
+
           skipSearchForValueRef.current = '';
-          setQuery(event.target.value);
+          setQuery(nextQuery);
           setError('');
         }}
         placeholder=""
